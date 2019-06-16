@@ -1,10 +1,11 @@
 julia 1.0
-LinearAlgebra
-DataStructures
-
-ModernGL
-GLFW
 
 LinearAlgebraicRepresentation
 Triangle
+LinearAlgebra
+DataStructures
+VoronoiDelaunay
+QHull
 
+ModernGL
+GLFW
