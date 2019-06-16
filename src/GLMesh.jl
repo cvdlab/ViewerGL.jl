@@ -38,6 +38,13 @@ end
 
 
 # ///////////////////////////////////////////////////////////////////////
+function computeNormal(p1::Point2d, p2::Point2d)
+	t = p2-p1
+	n = Point2d(-t[2], +t[1])
+	return normalized(n)
+end
+
+# ///////////////////////////////////////////////////////////////////////
 function computeNormal(p0::Point3d,p1::Point3d,p2::Point3d)
 	return normalized(cross(p1-p0,p2-p0))
 end

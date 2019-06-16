@@ -20,6 +20,11 @@ function norm(p::Point4d)
 	return sqrt(p[1]*p[1] + p[2]*p[2] + p[3]*p[3] + p[4]*p[4])
 end
 
+function normalized(p::Point2d)
+	len=norm(p)
+	return Point2d(p[1] / len, p[2] / len)
+end
+
 function normalized(p::Point3d)
 	len=norm(p)
 	return Point3d(p[1] / len, p[2] / len, p[3] / len)
