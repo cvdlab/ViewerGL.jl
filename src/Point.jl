@@ -4,10 +4,10 @@ const Point2d=MVector{2,Float64}
 const Point3d=MVector{3,Float64}
 const Point4d=MVector{4,Float64}
 
-Point2d() = Point3d(0.0,0.0)
+Point2d() = Point2d(0.0,0.0)
 Point3d() = Point3d(0.0,0.0,0.0)
 Point4d() = Point4d(0.0,0.0,0.0,0.0)
-
+ 
 function norm(p::Point2d)
 	return sqrt(p[1]*p[1] + p[2]*p[2])
 end
