@@ -1,4 +1,4 @@
-module Display
+module ViewerGL
 
 	using LinearAlgebra
 

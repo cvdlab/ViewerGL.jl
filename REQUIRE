@@ -1,4 +1,6 @@
 julia 1.0
+LinearAlgebra
+DataStructures
 
 ModernGL
 GLFW
@@ -6,5 +8,3 @@ GLFW
 LinearAlgebraicRepresentation
 Triangle
 
-LinearAlgebra
-DataStructures

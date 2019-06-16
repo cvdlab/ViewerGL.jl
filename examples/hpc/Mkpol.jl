@@ -1,6 +1,8 @@
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
 using QHull
+using ViewerGL
+GL = ViewerGL
 
 function GLLar(points::Array{Float64,2}, cells::Array{Array{Int64, 1}, 1})
 
@@ -19,10 +21,10 @@ function GLLar(points::Array{Float64,2}, cells::Array{Array{Int64, 1}, 1})
 
 		for tria in trias
 			p3,p2,p1 = points[tria[1],:],points[tria[2],:],points[tria[3],:]
-			p1 = convert(Point3d, p1)
-			p2 = convert(Point3d, p2)
-			p3 = convert(Point3d, p3)
-			n=0.5*computeNormal(p1::Point3d,p2::Point3d,p3::Point3d)
+			p1 = convert(GL.Point3d, p1)
+			p2 = convert(GL.Point3d, p2)
+			p3 = convert(GL.Point3d, p3)
+			n=0.5*GL.computeNormal(p1::GL.Point3d,p2::GL.Point3d,p3::GL.Point3d)
 
 			append!(vertices,p1); append!(normals,n)
 			append!(vertices,p2); append!(normals,n)
@@ -30,15 +32,15 @@ function GLLar(points::Array{Float64,2}, cells::Array{Array{Int64, 1}, 1})
 		end
 	end
 
-	ret=GLMesh(GL_TRIANGLES)
-	ret.vertices = GLVertexBuffer(vertices)
-	ret.normals  = GLVertexBuffer(normals)
+	ret=GL.GLMesh(GL.GL_TRIANGLES)
+	ret.vertices = GL.GLVertexBuffer(vertices)
+	ret.normals  = GL.GLVertexBuffer(normals)
 	return ret
 end
 
 V,CV = Lar.cuboidGrid([10,10,10])
-VIEW([
-      #GLCuboid(Box3d(Point3d(0,0,0),Point3d(1,1,1)))
+GL.VIEW([
+      # GL.GLCuboid(Box3d(GL.Point3d(0,0,0),GL.Point3d(1,1,1)))
       GLLar(V,CV)
-      GLAxis(Point3d(0,0,0),Point3d(1,1,1))
+      GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1))
 ])
