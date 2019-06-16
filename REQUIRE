@@ -1,9 +1,9 @@
 julia 1.0
+LinearAlgebra
 
 LinearAlgebraicRepresentation
 Triangle
 StaticArrays
-LinearAlgebra
 DataStructures
 VoronoiDelaunay
 QHull

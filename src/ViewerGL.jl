@@ -1,7 +1,6 @@
 module ViewerGL
 
 	using LinearAlgebra
-
 	using ModernGL
 	using GLFW
 	import Base:*
