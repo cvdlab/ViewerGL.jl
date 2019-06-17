@@ -1,4 +1,5 @@
 using QHull
+using LinearAlgebra
 using Revise
 using ViewerGL
 GL = ViewerGL

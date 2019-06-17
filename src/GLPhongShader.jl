@@ -33,21 +33,21 @@ varying vec3 v_eye_vec;
 varying vec4 v_color;
 #endif
 
-void main() 
+void main()
 {
 	vec4 eye_pos= u_modelview_matrix * a_position;
-	
-#if LIGHTING_ENABLED	
+
+#if LIGHTING_ENABLED
 	v_normal = u_normal_matrix * a_normal;
 	vec3 vVertex = vec3(u_modelview_matrix * a_position);
 	v_light_dir  = normalize(u_light_position - vVertex);
 	v_eye_vec    = normalize(-vVertex);
-#endif	
+#endif
 
 #if COLOR_ATTRIBUTE_ENABLED
 	v_color=a_color;
 #endif
-	
+
 	gl_Position = u_projection_matrix * eye_pos;
 }
 """
@@ -71,10 +71,10 @@ varying vec3 v_eye_vec;
 varying vec4 v_color;
 #endif
 
-void main() 
+void main()
 {
-	vec4 frag_color=u_color; 
-	
+	vec4 frag_color=u_color;
+
   #if LIGHTING_ENABLED
 	vec3 N = normalize(v_normal   );
 	vec3 L = normalize(v_light_dir);
@@ -83,8 +83,8 @@ void main()
 	vec4  u_material_ambient  = vec4(0.2,0.2,0.2,1.0);
 	vec4  u_material_diffuse  = vec4(0.8,0.8,0.8,1.0);
 	vec4  u_material_specular = vec4(0.1,0.1,0.1,1.0);
-	float u_material_shininess=100.0;	
-	
+	float u_material_shininess=100.0;
+
 	if(gl_FrontFacing)
 	{
 		frag_color = u_material_ambient;
@@ -122,7 +122,7 @@ void main()
 
 # /////////////////////////////////////////////////////////////////////
 function GLPhongShader(lighting_enabled,color_attribute_enabled)
-	
+
 	v=vert_source
 	f=frag_source
 
@@ -144,4 +144,3 @@ function GLPhongShader(lighting_enabled,color_attribute_enabled)
 
 	return GLShader(v,f)
 end
-
