@@ -1,19 +1,19 @@
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
+#using Plasm
 using Triangle
 using Revise
 using ViewerGL
 GL = ViewerGL
-using Plasm
 
 # ////////////////////////////////////////////////////////////////////////
 function GLPolygon(V::Lar.Points,EV::Lar.ChainOp,FE::Lar.ChainOp)
       # triangulation
       W = convert(Lar.Points, V')
-      EV = Lar.cop2lar(copEV)
+      EV = Lar.cop2lar(EV)
       trias = Lar.triangulate2d(W,EV)
       # mesh building
-      vertices,normals = lar2mesh(V,trias)
+      vertices,normals = GL.lar2mesh(V,trias)
       ret=GL.GLMesh(GL.GL_TRIANGLES)
       ret.vertices = GL.GLVertexBuffer(vertices)
       ret.normals  = GL.GLVertexBuffer(normals)
@@ -31,11 +31,7 @@ cop_EW = convert(Lar.ChainOp, cop_EV)
 V, copEV, copFE = Lar.Arrangement.planar_arrangement(
       W::Lar.Points, cop_EW::Lar.ChainOp)
 
-function two2three(points)
-      return [points zeros(Float64,size(points,1),1)]
-end
-
 GL.VIEW([
-      GLPolygon(two2three(V), copEV, copFE)
+      GLPolygon(GL.two2three(V), copEV, copFE)
       GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1))
 ])

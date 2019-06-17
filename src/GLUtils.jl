@@ -1,3 +1,28 @@
+using ViewerGL
+GL = ViewerGL
+
+# ////////////////////////////////////////////////////////////////////////
+function lar2mesh(points,faces)
+	vertices=Vector{Float32}()
+	normals =Vector{Float32}()
+	for face in faces
+		p3,p2,p1 = points[face[1],:],points[face[2],:],points[face[3],:]
+		p1 = convert(GL.Point3d, p1)
+		p2 = convert(GL.Point3d, p2)
+		p3 = convert(GL.Point3d, p3)
+		n=0.5*GL.computeNormal(p1::GL.Point3d,p2::GL.Point3d,p3::GL.Point3d)
+
+		append!(vertices,p1); append!(normals,n)
+		append!(vertices,p2); append!(normals,n)
+		append!(vertices,p3); append!(normals,n)
+	end
+	return vertices,normals
+end
+
+# /////////////////////////////////////////////////////////////////////
+function two2three(points)
+      return [points zeros(Float64,size(points,1),1)]
+end
 
 
 # /////////////////////////////////////////////////////////////////////
@@ -45,7 +70,7 @@ end
 
 
 # /////////////////////////////////////////////////////////////////////
-__release_gpu_resources__=[] 
+__release_gpu_resources__=[]
 
 function glDeleteLater(fun::Function)
 	global __release_gpu_resources__
@@ -57,7 +82,5 @@ function glDeleteNow()
 	global __release_gpu_resources__
 	for fun in __release_gpu_resources__
 		fun()
-	end	
+	end
 end
-
-
