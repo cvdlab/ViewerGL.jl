@@ -7,8 +7,18 @@ GL = ViewerGL
 using Plasm
 
 # ////////////////////////////////////////////////////////////////////////
-function GLPolygon(points::Lar.Points,EV::Lar.ChainOp,FE::Lar.ChainOp)
-
+function GLPolygon(V::Lar.Points,EV::Lar.ChainOp,FE::Lar.ChainOp)
+      # triangulation
+      W = convert(Lar.Points, V')
+      EV = Lar.cop2lar(copEV)
+      trias = Lar.triangulate2d(W,EV)
+      Plasm.view(W, trias)
+      # mesh building
+      vertices,normals = lar2mesh(V,trias)
+      ret=GL.GLMesh(GL.GL_TRIANGLES)
+      ret.vertices = GL.GLVertexBuffer(vertices)
+      ret.normals  = GL.GLVertexBuffer(normals)
+      return ret
 end
 
 # input 2D non-convex and non-contarctible polygon
@@ -19,16 +29,14 @@ Plasm.view(V, EV)
 W = convert(Lar.Points, V')
 cop_EV = Lar.coboundary_0(EV::Lar.Cells)
 cop_EW = convert(Lar.ChainOp, cop_EV)
-V, copEV, copFE = Lar.Arrangement.planar_arrangement(W::Lar.Points, cop_EW::Lar.ChainOp)
+V, copEV, copFE = Lar.Arrangement.planar_arrangement(
+      W::Lar.Points, cop_EW::Lar.ChainOp)
 
-# triangulation
-W = convert(Lar.Points, V')
-EV = Lar.cop2lar(copEV)
-trias = Lar.triangulate2d(W,EV)
-Plasm.view(W, trias)
+function two2three(points)
+      return [points zeros(Float64,size(points,1),1)]
+end
 
-
-# GL.VIEW([
-#       GLPolygon(points, EV, FE)
-#       GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1))
-# ])
+GL.VIEW([
+      GLPolygon(two2three(V), copEV, copFE)
+      GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1))
+])

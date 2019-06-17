@@ -4,15 +4,7 @@ using ViewerGL
 GL = ViewerGL
 
 # ////////////////////////////////////////////////////////////////////////
-function GLHull(points::Array{Float64,2})
-
-	ch = QHull.chull(points)
-	verts = ch.vertices
-	vdict = Dict(zip(verts, 1:length(verts)))
-	trias = [[vdict[u],vdict[v],vdict[w]] for (u,v,w) in ch.simplices]
-	points = points[verts,:]
-
-	faces = trias
+function lar2mesh(points,faces)
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()
 	for face in faces
@@ -26,7 +18,18 @@ function GLHull(points::Array{Float64,2})
 		append!(vertices,p2); append!(normals,n)
 		append!(vertices,p3); append!(normals,n)
 	end
+	return vertices,normals
+end
 
+# ////////////////////////////////////////////////////////////////////////
+function GLHull(points::Array{Float64,2})
+	ch = QHull.chull(points)
+	verts = ch.vertices
+	vdict = Dict(zip(verts, 1:length(verts)))
+	trias = [[vdict[u],vdict[v],vdict[w]] for (u,v,w) in ch.simplices]
+	points = points[verts,:]
+
+	vertices,normals = lar2mesh(points,trias)
 	ret=GL.GLMesh(GL.GL_TRIANGLES)
 	ret.vertices = GL.GLVertexBuffer(vertices)
 	ret.normals  = GL.GLVertexBuffer(normals)
