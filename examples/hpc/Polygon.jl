@@ -12,7 +12,6 @@ function GLPolygon(V::Lar.Points,EV::Lar.ChainOp,FE::Lar.ChainOp)
       W = convert(Lar.Points, V')
       EV = Lar.cop2lar(copEV)
       trias = Lar.triangulate2d(W,EV)
-      Plasm.view(W, trias)
       # mesh building
       vertices,normals = lar2mesh(V,trias)
       ret=GL.GLMesh(GL.GL_TRIANGLES)
