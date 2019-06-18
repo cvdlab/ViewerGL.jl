@@ -1,5 +1,14 @@
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 mutable struct Viewer
 	win::Any
 	W::Int32
@@ -27,7 +36,16 @@ mutable struct Viewer
 end
 
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function releaseGpuResources(viewer::Viewer)
 
 	for mesh in viewer.meshes
@@ -39,7 +57,16 @@ function releaseGpuResources(viewer::Viewer)
 	end
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function runViewer(viewer::Viewer)
 
 	ret_code=GLFW.Init()
@@ -85,7 +112,16 @@ function runViewer(viewer::Viewer)
 	GLFW.Terminate()
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function VIEW(meshes)
 
 	global viewer
@@ -121,7 +157,16 @@ function VIEW(meshes)
 end
 
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function getModelview(viewer::Viewer)
 	return lookAtMatrix(viewer.pos,viewer.pos+viewer.dir,viewer.vup)
 end
@@ -130,7 +175,16 @@ function getProjection(viewer::Viewer)
 	return perspectiveMatrix(viewer.fov,viewer.W/float(viewer.H),viewer.zNear,viewer.zFar)
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function projectPoint(viewer::Viewer,pos::Point3d)
 	viewport=[0,0,viewer.W,viewer.H]
 	projection =getProjection(viewer)
@@ -139,7 +193,16 @@ function projectPoint(viewer::Viewer,pos::Point3d)
 	return projectPoint(map,pos)
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function unprojectPoint(viewer::Viewer,x::Float32,y::Float32)
 	viewport=[0,0,viewer.W,viewer.H]
 	projection =getProjection(viewer)
@@ -150,7 +213,16 @@ function unprojectPoint(viewer::Viewer,x::Float32,y::Float32)
 	return normalized(P2-P1)
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function getShader(viewer::Viewer,lighting_enabled,color_attribute_enabled)
 
 	key=(lighting_enabled,color_attribute_enabled)
@@ -164,7 +236,16 @@ function getShader(viewer::Viewer,lighting_enabled,color_attribute_enabled)
 	return ret
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function glRender(viewer::Viewer)
 
 	glEnable(GL_DEPTH_TEST)
@@ -259,12 +340,30 @@ function glRender(viewer::Viewer)
 
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function redisplay(viewer::Viewer)
 	# nothing to do
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function handleResizeEvent(viewer)
 	size=GLFW.GetWindowSize(viewer.win)
 	viewer.W = size[1]*viewer.scalex
@@ -272,7 +371,16 @@ function handleResizeEvent(viewer)
 	redisplay(viewer)
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function handleMouseButtonEvent(viewer,button,action,mods)
 
 	button=Dict(GLFW.MOUSE_BUTTON_1=>1,GLFW.MOUSE_BUTTON_2=>3,GLFW.MOUSE_BUTTON_3=>2)[button]
@@ -290,7 +398,16 @@ function handleMouseButtonEvent(viewer,button,action,mods)
 	end
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function handleMouseMoveEvent(viewer,x,y)
 
 	x=x*viewer.scalex
@@ -341,13 +458,31 @@ function handleMouseMoveEvent(viewer,x,y)
 	redisplay(viewer)
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function handleMouseWheelEvent(viewer,delta)
 	viewer.pos=viewer.pos+viewer.dir * ((delta>=0 ? 10.0 : -10.0) * viewer.walk_speed)
 	redisplay(viewer)
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function handleKeyPressEvent(viewer,key, scancode, action, mods)
 
 	if action != GLFW.PRESS

@@ -1,6 +1,15 @@
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 mutable struct GLShader
 
 	vertex_source
@@ -20,7 +29,16 @@ mutable struct GLShader
 end
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function releaseGpuResources(shader::GLShader)
 
 	global __release_gpu_resources__
@@ -47,7 +65,16 @@ function releaseGpuResources(shader::GLShader)
 end
 	
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function createShader(type,source)
 	shader_id = glCreateShader(type)::GLuint
 	glCheckError()
@@ -69,7 +96,16 @@ end
 
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function enableProgram(shader)
 
 	if (shader.program_id<0)
@@ -104,7 +140,16 @@ function enableProgram(shader)
 	glUseProgram(shader.program_id)
 end
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function disableProgram(shader)
 	glUseProgram(0)	
 end

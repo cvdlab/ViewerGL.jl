@@ -1,5 +1,14 @@
 
-# /////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 mutable struct FrustumMap
 
 	viewport::Matrix4
@@ -21,11 +30,31 @@ mutable struct FrustumMap
 	
 end
 
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function projectPoint(map::FrustumMap,p3::Point3d)
 	p4=(map.viewport * (map.projection * (map.modelview * Point4d(p3[1],p3[2],p3[3],1.0))))
 	return Point3d(p4[1]/p4[4],p4[2]/p4[4],p4[3]/p4[4])
 end
 
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function unprojectPoint(map::FrustumMap,x::Float32,y::Float32, z::Float32)
 	p4 = (map.inv_modelview * (map.inv_projection * (map.inv_viewport * Point4d(x,y,z, 1.0))))
 	if p4.w==0 

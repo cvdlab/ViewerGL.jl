@@ -4,8 +4,17 @@ using QHull
 using ViewerGL
 GL = ViewerGL
 
-function lar2gl(V::Array{Float64,2}, CV::Array{Array{Int64,1},1})
 
+
+"""
+
+# Example
+
+```
+
+```
+"""
+function lar2gl(V::Array{Float64,2}, CV::Array{Array{Int64,1},1})
 	points = convert(Array{Float64,2},V') # points by rows
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()

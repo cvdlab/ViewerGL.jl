@@ -1,7 +1,16 @@
 
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 vert_source="""
 
 #define LIGHTING_ENABLED        arg(LIGHTING_ENABLED)
@@ -53,7 +62,16 @@ void main()
 """
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 frag_source="""
 
 #define LIGHTING_ENABLED        arg(LIGHTING_ENABLED)
@@ -120,7 +138,16 @@ void main()
 """
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function GLPhongShader(lighting_enabled,color_attribute_enabled)
 
 	v=vert_source

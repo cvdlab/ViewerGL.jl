@@ -1,7 +1,16 @@
 using ViewerGL
 GL = ViewerGL
 
-# ////////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function lar2mesh(points,faces)
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()
@@ -19,13 +28,31 @@ function lar2mesh(points,faces)
 	return vertices,normals
 end
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function two2three(points)
       return [points zeros(Float64,size(points,1),1)]
 end
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function glGenBuffer()
 	id = GLuint[0]
 	glGenBuffers(1, id)
@@ -33,7 +60,16 @@ function glGenBuffer()
 	id[]
 end
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function glGenVertexArray()
 	id = GLuint[0]
 	glGenVertexArrays(1, id)
@@ -44,7 +80,16 @@ end
 
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function glCheckError(actionName="")
 	message = glErrorMessage()
 	if length(message) > 0
@@ -56,7 +101,16 @@ function glCheckError(actionName="")
 	end
 end
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function glErrorMessage()
 	err = glGetError()
 	if err == GL_NO_ERROR return "" end
@@ -69,7 +123,16 @@ function glErrorMessage()
 end
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 __release_gpu_resources__=[]
 
 function glDeleteLater(fun::Function)
@@ -77,7 +140,16 @@ function glDeleteLater(fun::Function)
 	append!(__release_gpu_resources__,[fun])
 end
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function glDeleteNow()
 	global __release_gpu_resources__
 	for fun in __release_gpu_resources__

@@ -1,6 +1,15 @@
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 mutable struct GLVertexArray
 
 	id::Int32
@@ -15,7 +24,16 @@ mutable struct GLVertexArray
 end
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function releaseGpuResources(array::GLVertexArray)
 	global __release_gpu_resources__
 	if array.id>=0
@@ -25,7 +43,16 @@ function releaseGpuResources(array::GLVertexArray)
 	end
 end
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function enableVertexArray(array::GLVertexArray)
 
 	# not needed or osx
@@ -37,7 +64,16 @@ function enableVertexArray(array::GLVertexArray)
 	glBindVertexArray(array.id)
 end
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function disableVertexArray(array::GLVertexArray)
 
 	# not needed or osx

@@ -1,6 +1,15 @@
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 mutable struct GLMesh
 
 	primitive::Int32
@@ -27,7 +36,16 @@ mutable struct GLMesh
 
 end
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function releaseGpuResources(mesh::GLMesh)
 	releaseGpuResources(mesh.vertex_array)
 	releaseGpuResources(mesh.vertices)
@@ -37,20 +55,47 @@ end
 
 
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function computeNormal(p1::Point2d, p2::Point2d)
 	t = p2-p1
 	n = Point2d(-t[2], +t[1])
 	return normalized(n)
 end
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function computeNormal(p0::Point3d,p1::Point3d,p2::Point3d)
 	return normalized(cross(p1-p0,p2-p0))
 end
 
 
-# ///////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function getBoundingBox(mesh::GLMesh)
 	box=invalidBox()
 	vertices=mesh.vertices.vector
@@ -62,7 +107,16 @@ function getBoundingBox(mesh::GLMesh)
 end
 
 
-# ////////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function GLCuboid(box::Box3d)
 	points=getPoints(box)
 
@@ -89,7 +143,16 @@ function GLCuboid(box::Box3d)
 	return ret
 end
 
-# ////////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function GLAxis(p0::Point3d,p1::Point3d)
 
 	vertices=Vector{Float32}()

@@ -6,7 +6,16 @@ using Revise
 using ViewerGL
 GL = ViewerGL
 
-# ////////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function GLPolygon(V::Lar.Points,EV::Lar.ChainOp,FE::Lar.ChainOp)
       # triangulation
       W = convert(Lar.Points, V')

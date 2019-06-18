@@ -5,7 +5,16 @@ using ViewerGL
 GL = ViewerGL
 using Plasm, QHull
 
-# ////////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function GLHull2d(points::Array{Float64,2})
 
 	ch = QHull.chull(points)

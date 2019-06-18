@@ -39,6 +39,16 @@ end
 	q.w * w.z + q.x * w.y - q.y * w.x + q.z * w.w)
 
 
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function convertToQuaternion(T::Matrix4) 
 	# See https://arxiv.org/pdf/math/0701759.pdf
 	a2 = 1.0 + T[1,1] + T[2,2] + T[3,3]
@@ -61,6 +71,16 @@ function convertToQuaternion(T::Matrix4)
 	end
 end
 
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function convertToMatrix(q::Quaternion) 
 	sx, sy, sz = 2q.w * q.x, 2q.w * q.y, 2q.w * q.z
 	xx, xy, xz = 2q.x^2, 2q.x * q.y, 2q.x * q.z

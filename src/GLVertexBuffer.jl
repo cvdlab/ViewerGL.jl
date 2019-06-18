@@ -1,6 +1,15 @@
 
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 mutable struct GLVertexBuffer
 
 	id::Int32
@@ -22,7 +31,16 @@ mutable struct GLVertexBuffer
 	
 end
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function releaseGpuResources(buffer::GLVertexBuffer)
 	global __release_gpu_resources__
 	if buffer.id>=0
@@ -32,7 +50,16 @@ function releaseGpuResources(buffer::GLVertexBuffer)
 	end
 end
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function enableAttribute(location::Int32,buffer::GLVertexBuffer,num_components::Int64)
 	if length(buffer.vector)==00 || location<0 return end
 	if buffer.id<0 buffer.id=glGenBuffer() end
@@ -43,7 +70,16 @@ function enableAttribute(location::Int32,buffer::GLVertexBuffer,num_components::
 	glBindBuffer(GL_ARRAY_BUFFER, 0)	
 end	
 
-# /////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function disableAttribute(location::Int32,buffer::GLVertexBuffer)
 	if length(buffer.vector)==00 || location<0 return end
 	glDisableVertexAttribArray(location)

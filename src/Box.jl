@@ -1,5 +1,14 @@
 
-# ////////////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 mutable struct Box3d
 	p1::Point3d
 	p2::Point3d
@@ -18,11 +27,31 @@ end
 
 Base.:(==)(a::Box3d, b::Box3d) = a.p1 == b.p1 && a.p2 == b.p2
 
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function invalidBox()
 	m,M=typemin(Float64),typemax(Float64)
 	return Box3d(Point3d(M,M,M),Point3d(m,m,m))	
 end
 
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function addPoint(box::Box3d,point::Point3d)
 	for i in 1:3
 		box.p1[i]=min(box.p1[i],point[i])
@@ -31,6 +60,16 @@ function addPoint(box::Box3d,point::Point3d)
 	return box
 end
 
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function getPoints(box::Box3d)
 	return [
 		Point3d(box.p1[1],box.p1[2],box.p1[3]),

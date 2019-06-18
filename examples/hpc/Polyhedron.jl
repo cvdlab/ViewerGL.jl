@@ -4,16 +4,36 @@ using Triangle
 using Revise
 using ViewerGL
 GL = ViewerGL
+using LinearAlgebra
 
-# ////////////////////////////////////////////////////////////////////////
+const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
+
+
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function GLPolyhedron(V::Lar.Points,
 	EV::Lar.ChainOp,FE::Lar.ChainOp,CF::Lar.ChainOp)
 	# TODO
 end
 
-const M44 = convert(GL.Matrix4, I(4))
 
-# ////////////////////////////////////////////////////////////////////////
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)
 	# data preparation
 	vindexes = sort(collect(Set(cat(FV))))

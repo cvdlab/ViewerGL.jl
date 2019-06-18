@@ -4,7 +4,16 @@ using ViewerGL
 GL = ViewerGL
 
 
-# ////////////////////////////////////////////////////////////////////////
+
+
+"""
+
+# Example
+
+```
+
+```
+"""
 function GLHull(points::Array{Float64,2})
 	ch = QHull.chull(points)
 	verts = ch.vertices
