@@ -1,16 +1,7 @@
 
 
+# simple vertex shader (GLSL source) for simple graphics pipeline
 
-
-
-"""
-
-# Example
-
-```
-
-```
-"""
 vert_source="""
 
 #define LIGHTING_ENABLED        arg(LIGHTING_ENABLED)
@@ -62,16 +53,8 @@ void main()
 """
 
 
+# simple fragment shader (GLSL source) for simple graphics pipeline
 
-
-"""
-
-# Example
-
-```
-
-```
-"""
 frag_source="""
 
 #define LIGHTING_ENABLED        arg(LIGHTING_ENABLED)
@@ -141,12 +124,10 @@ void main()
 
 
 """
+	GLPhongShader(lighting_enabled,color_attribute_enabled)
 
-# Example
-
-```
-
-```
+Enable Phong's color shading and lighting shading.
+Vertex and fragment shaders are given in GLSL.
 """
 function GLPhongShader(lighting_enabled,color_attribute_enabled)
 

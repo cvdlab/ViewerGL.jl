@@ -1,25 +1,36 @@
-using ViewerGL
-GL = ViewerGL
-
 
 
 """
+	lar2mesh(points,faces)
+
+Transform a LAR model (verts, cells) in a GLMesh
 
 # Example
 
 ```
+julia> using LinearAlgebraicRepresentation
 
+julia> Lar = LinearAlgebraicRepresentation
+LinearAlgebraicRepresentation
+
+ulia> V,FV = Lar.simplexGrid([2,2])
+([0.0 1.0 … 1.0 2.0; 0.0 0.0 … 2.0 2.0],
+Array{Int64,1}[[1, 2, 4], [2, 4, 5], [2, 3, 5], [3, 5, 6], [4, 5, 7], [5, 7, 8], [5, 6, 8], [6, 8, 9]])
+
+julia> vertices,normals = GL.lar2mesh(GL.two2three(V'),FV);
+(Float32[0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0  …  0.0, 4.0, 4.0, 0.0, 3.0, 4.0, 0.0, 4.0, 3.0, 0.0],
+Float32[0.0, 0.0, -0.5, 0.0, 0.0, -0.5, 0.0, 0.0, -0.5, 0.0  …  -0.5, 0.0, 0.0, 0.5, 0.0, 0.0, 0.5, 0.0, 0.0, 0.5])
 ```
 """
-function lar2mesh(points,faces)
+function lar2mesh(verts,cells)
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()
-	for face in faces
-		p3,p2,p1 = points[face[1],:],points[face[2],:],points[face[3],:]
-		p1 = convert(GL.Point3d, p1)
-		p2 = convert(GL.Point3d, p2)
-		p3 = convert(GL.Point3d, p3)
-		n=0.5*GL.computeNormal(p1::GL.Point3d,p2::GL.Point3d,p3::GL.Point3d)
+	for cell in cells
+		p3,p2,p1 = verts[cell[1],:],verts[cell[2],:],verts[cell[3],:]
+		p1 = convert(Point3d, p1)
+		p2 = convert(Point3d, p2)
+		p3 = convert(Point3d, p3)
+		n=0.5*computeNormal(p1::Point3d,p2::Point3d,p3::Point3d)
 
 		append!(vertices,p1); append!(normals,n)
 		append!(vertices,p2); append!(normals,n)
@@ -31,11 +42,27 @@ end
 
 
 """
+	two2three(points)
 
+Transform a ``n×2`` `Array{Float64,2}` of 2D points to an ``nx3`` array of 3D points, adding a column of zeros.
 # Example
-
 ```
+julia> V
+2×9 Array{Float64,2}:
+ 0.0  1.0  2.0  0.0  1.0  2.0  0.0  1.0  2.0
+ 0.0  0.0  0.0  1.0  1.0  1.0  2.0  2.0  2.0
 
+ julia> GL.two2three(V')
+ 9×3 Array{Float64,2}:
+  0.0  0.0  0.0
+  1.0  0.0  0.0
+  2.0  0.0  0.0
+  0.0  1.0  0.0
+  1.0  1.0  0.0
+  2.0  1.0  0.0
+  0.0  2.0  0.0
+  1.0  2.0  0.0
+  2.0  2.0  0.0
 ```
 """
 function two2three(points)
@@ -46,12 +73,9 @@ end
 
 
 """
+	glGenBuffer()
 
-# Example
-
-```
-
-```
+Return 1 buffer object name.
 """
 function glGenBuffer()
 	id = GLuint[0]
@@ -63,12 +87,9 @@ end
 
 
 """
+	glGenVertexArray()
 
-# Example
-
-```
-
-```
+Specifies the number (one) of vertex array object names to generate.
 """
 function glGenVertexArray()
 	id = GLuint[0]
@@ -83,12 +104,9 @@ end
 
 
 """
+	glCheckError(actionName="")
 
-# Example
-
-```
-
-```
+`glGetError` returns the value of the error flag. Each detectable error is assigned a numeric code and symbolic name. When an error occurs, the error flag is set to the appropriate error code value.
 """
 function glCheckError(actionName="")
 	message = glErrorMessage()
@@ -104,12 +122,9 @@ end
 
 
 """
+	glErrorMessage()
 
-# Example
-
-```
-
-```
+Error message management.
 """
 function glErrorMessage()
 	err = glGetError()
@@ -123,18 +138,12 @@ function glErrorMessage()
 end
 
 
+const __release_gpu_resources__=[]
 
 
 """
-
-# Example
-
-```
-
-```
+	glDeleteLater(fun::Function)
 """
-__release_gpu_resources__=[]
-
 function glDeleteLater(fun::Function)
 	global __release_gpu_resources__
 	append!(__release_gpu_resources__,[fun])
@@ -143,12 +152,7 @@ end
 
 
 """
-
-# Example
-
-```
-
-```
+	glDeleteNow()
 """
 function glDeleteNow()
 	global __release_gpu_resources__
