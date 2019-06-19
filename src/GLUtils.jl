@@ -13,7 +13,7 @@ julia> using LinearAlgebraicRepresentation
 julia> Lar = LinearAlgebraicRepresentation
 LinearAlgebraicRepresentation
 
-ulia> V,FV = Lar.simplexGrid([2,2])
+julia> V,FV = Lar.simplexGrid([2,2])
 ([0.0 1.0 … 1.0 2.0; 0.0 0.0 … 2.0 2.0],
 Array{Int64,1}[[1, 2, 4], [2, 4, 5], [2, 3, 5], [3, 5, 6], [4, 5, 7], [5, 7, 8], [5, 6, 8], [6, 8, 9]])
 
