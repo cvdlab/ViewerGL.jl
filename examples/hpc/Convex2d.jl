@@ -3,8 +3,6 @@ using LinearAlgebra
 using Revise
 using ViewerGL
 GL = ViewerGL
-using Plasm, QHull
-
 
 
 """
@@ -47,7 +45,6 @@ end
 
 points = rand(50,2)
 GL.VIEW([
-	  # GL.GLCuboid(Box3d(GL.Point3d(0,0,0),GL.Point3d(1,1,1)))
 	  GLHull2d(points)
 	  GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1))
 ])

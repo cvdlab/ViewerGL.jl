@@ -36,7 +36,12 @@ end
 """
 function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)
 	# data preparation
-	vindexes = sort(collect(Set(cat(FV))))
+	function mycat(a::Lar.Cells)
+		out=[]
+		for cell in a append!(out,cell) end
+		return out
+	end
+	vindexes = sort(collect(Set(mycat(FV))))
 	W = V[:,vindexes]
 	vdict = Dict(zip(vindexes,1:length(vindexes)))
 	triangles = [[vdict[u],vdict[v],vdict[w]] for (u,v,w) in FV]

@@ -123,11 +123,19 @@ function runViewer(viewer::Viewer)
 	viewer.scalex=framebuffer_size[1]/Float64(window_size[1])
 	viewer.scaley=framebuffer_size[2]/Float64(window_size[2])
 
-	GLFW.SetWindowSizeCallback(win,  function(win, width::Int32, height::Int32) handleResizeEvent(viewer) end)
-	GLFW.SetKeyCallback(win,         function((win,key, scancode, action, mods)) handleKeyPressEvent(viewer,key,scancode,action,mods) end)
-	GLFW.SetCursorPosCallback(win,   function((win,x,y)) handleMouseMoveEvent(viewer,x,y) end)
-	GLFW.SetMouseButtonCallback(win, function(win,button,action,mods) handleMouseButtonEvent(viewer,button,action,mods) end)
-	GLFW.SetScrollCallback(win,      function((win,dx,dy)) handleMouseWheelEvent(viewer,dy) end)
+	GLFW.SetWindowSizeCallback(win,
+		function(win, width::Int32, height::Int32)
+	 		handleResizeEvent(viewer) end)
+	GLFW.SetKeyCallback(win,
+		function((win,key, scancode, action, mods))
+			handleKeyPressEvent(viewer,key,scancode,action,mods) end)
+	GLFW.SetCursorPosCallback(win,
+		function((win,x,y)) handleMouseMoveEvent(viewer,x,y) end)
+	GLFW.SetMouseButtonCallback(win,
+		function(win,button,action,mods)
+	 		handleMouseButtonEvent(viewer,button,action,mods) end)
+	GLFW.SetScrollCallback(win,
+		function((win,dx,dy)) handleMouseWheelEvent(viewer,dy) end)
 
 	handleResizeEvent(viewer)
 	while !GLFW.WindowShouldClose(win)
@@ -287,12 +295,9 @@ end
 
 
 """
+	unprojectPoint(viewer::Viewer,x::Float32,y::Float32)
 
-# Example
-
-```
-
-```
+Inverse projection of a 2D point in screen coordinates.
 """
 function unprojectPoint(viewer::Viewer,x::Float32,y::Float32)
 	viewport=[0,0,viewer.W,viewer.H]
@@ -307,12 +312,9 @@ end
 
 
 """
+	getShader(viewer::Viewer,lighting_enabled,color_attribute_enabled)
 
-# Example
-
-```
-
-```
+Return a shader from the dictionary of shaders in the current viewer, depending on the combination of lighting and color attributes.
 """
 function getShader(viewer::Viewer,lighting_enabled,color_attribute_enabled)
 
@@ -330,12 +332,9 @@ end
 
 
 """
+	glRender(viewer::Viewer)
 
-# Example
-
-```
-
-```
+Set viewing attributes and viewing transformation. Then, for each mesh associated to the current viewer as well as for each type of primitive in the mesh, execute a rendering with the shader, using primitive attributes.
 """
 function glRender(viewer::Viewer)
 
@@ -344,7 +343,8 @@ function glRender(viewer::Viewer)
 	glDisable(GL_CULL_FACE)
 	glClearDepth(1.0)
 	glClearColor(0.3,0.4,0.5, 0.00)
-	glPolygonOffset(-1.0,-1.0)
+	#glPolygonOffset(-1.0,-1.0)
+	glPolygonOffset(+2.0,+2.0)
 
 	glViewport(0,0,viewer.W,viewer.H)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -352,7 +352,6 @@ function glRender(viewer::Viewer)
 	PROJECTION = getProjection(viewer)
 	MODELVIEW  = getModelview(viewer)
 	lightpos=MODELVIEW * Point4d(viewer.pos[1],viewer.pos[2],viewer.pos[3],1.0)
-
 
 	for mesh in viewer.meshes
 
@@ -368,16 +367,13 @@ function glRender(viewer::Viewer)
 		for polygon_mode in (pdim>=2 ? [GL_FILL,GL_LINE] : [GL_FILL])
 
 			glPolygonMode(GL_FRONT_AND_BACK,polygon_mode)
-
 			if pdim>=2
-				glEnable(GL_POLYGON_OFFSET_LINE)
+			 	glEnable(GL_POLYGON_OFFSET_LINE)
 			end
-
 			lighting_enabled        =polygon_mode!=GL_LINE && length(mesh.normals.vector)>0
 			color_attribute_enabled =polygon_mode!=GL_LINE && length(mesh.colors.vector )>0
 
 			shader=getShader(viewer,lighting_enabled,color_attribute_enabled)
-
 			enableProgram(shader)
 
 			projection=PROJECTION
@@ -434,12 +430,9 @@ end
 
 
 """
+	redisplay(viewer::Viewer)
 
-# Example
-
-```
-
-```
+Redisplay the meshes in the current viewer object
 """
 function redisplay(viewer::Viewer)
 	# nothing to do
@@ -448,12 +441,10 @@ end
 
 
 """
+	handleResizeEvent(viewer)
 
-# Example
-
-```
-
-```
+Handle resize window event, by getting the current size.
+The `viewer` parameters for window `size` are updated.
 """
 function handleResizeEvent(viewer)
 	size=GLFW.GetWindowSize(viewer.win)
@@ -465,12 +456,9 @@ end
 
 
 """
+	handleMouseButtonEvent(viewer,button,action,mods)
 
-# Example
-
-```
-
-```
+Helper GLFW function to handle the Mouse Button Event.
 """
 function handleMouseButtonEvent(viewer,button,action,mods)
 
@@ -492,12 +480,9 @@ end
 
 
 """
+	handleMouseMoveEvent(viewer,x,y)
 
-# Example
-
-```
-
-```
+Helper GLFW function to handle the Mouse Move Event.
 """
 function handleMouseMoveEvent(viewer,x,y)
 
@@ -552,12 +537,9 @@ end
 
 
 """
+	handleMouseWheelEvent(viewer,delta)
 
-# Example
-
-```
-
-```
+Helper GLFW function to handle the Mouse Wheel Event.
 """
 function handleMouseWheelEvent(viewer,delta)
 	viewer.pos=viewer.pos+viewer.dir * ((delta>=0 ? 10.0 : -10.0) * viewer.walk_speed)
@@ -567,12 +549,9 @@ end
 
 
 """
+	handleKeyPressEvent(viewer,key, scancode, action, mods)
 
-# Example
-
-```
-
-```
+Helper GLFW function to handle the Key Press Event.
 """
 function handleKeyPressEvent(viewer,key, scancode, action, mods)
 
@@ -592,7 +571,7 @@ function handleKeyPressEvent(viewer,key, scancode, action, mods)
 		return
 	end
 
-	if (key=='-' || key=="_")
+	if (key=='-' || key=="=")
 		viewer.walk_speed*=(1.0/0.95)
 		return
 	end

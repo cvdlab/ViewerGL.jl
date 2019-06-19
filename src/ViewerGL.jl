@@ -1,3 +1,10 @@
+"""
+	module ViewerGL
+
+3D interactive Viewer for geometric and topological data.
+
+Helper module for Julia's native OpenGL visualization, forked from Plasm.jl. To be used with geometric models and geometric expressions from LinearAlgebraicRepresentation.jl, the simplest data structures for geometric and solid modeling :-)
+"""
 module ViewerGL
 
 	using LinearAlgebra
