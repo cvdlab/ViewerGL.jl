@@ -1,6 +1,6 @@
 # ViewerGL.jl
 
-3D Viewer for geometric and topological data
+3D interactive Viewer for geometric and topological data
 
 ### Version
 0.1.0
