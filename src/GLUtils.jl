@@ -1,7 +1,7 @@
 
 
 """
-	lar2mesh(points,faces)
+	lar4mesh(points,faces)
 
 Transform a LAR model (verts, cells) in a GLMesh
 
@@ -17,12 +17,12 @@ julia> V,FV = Lar.simplexGrid([2,2])
 ([0.0 1.0 … 1.0 2.0; 0.0 0.0 … 2.0 2.0],
 Array{Int64,1}[[1, 2, 4], [2, 4, 5], [2, 3, 5], [3, 5, 6], [4, 5, 7], [5, 7, 8], [5, 6, 8], [6, 8, 9]])
 
-julia> vertices,normals = GL.lar2mesh(GL.two2three(V'),FV);
+julia> vertices,normals = GL.lar4mesh(GL.two2three(V'),FV);
 (Float32[0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0  …  0.0, 4.0, 4.0, 0.0, 3.0, 4.0, 0.0, 4.0, 3.0, 0.0],
 Float32[0.0, 0.0, -0.5, 0.0, 0.0, -0.5, 0.0, 0.0, -0.5, 0.0  …  -0.5, 0.0, 0.0, 0.5, 0.0, 0.0, 0.5, 0.0, 0.0, 0.5])
 ```
 """
-function lar2mesh(verts,cells)
+function lar4mesh(verts,cells)
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()
 	for cell in cells

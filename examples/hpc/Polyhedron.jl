@@ -49,7 +49,7 @@ function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)
 	points = convert(Lar.Points, points') # points by row
 
 	# mesh building
-        vertices,normals = GL.lar2mesh(points,triangles)
+        vertices,normals = GL.lar4mesh(points,triangles)
         ret=GL.GLMesh(GL.GL_TRIANGLES)
         ret.vertices = GL.GLVertexBuffer(vertices)
         ret.normals  = GL.GLVertexBuffer(normals)
