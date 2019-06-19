@@ -5,9 +5,9 @@
 ### Version
 0.1.0
 
-## Aim
+## Description
 
-Helper module for Julia's native OpenGL visualization with [LinearAlgebraicRepresentation.jl](https://github.com/cvdlab/LinearAlgebraicRepresentation.jl) and  [Plasm.jl](https://github.com/cvdlab/Plasm.jl) geometric expressions.
+Helper module for Julia's native OpenGL visualization with [LinearAlgebraicRepresentation.jl](https://github.com/cvdlab/LinearAlgebraicRepresentation.jl) and  [Plasm.jl](https://github.com/cvdlab/Plasm.jl) geometric expressions. Main Author is [Giorgio Scorzelli](https://github.com/scrgiorgio).
 
 ## How to contribute
 
