@@ -57,8 +57,8 @@ function GLHull2d(points::Array{Float64,2})::GL.GLMesh
 	vdict = Dict(zip(verts, 1:length(verts)))
 	edges = [[vdict[u],vdict[v]] for (u,v) in ch.simplices]
 	points = points[verts,:]
-
 	faces = edges
+
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()
 	for face in faces
@@ -163,6 +163,8 @@ function GLLar2gl(V::Lar.Points, CV::Lar.Cells)::GL.GLMesh
 	points = convert(Array{Float64,2},V') # points by rows
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()
+
+	dim = size(points,2)
 
 	for cell in CV
 		ch = QHull.chull(points[cell,:])
