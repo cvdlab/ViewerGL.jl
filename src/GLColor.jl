@@ -3,7 +3,7 @@ using ViewerGL
 GL = ViewerGL
 
 """
-Color4 defines a structure which contains 4 floats values, each for red, green, blue and alpha.
+Color3 defines a structure which contains 3 floats values, each for red, green, and blue.
 """
 const Color3 = MVector{3,Float64}
 Color3() = Color4(1.0,1.0,1.0)
@@ -19,10 +19,10 @@ Color4() = Color4(1.0,1.0,1.0,1.0)
 Palette of twelve predefined colors
 """
 const WHITE   = Color4([1.0, 1.0, 1.0, 1.0])
-const RED	  = Color4([1.0, 0.0, 0.0, 1.0])
+const RED     = Color4([1.0, 0.0, 0.0, 1.0])
 const GREEN   = Color4([0.0, 1.0, 0.0, 1.0])
-const BLUE	  = Color4([0.0, 0.0, 1.0, 1.0])
-const CYAN	  = Color4([0.0, 1.0, 1.0, 1.0])
+const BLUE    = Color4([0.0, 0.0, 1.0, 1.0])
+const CYAN    = Color4([0.0, 1.0, 1.0, 1.0])
 const MAGENTA = Color4([1.0, 0.0, 1.0, 1.0])
 const YELLOW  = Color4([1.0, 1.0, 0.0, 1.0])
 const ORANGE  = Color4([1.0, 0.65, 1.0, 1.0])
@@ -41,7 +41,7 @@ const COLORS = Dict(1=>WHITE, 2=>RED, 3=>GREEN, 4=>BLUE, 5=>CYAN, 6=>MAGENTA, 7=
 """
 mutable struct GLColor
 
-    choice::Int # to select between per_body, per_cell, and per_vertex
+    choice::Int   # to select between per_body, per_cell, and per_vertex
 
     color_per_body::Vector{Color4}
     color_per_cell::Vector{Color4}
