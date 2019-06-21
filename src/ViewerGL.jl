@@ -26,6 +26,7 @@ module ViewerGL
 	include("GLPhongShader.jl")
 
 	include("Viewer.jl")
-	include("Geometry.jl")
+	#include("Geometry.jl")
+	include("Text.jl")
 
 end # module
