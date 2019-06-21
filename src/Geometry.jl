@@ -50,7 +50,7 @@ GL.VIEW([
 ])
 ```
 """
-function GLHull2d(points::Array{Float64,2})::GL.GLMesh
+function GLHull2d(points::Array{Float64,2})::GL.GLMesh # points by row
 
 	ch = QHull.chull(points)
 	verts = ch.vertices
@@ -215,15 +215,16 @@ end
 
 
 
-function GLPoints(points::Lar.Points)
+function GLPoints(points::Lar.Points) # points by row
       #points = convert(Lar.Points, points')
+	  if size(points,2) == 2
+		  points = [points zeros(size(points,1),1)]
+	  end
       vertices=Vector{Float32}()
       #normals =Vector{Float32}()
-      for point in points
-		if size(points,1) == 2
-            point = convert(GL.Point3d, [point; 0.0])
-		end
-            append!(vertices,point); #append!(normals,n)
+      for k=1:size(points,1)
+		point = convert(GL.Point3d,points[k,:])
+        append!(vertices,convert(GL.Point3d,point)); #append!(normals,n)
       end
       ret=GL.GLMesh(GL.GL_POINTS)
       ret.vertices = GL.GLVertexBuffer(vertices)
