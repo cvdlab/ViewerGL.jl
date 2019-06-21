@@ -97,7 +97,7 @@ EV = [[1,2],[2,3],[3,4],[4,1],[5,6],[6,7],[7,8],[8,5]]
 """
 function GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp)::GL.GLMesh
       # triangulation
-      W = convert(Lar.Points, V')::GL.GLMesh
+      W = convert(Lar.Points, V')
       EV = Lar.cop2lar(copEV)
       trias = Lar.triangulate2d(W,EV)
       # mesh building
@@ -184,4 +184,31 @@ function GLLar2gl(V::Lar.Points, CV::Lar.Cells)::GL.GLMesh
 	ret.vertices = GL.GLVertexBuffer(vertices)
 	ret.normals  = GL.GLVertexBuffer(normals)
 	return ret
+end
+
+
+function GLLines(points::Lar.Points,lines::Lar.Cells)
+      points = convert(Lar.Points, points')
+      vertices=Vector{Float32}()
+      #normals =Vector{Float32}()
+      for line in lines
+            p2,p1 = points[line[1],:], points[line[2],:]
+            t=p2-p1;  n=LinearAlgebra.normalize([-t[2];+t[1]])
+
+            p1 = convert(GL.Point3d, [p1; 0.0])
+            p2 = convert(GL.Point3d, [p2; 0.0])
+            n  = convert(GL.Point3d, [ n; 0.0])
+
+            append!(vertices,p1); #append!(normals,n)
+            append!(vertices,p2); #append!(normals,n)
+      end
+      ret=GL.GLMesh(GL.GL_LINES)
+      ret.vertices = GL.GLVertexBuffer(vertices)
+      #ret.normals  = GL.GLVertexBuffer(normals)
+      return ret
+end
+
+
+function GLText(string)
+	GL.GLLines(GL.text(string)...)
 end

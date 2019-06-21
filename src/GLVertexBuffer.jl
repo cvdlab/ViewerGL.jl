@@ -1,5 +1,5 @@
 
-
+using ModernGL
 
 
 """
@@ -52,11 +52,13 @@ end
 """
 	enableAttribute(location::Int32,buffer::GLVertexBuffer,num_components::Int64)
 
-If enabled, the values in the generic vertex attribute array will be accessed and used for rendering when calls are made to vertex array commands. 
+If enabled, the values in the generic vertex attribute array will be accessed and used for rendering when calls are made to vertex array commands.
 """
 function enableAttribute(location::Int32,buffer::GLVertexBuffer,num_components::Int64)
 	if length(buffer.vector)==00 || location<0 return end
 	if buffer.id<0 buffer.id=glGenBuffer() end
+	glLineWidth()
+	glPointSize()
 	glBindBuffer(GL_ARRAY_BUFFER, buffer.id)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(buffer.vector), buffer.vector, GL_STATIC_DRAW)
 	glVertexAttribPointer(location,num_components,GL_FLOAT,false,0,C_NULL)

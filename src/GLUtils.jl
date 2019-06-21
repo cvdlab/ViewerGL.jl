@@ -22,7 +22,7 @@ julia> vertices,normals = GL.lar4mesh(GL.two2three(V'),FV);
 Float32[0.0, 0.0, -0.5, 0.0, 0.0, -0.5, 0.0, 0.0, -0.5, 0.0  …  -0.5, 0.0, 0.0, 0.5, 0.0, 0.0, 0.5, 0.0, 0.0, 0.5])
 ```
 """
-function lar4mesh(verts,cells)
+function lar4mesh(verts,cells) # cells are triangles
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()
 	for cell in cells
@@ -99,8 +99,26 @@ function glGenVertexArray()
 end
 
 
+"""
+	glLineWidth()
+
+Define the width of the line primitive
+"""
+function glLineWidth()
+	width = convert(UInt32, 4)
+	ModernGL.glLineWidth(width)
+end
 
 
+"""
+	glPointSize()
+
+Define the size of the point primitive
+"""
+function glPointSize()
+	size = convert(UInt32, 4)
+	ModernGL.glPointSize(size)
+end
 
 
 """
