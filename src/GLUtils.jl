@@ -105,7 +105,7 @@ end
 Define the width of the line primitive
 """
 function glLineWidth()
-	width = convert(UInt32, 4)
+	width = convert(UInt32, 8)
 	ModernGL.glLineWidth(width)
 end
 
@@ -116,7 +116,7 @@ end
 Define the size of the point primitive
 """
 function glPointSize()
-	size = convert(UInt32, 4)
+	size = convert(UInt32, 8) # multiples of 2 give sprites!!
 	ModernGL.glPointSize(size)
 end
 

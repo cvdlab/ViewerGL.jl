@@ -212,3 +212,26 @@ end
 function GLText(string)
 	GL.GLLines(GL.text(string)...)
 end
+
+
+
+function GLPoints(points::Lar.Points)
+      #points = convert(Lar.Points, points')
+      vertices=Vector{Float32}()
+      #normals =Vector{Float32}()
+      for point in points
+		if size(points,1) == 2
+            point = convert(GL.Point3d, [point; 0.0])
+		end
+            append!(vertices,point); #append!(normals,n)
+      end
+      ret=GL.GLMesh(GL.GL_POINTS)
+      ret.vertices = GL.GLVertexBuffer(vertices)
+      #ret.normals  = GL.GLVertexBuffer(normals)
+      return ret
+end
+
+
+function GLText(string)
+	GL.GLLines(GL.text(string)...)
+end

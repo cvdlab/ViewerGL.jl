@@ -79,6 +79,26 @@ function charseq(mystring)
 	return [char for char in mystring]
 end
 
+function k(Any)
+	x->Any
+end
+function cons(funs)
+	return x -> [f(x) for f in funs]
+end
+function comp(funs)
+	function compose(f,g)
+	  return x -> f(g(x))
+	end
+	id = x->x
+	return reduce(compose, funs; init=id)
+end
+function cat(args)
+	return reduce( (x,y) -> append!(x,y), args; init=[] )
+end
+function distr(args)
+	list,element = args
+	return [ [e,element] for e in list ]
+end
 
 """
 	text(mystring::String)::LAR
@@ -98,33 +118,12 @@ Array{Int64,1}[[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[8,9],[9,10],[11,12],[12,13],
 [14,15],[15,16],[16,17],[17,18],[18,11],[19,20],[21,22],[22,23],[23,24],[24,25],[25,26],
 [26,27],[27,28],[28,29],[29,30],[30,31],[31,32],[33,34],[34,35],[35,36],[36,37]])
 
-julia> GL.view(model)
+julia> GL.VIEW([GL.GLLar2gl(model...)])
 ```
 """
 function text(mystring)
-	function k(Any)
-		x->Any
-	end
-	function cons(funs)
-		return x -> [f(x) for f in funs]
-	end
-	function comp(funs)
-	    function compose(f,g)
-		  return x -> f(g(x))
-		end
-	    id = x->x
-	    return reduce(compose, funs; init=id)
-	end
-	function cat(args)
-		return reduce( (x,y) -> append!(x,y), args; init=[] )
-	end
-	function distr(args)
-		list,element = args
-		return [ [e,element] for e in list ]
-	end
-
-	out = comp([ Lar.struct2lar, Lar.Struct, cat, distr,
-			cons([ charpols, k(Lar.t(fontspacing+fontwidth,0)) ]),charseq ])(mystring)
+	out = GL.comp([ Lar.struct2lar, Lar.Struct, cat, distr,
+			GL.cons([ charpols, k(Lar.t(fontspacing+fontwidth,0)) ]),charseq ])(mystring)
 	return out
 end
 
@@ -156,7 +155,7 @@ function translate(c)
 	function translate0(lar)
 		xs = lar[1][1,:]
 		width = maximum(xs) - minimum(xs)
-		apply(Lar.t(width/c,0))(lar)
+		Lar.apply(Lar.t(width/c,0))(lar)
 	end
 	return translate0
 end
@@ -189,6 +188,40 @@ function cat(args)
 end
 
 
+"""
+	k(Any)(x)
+
+*Constant* functional of FL and PLaSM languages.
+
+Gives a constant functional that always returns the actual parameter
+when applied to another parameter.
+
+#	Examples
+
+```
+julia> Plasm.k(10)(100)
+10
+
+julia> Plasm.k(sin)(cos)
+sin
+```
+"""
+function k(Any)
+	x->Any
+end
+
+
+
+"""
+	apply(fun::Function, params::Array)
+
+"""
+function apply(fun::Function)
+	function apply0(params::Array)
+		return fun(params)
+	end
+	return apply0
+end
 
 
 """
@@ -203,23 +236,24 @@ Partial implementation of the GKS's graphics primitive `text`.
 Plasm.view(Plasm.textWithAttributes("left", pi/4)("PLaSM"))
 ```
 """
-function textWithAttributes(textalignment="centre", textangle=0,
-							textwidth=1.0, textheight=2.0, textspacing=0.25)
-	function textWithAttributes(strand)
-		id = x->x
-		mat = Lar.s(textwidth/fontwidth,textheight/fontheight)
-		comp([
-		   apply(Lar.r(textangle)),
-		   align(textalignment),
-		   Lar.struct2lar,
-		   Lar.Struct,
-		   cat,
-		   distr,
-		   cons([ a2a(mat) ∘ charpols,
-				k(Lar.t(textwidth+textspacing,0)) ]),
-		   charseq ])(strand)
-	end
-end
+# function textWithAttributes(textalignment="centre", textangle=0,
+# 							textwidth=1.0, textheight=2.0, textspacing=0.25)
+# 	function textWithAttributes0(strand)
+# 		id = x->x
+# 		mat = Lar.s(textwidth/fontwidth,textheight/fontheight)
+# 		Lar.apply(Lar.r(textangle),
+# 		comp([ align(textalignment),
+# 		   Lar.struct2lar,
+# 		   Lar.Struct,
+# 		   cat,
+# 		   distr,
+# 		   GL.cons([ a2a(mat) ∘ charpols,
+# 				k(Lar.t(textwidth+textspacing,0)) ]),
+# 		   charseq ]))(strand)
+# 	end
+# 	return textWithAttributes0
+# end
+# # TODO: fix textWithAttributes
 
 
 """
