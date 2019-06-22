@@ -79,9 +79,6 @@ function charseq(mystring)
 	return [char for char in mystring]
 end
 
-function k(Any)
-	x->Any
-end
 function cons(funs)
 	return x -> [f(x) for f in funs]
 end
@@ -203,8 +200,8 @@ julia> Plasm.k(sin)(cos)
 sin
 ```
 """
-function k(Any)
-	x->Any
+function k(any::Any)
+	x->any
 end
 
 
