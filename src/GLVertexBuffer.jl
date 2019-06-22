@@ -57,6 +57,10 @@ If enabled, the values in the generic vertex attribute array will be accessed an
 function enableAttribute(location::Int32,buffer::GLVertexBuffer,num_components::Int64)
 	if length(buffer.vector)==00 || location<0 return end
 	if buffer.id<0 buffer.id=glGenBuffer() end
+	# Enable blending
+	glEnable(GL_BLEND)
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
 	glLineWidth()
 	glPointSize()
 	glBindBuffer(GL_ARRAY_BUFFER, buffer.id)
