@@ -105,7 +105,7 @@ end
 Define the width of the line primitive
 """
 function glLineWidth()
-	width = convert(UInt32, 8)
+	width = convert(UInt32, 4)
 	ModernGL.glLineWidth(width)
 end
 
