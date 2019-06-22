@@ -7,7 +7,7 @@ Helper module for Julia's native ``OpenGL visualization``, forked from [Plasm.jl
 """
 module ViewerGL
 
-	using LinearAlgebra
+	using LinearAlgebra,StaticArrays
 	using ModernGL
 	using GLFW
 	import Base:*
@@ -28,6 +28,6 @@ module ViewerGL
 	include("Viewer.jl")
 	include("Geometry.jl")
 	include("GLText.jl")
-	#include("GLColorBuffer.jl")
+	include("GLColorBuffer.jl")
 
 end # module

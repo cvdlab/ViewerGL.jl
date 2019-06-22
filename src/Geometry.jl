@@ -5,6 +5,7 @@ using Revise
 using ViewerGL
 GL = ViewerGL
 
+const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
 
 """
 	GLHull(points::Array{Float64,2})::GL.GLMesh
@@ -191,13 +192,16 @@ function GLLines(points::Lar.Points,lines::Lar.Cells)
       points = convert(Lar.Points, points')
       vertices=Vector{Float32}()
       #normals =Vector{Float32}()
+	  if size(points,2) == 2
+		  points = [points zeros(size(points,1),1)]
+	  end
       for line in lines
             p2,p1 = points[line[1],:], points[line[2],:]
-            t=p2-p1;  n=LinearAlgebra.normalize([-t[2];+t[1]])
+            t=p2-p1;  n=LinearAlgebra.normalize([-t[2];+t[1];t[3]])
 
-            p1 = convert(GL.Point3d, [p1; 0.0])
-            p2 = convert(GL.Point3d, [p2; 0.0])
-            n  = convert(GL.Point3d, [ n; 0.0])
+            p1 = convert(GL.Point3d, p1)
+            p2 = convert(GL.Point3d, p2)
+            n  = convert(GL.Point3d,  n)
 
             append!(vertices,p1); #append!(normals,n)
             append!(vertices,p2); #append!(normals,n)
@@ -229,4 +233,33 @@ function GLPoints(points::Lar.Points) # points by row
       ret.vertices = GL.GLVertexBuffer(vertices)
       #ret.normals  = GL.GLVertexBuffer(normals)
       return ret
+end
+
+
+
+"""
+# Example
+```
+```
+"""
+function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)
+	# data preparation
+	function mycat(a::Lar.Cells)
+		out=[]
+		for cell in a append!(out,cell) end
+		return out
+	end
+	vindexes = sort(collect(Set(mycat(FV))))
+	W = V[:,vindexes]
+	vdict = Dict(zip(vindexes,1:length(vindexes)))
+	triangles = [[vdict[u],vdict[v],vdict[w]] for (u,v,w) in FV]
+	points = (M44 * [W; ones(1,size(W,2))])[1:3,:]
+	points = convert(Lar.Points, points') # points by row
+
+	# mesh building
+        vertices,normals = GL.lar4mesh(points,triangles)
+        ret=GL.GLMesh(GL.GL_TRIANGLES)
+        ret.vertices = GL.GLVertexBuffer(vertices)
+        ret.normals  = GL.GLVertexBuffer(normals)
+        return ret
 end

@@ -115,9 +115,10 @@ Array{Int64,1}[[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[8,9],[9,10],[11,12],[12,13],
 julia> GL.VIEW([GL.GLLar2gl(model...)])
 ```
 """
-function text(mystring)
-	out = GL.comp([ Lar.struct2lar, Lar.Struct, cat, distr,
+function text(mystring,flag=true)
+	V,EV = GL.comp([ Lar.struct2lar, Lar.Struct, cat, distr,
 			GL.cons([ charpols, k(Lar.t(fontspacing+fontwidth,0)) ]),charseq ])(mystring)
+	out = GL.normalize3(V,flag),EV
 	return out
 end
 
@@ -262,7 +263,7 @@ The embedding is done by adding ``d`` zero coordinates to each vertex.
 julia> square = Lar.cuboid([1,1])
 ([0.0 0.0 1.0 1.0; 0.0 1.0 0.0 1.0], Array{Int64,1}[[1, 2, 3, 4]])
 
-julia> Plasm.embed(1)(square)
+julia> GL.embed(1)(square)
 ([0.0 0.0 1.0 1.0; 0.0 1.0 0.0 1.0; 0.0 0.0 0.0 0.0], Array{Int64,1}[[1, 2, 3, 4]])
 ```
 """

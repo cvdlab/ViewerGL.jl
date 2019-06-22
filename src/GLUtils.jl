@@ -1,4 +1,5 @@
-
+using LinearAlgebraicRepresentation
+Lar = LinearAlgebraicRepresentation
 
 """
 	lar4mesh(points,faces)
@@ -168,7 +169,6 @@ function glDeleteLater(fun::Function)
 end
 
 
-
 """
 	glDeleteNow()
 """
@@ -177,4 +177,59 @@ function glDeleteNow()
 	for fun in __release_gpu_resources__
 		fun()
 	end
+end
+
+
+
+"""
+	normalize2(V::Lar.Points; flag=true::Bool)::Lar.Points
+
+2D normalization transformation (isomorphic by defaults) of model
+vertices to normalized coordinates ``[0,1]^2``. Used with SVG importing.
+"""
+function normalize2(V::Lar.Points; flag=true, fold=-1)
+	m,n = size(V)
+	if m > n # V by rows
+		V = convert(Lar.Points, V')
+	end
+
+	xmin = minimum(V[1,:]); ymin = minimum(V[2,:]);
+	xmax = maximum(V[1,:]); ymax = maximum(V[2,:]);
+	box = [[xmin; ymin] [xmax; ymax]]	# containment box
+	aspectratio = (xmax-xmin)/(ymax-ymin)
+	if flag
+		if aspectratio > 1
+			umin = 0; umax = 1
+			vmin = 0; vmax = 1/aspectratio; ty = vmax
+		elseif aspectratio < 1
+			umin = 0; umax = aspectratio
+			vmin = 0; vmax = 1; ty = vmax
+		end
+		T = fold==-1 ? Lar.t(0,ty) : Lar.t(0,0) *
+		 	Lar.s(1,fold) * Lar.s((umax-umin), (vmax-vmin)) *
+			Lar.s(1/(xmax-xmin),1/(ymax-ymin)) * Lar.t(-xmin,-ymin)
+	else
+		T = Lar.t(0, ymax-ymin) * Lar.s(1,-1)
+	end
+	dim = size(V,1)
+	W = T[1:dim,:] * [V;ones(1,size(V,2))]
+	#V = map( x->round(x,digits=8), W )
+	V = map(Lar.approxVal(8), W)
+
+	if m > n # V by rows
+		V = convert(Lar.Points, V')
+	end
+	return V
+end
+
+
+function normalize3(V::Lar.Points, flag=true)
+	Vxy = normalize2(V[1:2,:], flag=flag, fold=1)
+	if size(V,1) == 3
+		zmin = minimum(V[3,:]); zmax = maximum(V[3,:]);
+		Vz = (V[3,:] .- zmin) / (zmax - zmin)
+	elseif size(V,1) == 2
+		Vz = zeros(1,size(V,2))
+	end
+	return [Vxy; Vz]
 end
