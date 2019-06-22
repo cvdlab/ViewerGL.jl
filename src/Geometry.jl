@@ -263,3 +263,81 @@ function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)
         ret.normals  = GL.GLVertexBuffer(normals)
         return ret
 end
+
+
+
+function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])
+	# test if all cells have same length
+	ls = map(length,CV)
+	@assert( (&)(map((==)(ls[1]),ls)...) == true )
+
+	n = size(V,1)  # space dimension
+	points = GL.embed(3-n)((V,CV))[1]
+	cells = CV
+	len = length(cells[1])  # cell dimension
+
+	c  = convert(GL.Point4d, color)
+
+	vertices= Vector{Float32}()
+	normals = Vector{Float32}()
+	colors  = Vector{Float32}()
+
+      if len==1   # zero-dimensional grids
+		ret=GL.GLMesh(GL.GL_POINTS)
+		for k=1:size(points,2)
+			p1 = convert(GL.Point3d, points[:,k])
+			append!(vertices,p1); #append!(normals,n)
+			append!(colors,c); #append!(normals,n)
+		end
+      elseif len==2   # one-dimensional grids
+		ret=GL.GLMesh(GL.GL_LINES)
+		for k=1:length(cells)
+			p1,p2=cells[k]
+			p1 = convert(GL.Point3d, points[:,p1]);
+			p2 = convert(GL.Point3d, points[:,p2])
+			t = p2-p1;
+			n = LinearAlgebra.normalize([-t[2];+t[1];t[3]])
+			#n  = convert(GL.Point3d, n)
+			append!(vertices,p1); append!(vertices,p2);
+			append!(normals,n);   append!(normals,n);
+			append!(colors,c);    append!(colors,c);
+		end
+      elseif len==3 # triangle grids
+		vertices=Vector{Float32}()
+		normals =Vector{Float32}()
+		colors =Vector{Float32}()
+		ret=GL.GLMesh(GL.GL_TRIANGLES)
+		for k=1:length(cells)
+			p1,p2,p3=cells[k]
+			p1 = convert(GL.Point3d, points[:,p1]);
+			p2 = convert(GL.Point3d, points[:,p2])
+			p3 = convert(GL.Point3d, points[:,p3])
+			n = 0.5*GL.computeNormal(p1,p2,p3)
+			append!(vertices,p1); append!(vertices,p2); append!(vertices,p3);
+			append!(normals,n);   append!(normals,n);   append!(normals,n);
+			append!(colors,c);    append!(colors,c);    append!(colors,c);
+		end
+      elseif len==4  # quad grids
+		vertices=Vector{Float32}()
+		normals =Vector{Float32}()
+		colors =Vector{Float32}()
+		ret=GL.GLMesh(GL.GL_QUADS)
+		for k=1:length(cells)
+			p1,p2,p3,p4=cells[k]
+			p1 = convert(GL.Point3d, points[:,p1]);
+			p2 = convert(GL.Point3d, points[:,p2])
+			p3 = convert(GL.Point3d, points[:,p3])
+			p4 = convert(GL.Point3d, points[:,p4])
+			n = 0.5*GL.computeNormal(p1,p2,p3)
+			append!(vertices,p1); append!(vertices,p2); append!(vertices,p4); append!(vertices,p3);
+			append!(normals,n);   append!(normals,n);   append!(normals,n);   append!(normals,n);
+			append!(colors,c);    append!(colors,c);    append!(colors,c);    append!(colors,c);
+		end
+      else # dim > 3
+            error("cannot visualize dim > 3")
+      end
+      ret.vertices = GL.GLVertexBuffer(vertices)
+	ret.normals  = GL.GLVertexBuffer(normals)
+	ret.colors  = GL.GLVertexBuffer(colors)
+    return ret
+end

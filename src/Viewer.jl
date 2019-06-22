@@ -21,6 +21,7 @@ Includes:
 *	`down_button`::Int32
 *	`meshes`::Any
 *	`shaders`::Dict
+*	`exitNow`::Int32
 """
 mutable struct Viewer
 	win::Any
@@ -40,6 +41,7 @@ mutable struct Viewer
 	down_button::Int32
 	meshes::Any
 	shaders::Dict
+	exitNow::Int32
 
 	# constructor
 	function Viewer(meshes)
@@ -356,13 +358,14 @@ function glRender(viewer::Viewer)
 	for mesh in viewer.meshes
 
 		pdim=Dict(
-			GL_POINTS=>0,
-			GL_LINE_STRIP=>1,
-			GL_LINE_LOOP=>1,
-			GL_LINES=>1,
-			GL_TRIANGLE_STRIP=>2,
-			GL_TRIANGLE_FAN=>2,
-			GL_TRIANGLES=>2)[mesh.primitive]
+			GL_POINTS        =>0,
+			GL_LINES         =>1,
+			GL_LINE_LOOP     =>2,
+			GL_LINE_STRIP    =>3,
+			GL_TRIANGLES     =>4,
+			GL_TRIANGLE_STRIP=>5,
+			GL_TRIANGLE_FAN  =>6,
+			GL_QUADS         =>7)[mesh.primitive]
 
 		for polygon_mode in (pdim>=2 ? [GL_FILL,GL_LINE] : [GL_FILL])
 
