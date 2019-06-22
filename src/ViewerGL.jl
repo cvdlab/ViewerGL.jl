@@ -12,22 +12,22 @@ module ViewerGL
 	using GLFW
 	import Base:*
 
-	include("./src/Point.jl")
-	include("./src/Box.jl")
-	include("./src/Matrix.jl")
-	include("./src/Quaternion.jl")
-	include("./src/Frustum.jl")
+	include("Point.jl")
+	include("Box.jl")
+	include("Matrix.jl")
+	include("Quaternion.jl")
+	include("Frustum.jl")
 
-	include("./src/GLUtils.jl")
-	include("./src/GLVertexBuffer.jl")
-	include("./src/GLVertexArray.jl")
-	include("./src/GLMesh.jl")
-	include("./src/GLShader.jl")
-	include("./src/GLPhongShader.jl")
+	include("GLUtils.jl")
+	include("GLVertexBuffer.jl")
+	include("GLVertexArray.jl")
+	include("GLMesh.jl")
+	include("GLShader.jl")
+	include("GLPhongShader.jl")
 
-	include("./src/Viewer.jl")
-	include("./src/Geometry.jl")
-	include("./src/GLText.jl")
-	include("./src/GLColorBuffer.jl")
+	include("Viewer.jl")
+	include("Geometry.jl")
+	include("GLText.jl")
+	#include("GLColorBuffer.jl")
 
 end # module

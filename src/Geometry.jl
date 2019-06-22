@@ -214,7 +214,6 @@ function GLText(string)
 end
 
 
-
 function GLPoints(points::Lar.Points) # points by row
       #points = convert(Lar.Points, points')
 	  if size(points,2) == 2
@@ -230,9 +229,4 @@ function GLPoints(points::Lar.Points) # points by row
       ret.vertices = GL.GLVertexBuffer(vertices)
       #ret.normals  = GL.GLVertexBuffer(normals)
       return ret
-end
-
-
-function GLText(string)
-	GL.GLLines(GL.text(string)...)
 end

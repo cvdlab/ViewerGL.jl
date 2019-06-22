@@ -92,9 +92,6 @@ function comp(funs)
 	id = x->x
 	return reduce(compose, funs; init=id)
 end
-function cat(args)
-	return reduce( (x,y) -> append!(x,y), args; init=[] )
-end
 function distr(args)
 	list,element = args
 	return [ [e,element] for e in list ]
