@@ -265,6 +265,18 @@ function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)
 end
 
 
+"""
+# Example
+```
+```
+"""
+function GLPolyhedron(V::Lar.Points,
+	EV::Lar.ChainOp,FE::Lar.ChainOp,CF::Lar.ChainOp)
+	# TODO
+end
+
+
+
 
 function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])
 	# test if all cells have same length
