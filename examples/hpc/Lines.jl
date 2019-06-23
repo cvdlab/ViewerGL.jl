@@ -2,7 +2,6 @@ using ViewerGL
 GL = ViewerGL
 
 
-
 points,lines = GL.text("PLaSM",false)
 #points = Plasm.normalize(points)
 GL.VIEW([

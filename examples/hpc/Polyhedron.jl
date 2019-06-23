@@ -1,12 +1,8 @@
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
-using Triangle
-using Revise
 using ViewerGL
 GL = ViewerGL
-using LinearAlgebra
 
-const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
 
 
 # data input
@@ -27,6 +23,6 @@ print(f, LarModelString); close(f)
 V,EVs,FVs = Lar.obj2lar("test/out3d.obj")
 
 GL.VIEW([
-      GLPolyhedron(V, FVs[1])
+      GL.GLPolyhedron(V, FVs[1])
       GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1))
 ])

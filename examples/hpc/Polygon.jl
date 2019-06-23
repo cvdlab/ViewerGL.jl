@@ -1,9 +1,5 @@
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
-using LinearAlgebra
-#using Plasm
-using Triangle
-using Revise
 using ViewerGL
 GL = ViewerGL
 

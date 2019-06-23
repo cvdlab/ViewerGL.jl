@@ -1,4 +1,3 @@
-using QHull
 using ViewerGL
 GL = ViewerGL
 
