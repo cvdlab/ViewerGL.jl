@@ -31,8 +31,10 @@ mutable struct FrustumMap
 		viewport_T=Matrix4(
 			viewport[3] / 2.0,                  0,       0, viewport[1] + viewport[3] / 2.0,
 		                   0,  viewport[4] / 2.0,       0, viewport[2] + viewport[4] / 2.0,
-		                   0,                  0, 1 / 2.0, 1 / 2.0)
-		new(viewport_T,projection,modelview,inv(ret.viewport),inv(ret.projection),inv(ret.modelview))
+		                   0,                  0, 1 / 2.0, 1 / 2.0,
+						   0,                  0,       0,        1)
+	   #new(viewport_T,projection,modelview,inv(ret.viewport),inv(ret.projection),inv(ret.modelview))
+	   ret = new(viewport_T,projection,modelview,inv(viewport_T),inv(projection),inv(modelview))
 	end
 
 end

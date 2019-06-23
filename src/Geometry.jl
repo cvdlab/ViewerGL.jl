@@ -154,7 +154,6 @@ Generate the `GL.GLMesh` ``mesh`` to visualize a ``Lar.LAR`` model.
 ```
 V,CV = Lar.cuboidGrid([10,20,1])
 GL.VIEW([
-      # GL.GLCuboid(Box3d(GL.Point3d(0,0,0),GL.Point3d(1,1,1)))
       GL.GLLar2gl(V,CV)
       GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1))
 ])
