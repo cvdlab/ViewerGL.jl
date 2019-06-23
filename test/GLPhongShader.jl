@@ -6,8 +6,8 @@ GL = ViewerGL
 
 @testset "GLPhongShader.jl" begin
 
-   # function_name()
-   @testset "function_name()" begin
+   # function GLPhongShader(lighting_enabled,color_attribute_enabled)
+   @testset "GLPhongShader" begin
       @test
       @test
       @test
