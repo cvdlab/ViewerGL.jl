@@ -3,7 +3,6 @@ using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
 using ViewerGL
 GL = ViewerGL
-using ViewerGL
 
 @testset "Goemetry.jl" begin
 
@@ -71,22 +70,28 @@ using ViewerGL
       @test GL.GLLar2gl(V::Lar.Points, CV::Lar.Cells).T==GL.M44
       @test GL.GLMesh.size==48
       @test GL.GLMesh.isbitstype==false
+      @test GL.GLVertexBuffer.isconcretetype==true
    end
 
    # function GLLines(points::Lar.Points,lines::Lar.Cells)
    @testset "GLLines" begin
-      @test
-      @test
-      @test
-      @test
+      (points, lines) = ([0.0 0.0 3.0 4.0 4.0 3.0 0.0 9.0 5.0 5.0 14.0 13.0 11.0 10.0 10.0 11.0 13.0 14.0 14.0 14.0 15.0 16.0 18.0 19.0 19.0 18.0 16.0 15.0 15.0 16.0 18.0 19.0 20.0 20.0 22.0 24.0 24.0; 6.0 0.0 0.0 1.0 3.0 4.0 4.0 6.0 6.0 0.0 5.0 6.0 6.0 5.0 4.0 3.0 3.0 4.0 6.0 3.0 5.0 6.0 6.0 5.0 4.0 3.0 3.0 2.0 1.0 0.0 0.0 1.0 6.0 0.0 2.0 0.0 6.0; 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0], Array{Int64,1}[[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [8, 9], [9, 10], [11, 12], [12, 13], [13, 14], [14, 15], [15, 16], [16, 17], [17, 18], [18, 11], [19, 20], [21, 22], [22, 23], [23, 24], [24, 25], [25, 26], [26, 27], [27, 28], [28, 29], [29, 30], [30, 31], [31, 32], [33, 34], [34, 35], [35, 36], [36, 37]])
+      @test typeof(GL.GLLines(points::Lar.Points,lines::Lar.Cells))==ViewerGL.GLMesh
+      @test GL.GLLines(points::Lar.Points,lines::Lar.Cells).primitive==1
+      @test GL.GLLines(points::Lar.Points,lines::Lar.Cells).T==GL.M44
+      @test GL.GLMesh.size==48
+      @test GL.GLMesh.isbitstype==false
+      @test GL.GLVertexBuffer.isconcretetype==true
    end
 
    # function GLText(string)
    @testset "GLText" begin
-      @test
-      @test
-      @test
-      @test
+      @test typeof(GL.GLText("Plasm"))==ViewerGL.GLMesh
+      @test GL.GLText("Plasm").primitive==1
+      @test GL.GLText("Plasm").T==GL.M44
+      @test GL.GLMesh.size==48
+      @test GL.GLMesh.isbitstype==false
+      @test GL.GLVertexBuffer.isconcretetype==true
    end
 
    # function GLPoints(points::Lar.Points) # points by row

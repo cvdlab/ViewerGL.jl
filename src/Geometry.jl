@@ -186,8 +186,18 @@ function GLLar2gl(V::Lar.Points, CV::Lar.Cells)::GL.GLMesh
 	return ret
 end
 
+"""
+	GLLines(points::Lar.Points,lines::Lar.Cells)::GLMesh
+# Example
+```
+julia> (points, lines) = GL.text("PLaSM");
 
-function GLLines(points::Lar.Points,lines::Lar.Cells)
+julia> mesh = GL.GLLines(points::Lar.Points,lines::Lar.Cells);
+
+julia> mesh
+```
+"""
+function GLLines(points::Lar.Points,lines::Lar.Cells)::
       points = convert(Lar.Points, points')
       vertices=Vector{Float32}()
       #normals =Vector{Float32}()
@@ -211,13 +221,43 @@ function GLLines(points::Lar.Points,lines::Lar.Cells)
       return ret
 end
 
+"""
+	GLText(string)::GLMesh
 
+Transform a string into a mesh of lines.
+To display as graphical text.
+# Example
+```
+julia> GL.text("Plasm")
+([0.0 0.0 … 0.833333 0.833333; 0.0 0.25 … 0.0 0.125; 0.0 0.0 … 0.0 0.0], Array{Int64,1}[[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]
+, [6, 7], [8, 9], [9, 10], [11, 12], [13, 14]  …  [25, 26], [26, 27], [27, 28], [28, 29], [29, 30], [31, 32], [32, 33], [34, 3
+5], [35, 36], [37, 38]])
+
+julia> GL.GLText("Plasm")
+ViewerGL.GLMesh(1, [1.0 0.0 0.0 0.0; 0.0 1.0 0.0 0.0; 0.0 0.0 1.0 0.0; 0.0 0.0 0.0 1.0], ViewerGL.GLVertexArray(-1), ViewerGL.GLVertexBuffer(-1, Float32[0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.125, 0.25, 0.0, 0.0  …  0.0, 0.916667, 0.125, 0.0, 0.833333, 0.125, 0.0, 0.833333, 0.0, 0.0]), ViewerGL.GLVertexBuffer(-1, Float32[]), ViewerGL.GLVertexBuffer(-1, Float32[]))
+```
+"""
 function GLText(string)
 	GL.GLLines(GL.text(string)...)
 end
 
+"""
+	GLText(string)::GLMesh
 
-function GLPoints(points::Lar.Points) # points by row
+Transform a string into a mesh of lines.
+To display as graphical text.
+# Example
+```
+julia> GL.text("Plasm")
+([0.0 0.0 … 0.833333 0.833333; 0.0 0.25 … 0.0 0.125; 0.0 0.0 … 0.0 0.0], Array{Int64,1}[[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]
+, [6, 7], [8, 9], [9, 10], [11, 12], [13, 14]  …  [25, 26], [26, 27], [27, 28], [28, 29], [29, 30], [31, 32], [32, 33], [34, 3
+5], [35, 36], [37, 38]])
+
+julia> GL.GLText("Plasm")
+ViewerGL.GLMesh(1, [1.0 0.0 0.0 0.0; 0.0 1.0 0.0 0.0; 0.0 0.0 1.0 0.0; 0.0 0.0 0.0 1.0], ViewerGL.GLVertexArray(-1), ViewerGL.GLVertexBuffer(-1, Float32[0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.125, 0.25, 0.0, 0.0  …  0.0, 0.916667, 0.125, 0.0, 0.833333, 0.125, 0.0, 0.833333, 0.0, 0.0]), ViewerGL.GLVertexBuffer(-1, Float32[]), ViewerGL.GLVertexBuffer(-1, Float32[]))
+```
+"""
+function GLPoints(points::Lar.Points)::GL.GLMesh # points by row
       #points = convert(Lar.Points, points')
 	  if size(points,2) == 2
 		  points = [points zeros(size(points,1),1)]
