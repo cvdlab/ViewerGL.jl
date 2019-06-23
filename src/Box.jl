@@ -1,6 +1,4 @@
 
-
-
 """
 	Box3d(p1::Point3d,p2::Point3d)
 
