@@ -12,6 +12,9 @@ matrix:
   fast_finish: true
 notifications:
   email: false
+install:
+  - julia -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/cvdlab/LinearAlgebraicRepresentation.jl", rev="julia-1.1"))'
+
 after_success:
   - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
 jobs:
