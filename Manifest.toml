@@ -1,6 +1,10 @@
 # This file is machine-generated - editing it directly is not advised
 
-[[ViewGL]]
-path = "/Users/paoluzzi/.julia/dev/ViewGL"
-uuid = "e4b09d3c-965a-11e9-064b-1f4b25cc26ee"
-version = "0.1.0"
+[[Libdl]]
+uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
+
+[[ModernGL]]
+deps = ["Libdl"]
+git-tree-sha1 = "f4f8fa8d04d3c1e7294f07fc37586c819466ad38"
+uuid = "66fc600b-dfda-50eb-8b99-91cfa97b1301"
+version = "1.0.0"

@@ -3,7 +3,8 @@ uuid = "32496ab8-9004-11e9-0205-c9e71bda7ab0"
 authors = ["apaoluzzi <apaoluzzi@mac.com>"]
 version = "0.1.0"
 
-# [deps]
+[deps]
+ModernGL
 # ViewGL = "e4b09d3c-965a-11e9-064b-1f4b25cc26ee"
 
 [compat]
