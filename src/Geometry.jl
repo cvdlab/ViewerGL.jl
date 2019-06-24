@@ -197,7 +197,7 @@ julia> mesh = GL.GLLines(points::Lar.Points,lines::Lar.Cells);
 julia> mesh
 ```
 """
-function GLLines(points::Lar.Points,lines::Lar.Cells)::
+function GLLines(points::Lar.Points,lines::Lar.Cells)::GL.GLMesh
       points = convert(Lar.Points, points')
       vertices=Vector{Float32}()
       #normals =Vector{Float32}()
@@ -222,7 +222,7 @@ function GLLines(points::Lar.Points,lines::Lar.Cells)::
 end
 
 """
-	GLText(string)::GLMesh
+	GLText(string)::GL.GLMesh
 
 Transform a string into a mesh of lines.
 To display as graphical text.
@@ -237,24 +237,20 @@ julia> GL.GLText("Plasm")
 ViewerGL.GLMesh(1, [1.0 0.0 0.0 0.0; 0.0 1.0 0.0 0.0; 0.0 0.0 1.0 0.0; 0.0 0.0 0.0 1.0], ViewerGL.GLVertexArray(-1), ViewerGL.GLVertexBuffer(-1, Float32[0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.125, 0.25, 0.0, 0.0  …  0.0, 0.916667, 0.125, 0.0, 0.833333, 0.125, 0.0, 0.833333, 0.0, 0.0]), ViewerGL.GLVertexBuffer(-1, Float32[]), ViewerGL.GLVertexBuffer(-1, Float32[]))
 ```
 """
-function GLText(string)
+function GLText(string)::GL.GLMesh
 	GL.GLLines(GL.text(string)...)
 end
 
 """
-	GLText(string)::GLMesh
+	GLPoints(points::Lar.Points)::GL.GLMesh
 
-Transform a string into a mesh of lines.
-To display as graphical text.
+Transform an array of points into a mesh of points.
 # Example
 ```
-julia> GL.text("Plasm")
-([0.0 0.0 … 0.833333 0.833333; 0.0 0.25 … 0.0 0.125; 0.0 0.0 … 0.0 0.0], Array{Int64,1}[[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]
-, [6, 7], [8, 9], [9, 10], [11, 12], [13, 14]  …  [25, 26], [26, 27], [27, 28], [28, 29], [29, 30], [31, 32], [32, 33], [34, 3
-5], [35, 36], [37, 38]])
+julia> points = rand(50,3)
 
-julia> GL.GLText("Plasm")
-ViewerGL.GLMesh(1, [1.0 0.0 0.0 0.0; 0.0 1.0 0.0 0.0; 0.0 0.0 1.0 0.0; 0.0 0.0 0.0 1.0], ViewerGL.GLVertexArray(-1), ViewerGL.GLVertexBuffer(-1, Float32[0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.125, 0.25, 0.0, 0.0  …  0.0, 0.916667, 0.125, 0.0, 0.833333, 0.125, 0.0, 0.833333, 0.0, 0.0]), ViewerGL.GLVertexBuffer(-1, Float32[]), ViewerGL.GLVertexBuffer(-1, Float32[]))
+julia> GL.GLPoints(points::Lar.Points)::GL.GLMesh
+ViewerGL.GLMesh(0, [1.0 0.0 0.0 0.0; 0.0 1.0 0.0 0.0; 0.0 0.0 1.0 0.0; 0.0 0.0 0.0 1.0], ViewerGL.GLVertexArray(-1), ViewerGL.GLVertexBuffer(-1, Float32[0.469546, 0.117036, 0.70094, 0.645718, 0.453858, 0.750581, 0.220592, 0.19583, 0.192406, 0.860808  …  0.956595, 0.395031, 0.805344, 0.111219, 0.0562529, 0.923611, 0.634622, 0.794003, 0.0861098, 0.600665]), ViewerGL.GLVertexBuffer(-1, Float32[]), ViewerGL.GLVertexBuffer(-1, Float32[]))
 ```
 """
 function GLPoints(points::Lar.Points)::GL.GLMesh # points by row
@@ -277,11 +273,19 @@ end
 
 
 """
+	GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)::GL.GLMesh
+
+Transform a Lar model of a 3D polyhedron, given as a couple (V,FV), into a ModernGL mesh.
 # Example
 ```
+julia> V,(VV,EV,FV,CV) = Lar.cuboid([1,1,1],true);
+
+julia> mesh = GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells);
+
+julia> mesh
 ```
 """
-function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)
+function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)::GL.GLMesh
 	# data preparation
 	function mycat(a::Lar.Cells)
 		out=[]
@@ -303,21 +307,43 @@ function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)
         return ret
 end
 
-
+#=
 """
+	GLPolyhedron(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp,copCF::Lar.ChainOp)::GLMesh
+
+Generate a graphical mesh from a chain complex of sparse matrices.
 # Example
 ```
+(V, FV, EV) = ([0.0 0.0 0.0 0.0 1.0 1.0 1.0 1.0; 0.0 0.0 1.0 1.0 0.0 0.0 1.0 1.0; 0.0 1.0 0.0 1.0 0.0 1.0 0.0 1.0], Array{Int64,1}[[1, 2, 3, 4], [5, 6, 7, 8], [1, 2, 5, 6], [3, 4, 7, 8], [1, 3, 5, 7], [2, 4, 6, 8]], Array{Int64,1}[[1, 2], [3, 4], [5, 6
+], [7, 8], [1, 3], [2, 4], [5, 7], [6, 8], [1, 5], [2, 6], [3, 7], [4, 8]])
+cop_EV = Lar.coboundary_0(EV::Lar.Cells);
+cop_EW = convert(Lar.ChainOp, cop_EV);
+cop_FE = Lar.coboundary_1(V, FV::Lar.Cells, EV::Lar.Cells);
+W = convert(Lar.Points, V');
+
+V, copEV, copFE, copCF = Lar.Arrangement.spatial_arrangement(
+  W::Lar.Points, cop_EW::Lar.ChainOp, cop_FE::Lar.ChainOp)
+
+GL.GLPolyhedron(V::Lar.Points,
+  	copEV::Lar.ChainOp,copFE::Lar.ChainOp,copCF::Lar.ChainOp)::GLMesh
 ```
 """
 function GLPolyhedron(V::Lar.Points,
-	EV::Lar.ChainOp,FE::Lar.ChainOp,CF::Lar.ChainOp)
+	copEV::Lar.ChainOp,copFE::Lar.ChainOp,copCF::Lar.ChainOp)
 	# TODO
+
+	# mesh building
+	vertices,normals = GL.lar4mesh(points,triangles)
+	ret=GL.GLMesh(GL.GL_TRIANGLES)
+	ret.vertices = GL.GLVertexBuffer(vertices)
+	ret.normals  = GL.GLVertexBuffer(normals)
+	return ret
 end
+=#
 
 
 
-
-function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])
+function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])::GL.GLMesh
 	# test if all cells have same length
 	ls = map(length,CV)
 	@assert( (&)(map((==)(ls[1]),ls)...) == true )

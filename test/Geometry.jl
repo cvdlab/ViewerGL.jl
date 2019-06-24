@@ -47,7 +47,6 @@ GL = ViewerGL
       @test typeof(GL.GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp))==GL.GLMesh
       @test GL.GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp).primitive==4
       @test GL.GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp).T==GL.M44
-      @test GL.GLMesh.types==Core.svec(Int32, MArray{Tuple{4,4},Float64,2,L} where L, GL.GLVertexArray, GL.GLVertexBuffer, GL.GLVertexBuffer, GL.GLVertexBuffer)
       @test GL.GLMesh.size==48
       @test GL.GLMesh.isbitstype==false
    end
@@ -96,42 +95,54 @@ GL = ViewerGL
 
    # function GLPoints(points::Lar.Points) # points by row
    @testset "GLPoints" begin
-      @test
-      @test
-      @test
-      @test
+      points = rand(50,3)
+      @test typeof(GL.GLPoints(points::Lar.Points))==GL.GLMesh
+      @test GL.GLPoints(points::Lar.Points).primitive==0
+      @test GL.GLPoints(points::Lar.Points).T==GL.M44
+      @test GL.GLMesh.size==48
+      @test GL.GLMesh.isbitstype==false
+      @test GL.GLVertexBuffer.isconcretetype==true
    end
 
    # function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)
    @testset "GLPolyhedron" begin
-      @test
-      @test
-      @test
-      @test
+      (V, FV) = ([0.0 0.0 0.0 0.0 1.0 1.0 1.0 1.0; 0.0 0.0 1.0 1.0 0.0 0.0 1.0 1.0; 0.0 1.0 0.0 1.0 0.0 1.0 0.0 1.0], Array{Int64,1}[[1, 2, 3, 4], [5, 6, 7, 8], [1, 2, 5, 6], [3, 4, 7, 8], [1, 3, 5, 7], [2, 4, 6, 8]])
+      @test typeof(GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells))==GL.GLMesh
+      @test GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells).primitive==4
+      @test GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells).T==GL.M44
+      @test GL.GLMesh.size==48
+      @test GL.GLMesh.isbitstype==false
+      @test GL.GLVertexBuffer.isconcretetype==true
    end
-
-   # 	function mycat(a::Lar.Cells)
-   @testset "mycat" begin
-      @test
-      @test
-      @test
-      @test
-   end
-
-   # function GLPolyhedron(V::Lar.Points, ...
+#=
    @testset "GLPolyhedron" begin
-      @test
-      @test
-      @test
-      @test
+      (V, FV, EV) = ([0.0 0.0 0.0 0.0 1.0 1.0 1.0 1.0; 0.0 0.0 1.0 1.0 0.0 0.0 1.0 1.0; 0.0 1.0 0.0 1.0 0.0 1.0 0.0 1.0], Array{Int64,1}[[1, 2, 3, 4], [5, 6, 7, 8], [1, 2, 5, 6], [3, 4, 7, 8], [1, 3, 5, 7], [2, 4, 6, 8]], Array{Int64,1}[[1, 2], [3, 4], [5, 6
+      ], [7, 8], [1, 3], [2, 4], [5, 7], [6, 8], [1, 5], [2, 6], [3, 7], [4, 8]])
+      cop_EV = Lar.coboundary_0(EV::Lar.Cells);
+      cop_EW = convert(Lar.ChainOp, cop_EV);
+      cop_FE = Lar.coboundary_1(V, FV::Lar.Cells, EV::Lar.Cells);
+      W = convert(Lar.Points, V');
+
+      V, copEV, copFE, copCF = Lar.Arrangement.spatial_arrangement(
+      	W::Lar.Points, cop_EW::Lar.ChainOp, cop_FE::Lar.ChainOp)
+      @test typeof(GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells))==GL.GLMesh
+      @test GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells).primitive==4
+      @test GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells).T==GL.M44
+      @test GL.GLMesh.size==48
+      @test GL.GLMesh.isbitstype==false
+      @test GL.GLVertexBuffer.isconcretetype==true
    end
+=#
 
    # function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])
    @testset "GLGrid" begin
-      @test
-      @test
-      @test
-      @test
+      V,(VV,EV,FV,CV) = Lar.cuboidGrid([1,2,1],true)
+      @test typeof(GL.GLGrid(V,FV,GL.Point4d(1,1,1,0.1)))==GL.GLMesh
+      @test GL.GLGrid(V,FV,GL.Point4d(1,1,1,0.1)).primitive==7
+      @test GL.GLGrid(V,FV,GL.Point4d(1,1,1,0.1)).T==GL.M44
+      @test GL.GLMesh.size==48
+      @test GL.GLMesh.isbitstype==false
+      @test GL.GLVertexBuffer.isconcretetype==true
    end
 
 end

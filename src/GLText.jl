@@ -194,10 +194,10 @@ when applied to another parameter.
 #	Examples
 
 ```
-julia> Plasm.k(10)(100)
+julia> GL.k(10)(100)
 10
 
-julia> Plasm.k(sin)(cos)
+julia> GL.k(sin)(cos)
 sin
 ```
 """
@@ -274,7 +274,7 @@ function embed(n)
 	return embed0
 end
 
-
+#=
 """
 	numbering(model::LARmodel)
 
@@ -296,7 +296,7 @@ function numbering(numberSizeScaling=1)
 	function numbering0(model)
 		V,cells = model
 		if size(V,1)==2
-			V = Plasm.embed(1)(model)[1]
+			V = GL.embed(1)(model)[1]
 		end
 		wireframe = Plasm.lar2hpc(V,cells[2])
 		ns = numberSizeScaling
@@ -319,7 +319,7 @@ function numbering(numberSizeScaling=1)
 	end
 	return numbering0
 end
-
+=#
 
 
 """
@@ -337,7 +337,7 @@ using Plasm, SparseArrays
 Lar = LinearAlgebraicRepresentation
 
 V,EV = Lar.randomcuboids(7, 1.0);
-V = Plasm.normalize(V,flag=true);
+V = GL.normalize(V,flag=true);
 W = convert(Lar.Points, V');
 cop_EV = Lar.coboundary_0(EV::Lar.Cells);
 cop_EW = convert(Lar.ChainOp, cop_EV);
@@ -354,7 +354,7 @@ function numbering1(scaling=0.1)
 		FV = [collect(Set(cat(EV[e] for e in findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
 		FV = convert(Array{Array{Int64,1},1}, FV)
 		model = (convert(Lar.Points, V'), Lar.Cells[VV,EV,FV])
-		return Plasm.numbering(scaling)(model)
+		return GL.numbering(scaling)(model)
 	end
 	return numbering0
 end

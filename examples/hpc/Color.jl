@@ -1,16 +1,4 @@
 
-"""
-
-# Example
-
-```
-
-```
-"""
-function GLPolyhedron(V::Lar.Points,
-	EV::Lar.ChainOp,FE::Lar.ChainOp,CF::Lar.ChainOp)
-	# TODO
-end
 
 
 
