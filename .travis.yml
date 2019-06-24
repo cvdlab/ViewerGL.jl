@@ -14,6 +14,7 @@ notifications:
   email: false
 install:
   - julia -e 'using Pkg; Pkg.add("ModernGL")'
+  - julia -e 'using Pkg; Pkg.add("GLFW")'
   - julia -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/cvdlab/LinearAlgebraicRepresentation.jl", rev="julia-1.1"))'
 
 after_success:
