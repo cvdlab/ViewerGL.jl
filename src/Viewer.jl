@@ -110,7 +110,7 @@ function runViewer(viewer::Viewer)
 	#GLFW.WindowHint(GLFW.OPENGL_FORWARD_COMPAT, GL_TRUE)
 	#GLFW.WindowHint(GLFW.OPENGL_PROFILE, GLFW.OPENGL_CORE_PROFILE)
 
-	win = GLFW.CreateWindow(viewer.W, viewer.H, "Plasm")
+	win = GLFW.CreateWindow(viewer.W, viewer.H, "ViewerGL")
 	viewer.win=win
 	GLFW.MakeContextCurrent(win)
 
