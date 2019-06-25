@@ -15,7 +15,7 @@ notifications:
 install:
   - julia -e 'using Pkg; Pkg.add("ModernGL")'
   - julia -e 'using Pkg; Pkg.add("GLFW")'
-  - julia -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/cvdlab/LinearAlgebraicRepresentation.jl", rev="julia-1.1"))'
+  - julia -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/cvdlab/LinearAlgebraicRepresentation.jl"))'
 
 after_success:
   - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
