@@ -7,7 +7,6 @@ version = "0.1.0"
 ModernGL = "66fc600b-dfda-50eb-8b99-91cfa97b1301"
 GLFW = "f7f18e0c-5ee9-5ccd-a5bf-e8befd85ed98"
 QHull = "a8468747-bd6f-53ef-9e5c-744dbc5c59e7"
-LinearAlgebraicRepresentation = "95167b0c-186a-594b-a231-52369c6de044"
 
 [compat]
 julia = "1.1"
