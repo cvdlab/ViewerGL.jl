@@ -1,10 +1,10 @@
 # ViewerGL.jl
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://apaoluzzi.github.io/ViewerGL.jl/stable)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://apaoluzzi.github.io/ViewerGL.jl/dev)
-[![Build Status](https://travis-ci.com/apaoluzzi/ViewerGL.jl.svg?branch=master)](https://travis-ci.com/apaoluzzi/ViewerGL.jl)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/apaoluzzi/ViewerGL.jl?svg=true)](https://ci.appveyor.com/project/apaoluzzi/ViewerGL-jl)
-[![Codecov](https://codecov.io/gh/apaoluzzi/ViewerGL.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/apaoluzzi/ViewerGL.jl)
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://cvdlab.github.io/ViewerGL.jl/stable)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://cvdlab.github.io/ViewerGL.jl/dev)
+[![Build Status](https://travis-ci.com/cvdlab/ViewerGL.jl.svg?branch=master)](https://travis-ci.com/cvdlab/ViewerGL.jl)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/cvdlab/ViewerGL.jl?svg=true)](https://ci.appveyor.com/project/cvdlab/ViewerGL-jl)
+[![Codecov](https://codecov.io/gh/cvdlab/ViewerGL.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/cvdlab/ViewerGL.jl)
 
 3D interactive Viewer for geometric and topological data
 
