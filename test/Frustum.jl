@@ -53,8 +53,8 @@ GL = ViewerGL
    # function unprojectPoint(map::FrustumMap,x::Float32,y::Float32, z::Float32)
    @testset "unprojectPoint" begin
       x=1.5; y=1.5; z=1.5;
-      p4 = (map.inv_modelview * (map.inv_projection * (map.inv_viewport * GL.Point4d(x,y,z, 1.0))))
-      @test typeof(map)==ViewerGL.FrustumMap
+      p4 = (themap.inv_modelview * (themap.inv_projection * (themap.inv_viewport * GL.Point4d(x,y,z, 1.0))))
+      @test typeof(themap)==ViewerGL.FrustumMap
       @test GL.Point4d(x,y,z, 1.0)==[1.5,1.5,1.5,1.0]
       @test p4 == [-37.07357467076195, -38.160642058780965, -38.322834078026, -12.425000000000002]
    end

@@ -1,6 +1,5 @@
 using Test
-using LinearAlgebraicRepresentation
-Lar = LinearAlgebraicRepresentation
+import Pkg; Pkg.add("LinearAlgebraicRepresentation")
 
 include("./Box.jl")
 include("./Frustum.jl")
