@@ -13,7 +13,7 @@ GL = ViewerGL
    viewport=[0,0,GL.viewer.W,GL.viewer.H];
    projection =GL.getProjection(GL.viewer);
    modelview=GL.getModelview(GL.viewer);
-   map=GL.FrustumMap(viewport,projection,modelview)
+   themap=GL.FrustumMap(viewport,projection,modelview)
 #=   @testset "FrustumMap" begin
 
       @test map=GL.FrustumMap(viewport,projection,modelview) ==
@@ -43,10 +43,10 @@ GL = ViewerGL
 =#
    # function projectPoint(map::FrustumMap,p3::Point3d)
    @testset "projectPoint" begin
-      @test GL.projectPoint(map::GL.FrustumMap,GL.Point3d(1.5,1.5,1.5))==GL.Point3d(1024.0,768.0,0.9865771471158417)
-      @test GL.projectPoint(map::GL.FrustumMap,GL.Point3d(-1.5,-1.5,-1.5))==GL.Point3d(1024.0,768.0,0.9968617210493019)
-      @test typeof(GL.projectPoint(map::GL.FrustumMap,GL.Point3d(1.5,1.5,1.5)))==StaticArrays.MArray{Tuple{3},Float64,1,3}
-      @test typeof(map)==ViewerGL.FrustumMap
+      @test GL.projectPoint(themap::GL.FrustumMap,GL.Point3d(1.5,1.5,1.5))==GL.Point3d(1024.0,768.0,0.9865771471158417)
+      @test GL.projectPoint(themap::GL.FrustumMap,GL.Point3d(-1.5,-1.5,-1.5))==GL.Point3d(1024.0,768.0,0.9968617210493019)
+      @test typeof(GL.projectPoint(themap::GL.FrustumMap,GL.Point3d(1.5,1.5,1.5)))==StaticArrays.MArray{Tuple{3},Float64,1,3}
+      @test typeof(themap)==ViewerGL.FrustumMap
       @test typeof(GL.Point3d(1.5,1.5,1.5))==StaticArrays.MArray{Tuple{3},Float64,1,3}
     end
 
