@@ -9,7 +9,7 @@ GL = ViewerGL
 
    # projectPoint(map::FrustumMap,p3::Point3d)
    mesh = GL.GLCuboid(GL.Box3d(GL.Point3d(0,0,0),GL.Point3d(1,1,1)))
-   GL.VIEW([mesh]);
+   GL.VIEW([mesh],false);
    viewport=[0,0,GL.viewer.W,GL.viewer.H];
    projection =GL.getProjection(GL.viewer);
    modelview=GL.getModelview(GL.viewer);
@@ -43,8 +43,8 @@ GL = ViewerGL
 =#
    # function projectPoint(map::FrustumMap,p3::Point3d)
    @testset "projectPoint" begin
-      @test GL.projectPoint(themap::GL.FrustumMap,GL.Point3d(1.5,1.5,1.5))==GL.Point3d(1024.0,768.0,0.9865771471158417)
-      @test GL.projectPoint(themap::GL.FrustumMap,GL.Point3d(-1.5,-1.5,-1.5))==GL.Point3d(1024.0,768.0,0.9968617210493019)
+      @test GL.projectPoint(themap::GL.FrustumMap,GL.Point3d(1.5,1.5,1.5))==GL.Point3d(512.0, 384.0, 0.9865771471158417)
+      @test GL.projectPoint(themap::GL.FrustumMap,GL.Point3d(-1.5,-1.5,-1.5))==GL.Point3d(512.0, 384.0,0.9968617210493019)
       @test typeof(GL.projectPoint(themap::GL.FrustumMap,GL.Point3d(1.5,1.5,1.5)))==StaticArrays.MArray{Tuple{3},Float64,1,3}
       @test typeof(themap)==ViewerGL.FrustumMap
       @test typeof(GL.Point3d(1.5,1.5,1.5))==StaticArrays.MArray{Tuple{3},Float64,1,3}
@@ -56,7 +56,7 @@ GL = ViewerGL
       p4 = (themap.inv_modelview * (themap.inv_projection * (themap.inv_viewport * GL.Point4d(x,y,z, 1.0))))
       @test typeof(themap)==ViewerGL.FrustumMap
       @test GL.Point4d(x,y,z, 1.0)==[1.5,1.5,1.5,1.0]
-      @test p4 == [-37.07357467076195, -38.160642058780965, -38.322834078026, -12.425000000000002]
+      @test p4 == [-37.0748323866816,-38.160305054815986,-38.32191336607133,-12.425000000000002]
    end
 
 end

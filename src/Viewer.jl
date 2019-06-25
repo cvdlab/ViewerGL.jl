@@ -171,7 +171,7 @@ GL_VENDOR                   NVIDIA Corporation
 GL_RENDERER                 NVIDIA GeForce GT 750M OpenGL Engine
 ```
 """
-function VIEW(meshes)
+function VIEW(meshes,view=true)
 
 	global viewer
 	viewer=Viewer(meshes)
@@ -199,10 +199,11 @@ function VIEW(meshes)
 	viewer.zNear	  = maxsize / 50.0
 	viewer.zFar	  = maxsize * 10.0
 	viewer.walk_speed = maxsize / 500.0
-	redisplay(viewer)
-
-	runViewer(viewer)
-
+	if view==true
+		redisplay(viewer)
+		runViewer(viewer)
+	end
+	return viewer
 end
 
 
