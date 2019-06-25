@@ -2,7 +2,7 @@
 
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://cvdlab.github.io/ViewerGL.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://cvdlab.github.io/ViewerGL.jl/dev)
-[![Build Status](https://travis-ci.com/cvdlab/ViewerGL.jl.svg?branch=master)](https://travis-ci.com/cvdlab/ViewerGL.jl)
+[![Build Status](https://travis-ci.org/cvdlab/ViewerGL.jl.svg?branch=master)](https://travis-ci.org/cvdlab/ViewerGL.jl)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/cvdlab/ViewerGL.jl?svg=true)](https://ci.appveyor.com/project/cvdlab/ViewerGL-jl)
 [![Codecov](https://codecov.io/gh/cvdlab/ViewerGL.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/cvdlab/ViewerGL.jl)
 
