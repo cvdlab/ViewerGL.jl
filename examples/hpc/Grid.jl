@@ -30,6 +30,7 @@ V,CV = Lar.simplexGrid([4,4,4])
 FV = Lar.simplexFacets(CV)
 TV = Lar.simplexBoundary_3(CV,FV)
 EV = Lar.simplexFacets(TV)
+
 GL.VIEW([
 	GL.GLGrid(V,TV,GL.Point4d(1,1,1,0.1))
 	GL.GLGrid(V,EV,GL.Point4d(1,1,1,0.25))
