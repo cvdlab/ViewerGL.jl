@@ -1,6 +1,4 @@
 using Test
-using LinearAlgebraicRepresentation
-Lar = LinearAlgebraicRepresentation
 using StaticArrays
 using ViewerGL
 GL = ViewerGL
