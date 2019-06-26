@@ -1,6 +1,7 @@
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
 using QHull
+using Revise
 using ViewerGL
 GL = ViewerGL
 
@@ -342,7 +343,8 @@ end
 
 
 
-function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])::GL.GLMesh
+function GLGrid(model,color=GL.COLORS[1])::GL.GLMesh
+	V,CV = model
 	# test if all cells have same length
 	ls = map(length,CV)
 	@assert( (&)(map((==)(ls[1]),ls)...) == true )
