@@ -423,7 +423,7 @@ end
 
 # ////////////////////////////////////////////////////////////
 function GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1)
-	assembly = GL.explodecells(V,FVs,1.2,1.2,1.2)
+	assembly = GL.explodecells(V,FVs,sx,sy,sz)
 	meshes = Any[]
 	for k=1:length(assembly)-1
 		# Lar model with constant lemgth of cells, i.e a GRID object !!
