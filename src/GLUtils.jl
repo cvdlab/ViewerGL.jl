@@ -233,3 +233,26 @@ function normalize3(V::Lar.Points, flag=true)
 	end
 	return [Vxy; Vz]
 end
+
+
+
+function explodecells(V,FVs,sx=1.2,sy=1.2,sz=1.2)
+	V,FVs
+	outVerts, outCells = [],[]
+	grids = []
+	for FV in FVs
+		vertidx = sort(collect(Set(cat(FV))))
+		vcell = V[:,vertidx]
+		vdict = Dict(zip(vertidx,1:length(vertidx)))
+
+		center = sum(vcell,dims=2)/size(vcell,2)
+		scaled_center = size(center,1)==2 ? center .* [sx;sy] : center .* [sx;sy;sz]
+		translation_vector = scaled_center - center
+		cellverts = vcell .+ translation_vector
+		newcells = [[vdict[v] for v in cell] for cell in FV]
+
+		mesh = cellverts, newcells
+		push!(grids, mesh)
+	end
+	return grids
+end

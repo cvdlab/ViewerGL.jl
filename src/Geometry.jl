@@ -1,7 +1,6 @@
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
 using QHull
-using Revise
 using ViewerGL
 GL = ViewerGL
 

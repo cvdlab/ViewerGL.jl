@@ -121,6 +121,17 @@ function getBoundingBox(mesh::GLMesh)
 	end
 	return box
 end
+function getBoundingBox(meshes::Array)
+	box=invalidBox()
+	for mesh in meshes
+		vertices=mesh.vertices.vector
+		for I in 1:3:length(vertices)
+			point=Point3d(vertices[I+0],vertices[I+1],vertices[I+2])
+			addPoint(box,point)
+		end
+	end
+	return box
+end
 
 
 
