@@ -1,6 +1,6 @@
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
-using QHull
+using QHull, LinearAlgebra
 using ViewerGL
 GL = ViewerGL
 
@@ -417,4 +417,26 @@ function GLGrid(model,color=GL.COLORS[1])::GL.GLMesh
 	ret.normals  = GL.GLVertexBuffer(normals)
 	ret.colors  = GL.GLVertexBuffer(colors)
     return ret
+end
+
+
+
+# ////////////////////////////////////////////////////////////
+function GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1)
+	assembly = GL.explodecells(V,FVs,1.2,1.2,1.2)
+	meshes = Any[]
+	for k=1:length(assembly)-1
+		# Lar model with constant lemgth of cells, i.e a GRID object !!
+		mesh = assembly[k]
+		# cyclic color + random color components
+		if colors == 1
+			color = GL.COLORS[1]
+		elseif 2 <= colors <= 12
+			color = GL.COLORS[colors]
+		else # colors > 12: cyclic colors w random component
+			color = GL.COLORS[k%12+1] - (rand(Float64,4)*0.1)
+		end
+		push!(meshes, GL.GLGrid(mesh,color) )
+	end
+	return meshes
 end
