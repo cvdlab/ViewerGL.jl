@@ -157,7 +157,7 @@ function translate(c)
 	function translate0(lar)
 		xs = lar[1][1,:]
 		width = maximum(xs) - minimum(xs)
-		Lar.apply(Lar.t(width/c,0))(lar)
+		GL.apply(Lar.t(width/c,0))(lar)
 	end
 	return translate0
 end
@@ -212,7 +212,7 @@ function textWithAttributes(textalignment="centre", textangle=0,
 		id = x->x
 		mat = Lar.s(textwidth/fontwidth,textheight/fontheight)
 		comp([
-		   apply(Lar.r(textangle)),
+		   GL.apply(Lar.r(textangle)),
 		   align(textalignment),
 		   Lar.struct2lar,
 		   Lar.Struct,
@@ -266,30 +266,33 @@ Plasm.view(Plasm.numbering(1.5)(model))
 ```
 """
 function numbering(numberSizeScaling=1)
-	p = PyCall.pyimport("pyplasm")
 	function numbering0(model)
 		V,cells = model
 		if size(V,1)==2
 			V = GL.embed(1)(model)[1]
 		end
-		wireframe = Plasm.lar2hpc(V,cells[2])
+		wireframe = V,cells[2]
 		ns = numberSizeScaling
 		gcode = GL.textWithAttributes("centre", 0, 0.1ns, 0.2ns, 0.025ns)
-		scene = [wireframe]
+		meshes = [GL.GLLines(wireframe[1],wireframe[2])]
+		# GL.VIEW(scene);
+		#colors = [p["GREEN"], p["YELLOW"], p["CYAN"], p["ORANGE"]]
+		colors = GL.COLORS[3], GL.COLORS[7], GL.COLORS[5], GL.COLORS[8]
 		for (h,skel) in enumerate(cells)
-			  colors = [p["GREEN"], p["YELLOW"], p["CYAN"], p["ORANGE"]]
-		 	  nums = []
-			  for (k,cell) in enumerate(skel)
+	 	  nums = []
+		  for (k,cell) in enumerate(skel)
 				center = sum([V[:,v] for v in cell])/length(cell)
-				code = Plasm.embed(1)( gcode(string(k)) )
+				code = GL.embed(1)( gcode(string(k)) )
 				scaling = (0.6+0.1h,0.6+0.1h,1)
 				push!(nums, Lar.struct2lar( Lar.Struct([
 					Lar.t(center...), Lar.s(scaling...), code ]) ))
-			end
-			hpc = Plasm.lar2hpc(nums)
-			push!( scene, p["COLOR"](colors[h])(hpc) )
+		  end
+		  for num in nums
+			mesh = GL.GLLines(num[1],num[2],colors[h])
+			push!( meshes, mesh )
+		  end
 		end
-		p["STRUCT"]( scene )
+		return meshes
 	end
 	return numbering0
 end
@@ -390,11 +393,14 @@ julia> Plasm.apply(LinearAlgebraicRepresentation.t(1,2))(square)
 ([1.0 1.0 2.0 2.0; 2.0 3.0 2.0 3.0], Array{Int64,1}[[1, 2, 3, 4]])
 ```
 """
-function apply(affineMatrix)
+function apply(affineMatrix::Array{Float64,2})
 	function apply0(larmodel)
-		return Lar.struct2lar(Lar.Struct([ affineMatrix,larmodel ]))
+		return Lar.apply( affineMatrix, larmodel )
 	end
 	return apply0
+end
+function apply(affineMatrix::Array{Float64,2},larmodel)
+	return Lar.apply( affineMatrix, larmodel )
 end
 
 

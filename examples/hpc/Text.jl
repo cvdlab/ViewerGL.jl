@@ -1,8 +1,8 @@
 using ViewerGL
 GL = ViewerGL
 
-GL.VIEW([ GL.GLText("PLaSM"),
-          GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1)) ])
+GL.VIEW([ GL.GLText("PLaSM"),GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1)),
+ 			GL.GLText("PLaSM") ]);
 
 # TODO: fix textWithAttributes()
 #GL.textWithAttributes("left", pi/4)("PLaSM")
@@ -24,6 +24,6 @@ VV = [[k] for k=1:size(V,2)]
 
 model = (V, (VV,EV,FV))
 
-View(Plasm.numbering(2.)(model))
+GL.VIEW(GL.numbering(2.)(model));
 
-View(Plasm.hpc_exploded( model )(1.5,1.5,1.5))
+#View(Plasm.hpc_exploded( model )(1.5,1.5,1.5))
