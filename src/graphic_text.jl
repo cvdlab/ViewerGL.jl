@@ -3,11 +3,11 @@ using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
 import Base.cat
 
-View = Plasm.view	
+View = Plasm.view
 
 # Graphic text font implementation
 # Vector definition of printable ASCII codes as one-dimensional LAR models.
-# Font design from *Geometric Programming for Computer-Aided Design*, Wiley, 2003. 
+# Font design from *Geometric Programming for Computer-Aided Design*, Wiley, 2003.
 
 ascii32 = ([0.0; 0.0],Array{Int64,1}[[1]])
 ascii33 = ([1.75 1.75 2.0 2.0 1.5 1.5; 1.75 5.5 0.5 1.0 1.0 0.5],Array{Int64,1}[[1,2],[3,4],[4,5],[5,6],[6,3]])
@@ -106,12 +106,12 @@ ascii125 = ([1.5 2.0 2.0 2.5 2.0 2.0 1.5; 6.5 6.0 3.5 3.0 2.5 0.0 -0.5],Array{In
 ascii126 = ([1.0 1.75 2.75 3.5; 5.0 5.5 5.0 5.5],Array{Int64,1}[[1,2],[2,3],[3,4]])
 
 
-""" 
+"""
 	hpcs::Array
 
 
 """
-hpcs = [ 
+hpcs = [
 	ascii32,ascii33,ascii34,ascii35,ascii36,ascii37,ascii38,ascii39,ascii40,ascii41,
 	ascii42,ascii43,ascii44,ascii45,ascii46,ascii47,ascii48,ascii49,ascii50,ascii51,
 	ascii52,ascii53,ascii54,ascii55,ascii56,ascii57,ascii58,ascii59,ascii60,ascii61,
@@ -132,8 +132,7 @@ ascii_LAR = DataStructures.OrderedDict{Int,Lar.LAR}()
 *Ordered dictionary* of printable ASCII codes as one-dimensional *LAR models* in 2D.
 
 `Key` is the `integer` ASCII code between 32 and 126.
-Font design: *Geometric Programming for Computer-Aided Design*, Wiley, 2003. 
-
+Font design: *Geometric Programming for Computer-Aided Design*, Wiley, 2003.
 # Example
 ```
 julia> Plasm.ascii_LAR[46]
@@ -147,20 +146,20 @@ ascii_LAR = DataStructures.OrderedDict(zip(32:126,Plasm.hpcs))
 
 
 
-# Attributes for `text` 2D graphics primitive. 
+# Attributes for `text` 2D graphics primitive.
 # Reference to GKS ISO Graphics Standard (ISO/IEC 7942-4:1998)
 
-const textalignment = "centre" #default value
-const textangle = pi/4 #default value
-const textwidth = 1.0 #default value
-const textheight = 1.0 #default value
-const textspacing = 0.25 #default value
-const fontwidth = 4.0 #default value
-const fontheight = 8.0 #default value
-const fontspacing = 1.0 #default value
+global textalignment = "centre" #default value
+global textangle = pi/4 #default value
+global textwidth = 1.0 #default value
+global textheight = 1.0 #default value
+global textspacing = 0.25 #default value
+global fontwidth = 4.0 #default value
+global fontheight = 8.0 #default value
+global fontspacing = 1.0 #default value
 
 
-""" 
+"""
 	charpols(mystring::String)::Array{LAR,1}
 
 Return the `array` of `LAR` models, for chars in `mystring`.
@@ -171,7 +170,7 @@ end
 
 
 
-""" 
+"""
 	charseq(mystring::String)::Array{Char,1}
 
 # Example
@@ -190,7 +189,7 @@ function charseq(mystring)
 end
 
 
-""" 
+"""
 	text(mystring::String)::LAR
 
 Compute the one-dim *LAR model* drawing the contents of `mystring`
@@ -198,12 +197,12 @@ Compute the one-dim *LAR model* drawing the contents of `mystring`
 # Example
 ```
 julia> model = Plasm.text("PLaSM")
-# output 
-([0.0 0.0 3.0 4.0 4.0 3.0 0.0 9.0 5.0 5.0 14.0 13.0 11.0 10.0 
-10.0 11.0 13.0 14.0 14.0 14.0 15.0 16.0 18.0 19.0 19.0 18.0 16.0 15.0 15.0 16.0 18.0 
-19.0 20.0 20.0 22.0 24.0 24.0; 0.0 6.0 6.0 5.0 3.0 2.0 2.0 0.0 0.0 6.0 1.0 0.0 0.0 1.0 
-2.0 3.0 3.0 2.0 0.0 3.0 1.0 0.0 0.0 1.0 2.0 3.0 3.0 4.0 5.0 6.0 6.0 5.0 0.0 6.0 4.0 
-6.0 0.0], 
+# output
+([0.0 0.0 3.0 4.0 4.0 3.0 0.0 9.0 5.0 5.0 14.0 13.0 11.0 10.0
+10.0 11.0 13.0 14.0 14.0 14.0 15.0 16.0 18.0 19.0 19.0 18.0 16.0 15.0 15.0 16.0 18.0
+19.0 20.0 20.0 22.0 24.0 24.0; 0.0 6.0 6.0 5.0 3.0 2.0 2.0 0.0 0.0 6.0 1.0 0.0 0.0 1.0
+2.0 3.0 3.0 2.0 0.0 3.0 1.0 0.0 0.0 1.0 2.0 3.0 3.0 4.0 5.0 6.0 6.0 5.0 0.0 6.0 4.0
+6.0 0.0],
 Array{Int64,1}[[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[8,9],[9,10],[11,12],[12,13],[13,14],
 [14,15],[15,16],[16,17],[17,18],[18,11],[19,20],[21,22],[22,23],[23,24],[24,25],[25,26],
 [26,27],[27,28],[28,29],[29,30],[30,31],[31,32],[33,34],[34,35],[35,36],[36,37]])
@@ -219,7 +218,7 @@ end
 
 
 
-""" 
+"""
 	a2a(mat::Matrix)(models::Array{LAR,1})::Struct.body
 
 Local function, service to `textWithAttributes` implementation.
@@ -236,13 +235,13 @@ function a2a(mat)
 end
 
 
-""" 
+"""
 	translate(c::Number)(lar::LAR)::LAR
 
 Local function, service to `textWithAttributes` implementation.
 """
 function translate(c)
-	function translate0(lar) 
+	function translate0(lar)
 		xs = lar[1][1,:]
 		width = maximum(xs) - minimum(xs)
 		apply(Lar.t(width/c,0))(lar)
@@ -251,7 +250,7 @@ function translate(c)
 end
 
 
-""" 
+"""
 	align(textalignment="centre"::String)(model::LAR)::LAR
 
 Local function, service to `textWithAttributes` implementation.
@@ -260,7 +259,7 @@ function align(textalignment="centre")
 	function align1(model)
 		if ( textalignment == "centre" ) out=translate(-2)(model)
 		elseif ( textalignment == "right" ) out=translate(-1)(model)
-		elseif ( textalignment == "left" ) out=model 
+		elseif ( textalignment == "left" ) out=model
 		end
 		return out
 	end
@@ -268,7 +267,7 @@ end
 
 
 
-""" 
+"""
  	cat(args)
 
 Redefined locally, as service to `textWithAttributes` implementation.
@@ -280,38 +279,38 @@ end
 
 
 
-""" 
-	textWithAttributes(textalignment='centre', textangle=0, 
+"""
+	textWithAttributes(textalignment='centre', textangle=0,
 		textwidth=1.0, textheight=2.0, textspacing=0.25)(strand::String)::LAR
 
 Partial implementation of the GKS's graphics primitive `text`.
 
 # Example
 
-``` 
+```
 Plasm.view(Plasm.textWithAttributes("left", pi/4)("PLaSM"))
 ```
 """
-function textWithAttributes(textalignment="centre", textangle=0, 
-							textwidth=1.0, textheight=2.0, textspacing=0.25) 
+function textWithAttributes(textalignment="centre", textangle=0,
+							textwidth=1.0, textheight=2.0, textspacing=0.25)
 	function textWithAttributes(strand)
 		id = x->x
 		mat = Lar.s(textwidth/fontwidth,textheight/fontheight)
-		comp([ 
+		comp([
 		   apply(Lar.r(textangle)),
 		   align(textalignment),
 		   Lar.struct2lar,
 		   Lar.Struct,
 		   cat,
 		   distr,
-		   cons([ a2a(mat) ∘ charpols, 
+		   cons([ a2a(mat) ∘ charpols,
 				k(Lar.t(textwidth+textspacing,0)) ]),
 		   charseq ])(strand)
 	end
 end
- 
 
-""" 
+
+"""
 	embed(n::Int)(model::LAR)::LAR
 
 Embed a `LAR` `model` of dimension ``d`` in a space ``R^{d+n}``.
@@ -345,17 +344,17 @@ Different `colors` and size are used for the various dimensional cells.
 
 ```
 model = Lar.cuboidGrid([3,4,2], true)
-Plasm.view(Plasm.numbering()(model)) 
+Plasm.view(Plasm.numbering()(model))
 
 model = Lar.cuboidGrid([10,10], true)
 Plasm.view(Plasm.numbering(1.5)(model))
 ```
-""" 
-function numbering(numberSizeScaling=1) 
+"""
+function numbering(numberSizeScaling=1)
 	p = PyCall.pyimport("pyplasm")
-	function numbering0(model) 
+	function numbering0(model)
 		V,cells = model
-		if size(V,1)==2 
+		if size(V,1)==2
 			V = Plasm.embed(1)(model)[1]
 		end
 		wireframe = Plasm.lar2hpc(V,cells[2])
@@ -369,7 +368,7 @@ function numbering(numberSizeScaling=1)
 				center = sum([V[:,v] for v in cell])/length(cell)
 				code = Plasm.embed(1)( gcode(string(k)) )
 				scaling = (0.6+0.1h,0.6+0.1h,1)
-				push!(nums, Lar.struct2lar( Lar.Struct([ 
+				push!(nums, Lar.struct2lar( Lar.Struct([
 					Lar.t(center...), Lar.s(scaling...), code ]) ))
 			end
 			hpc = Plasm.lar2hpc(nums)
@@ -386,7 +385,7 @@ end
 #	numbering(scaling=0.1)
 #		(V::Lar.Points, copEV::Lar.ChainOp, copFE::Lar.ChainOp)::Lar.Hpc
 
-Produce the numbered `Hpc` of `planar_arrangement()` 2D output. 
+Produce the numbered `Hpc` of `planar_arrangement()` 2D output.
 Vertices in `V` are stored by row.
 
 # Example

@@ -186,7 +186,7 @@ function GLLar2gl(V::Lar.Points, CV::Lar.Cells)::GL.GLMesh
 end
 
 """
-	GLLines(points::Lar.Points,lines::Lar.Cells)::GLMesh
+	GLLines(points::Lar.Points,lines::Lar.Cells,color=COLORS[12])::GLMesh
 # Example
 ```
 julia> (points, lines) = GL.text("PLaSM");
@@ -196,9 +196,10 @@ julia> mesh = GL.GLLines(points::Lar.Points,lines::Lar.Cells);
 julia> mesh
 ```
 """
-function GLLines(points::Lar.Points,lines::Lar.Cells)::GL.GLMesh
+function GLLines(points::Lar.Points,lines::Lar.Cells,color=COLORS[12])::GL.GLMesh
       points = convert(Lar.Points, points')
       vertices=Vector{Float32}()
+	  colors  = Vector{Float32}()
       #normals =Vector{Float32}()
 	  if size(points,2) == 2
 		  points = [points zeros(size(points,1),1)]
@@ -211,37 +212,19 @@ function GLLines(points::Lar.Points,lines::Lar.Cells)::GL.GLMesh
             p2 = convert(GL.Point3d, p2)
             n  = convert(GL.Point3d,  n)
 
-            append!(vertices,p1); #append!(normals,n)
-            append!(vertices,p2); #append!(normals,n)
+            append!(vertices,p1); append!(colors,color)
+            append!(vertices,p2); append!(colors,color)
       end
       ret=GL.GLMesh(GL.GL_LINES)
       ret.vertices = GL.GLVertexBuffer(vertices)
-      #ret.normals  = GL.GLVertexBuffer(normals)
+      ret.colors  = GL.GLVertexBuffer(colors)
       return ret
 end
 
-"""
-	GLText(string)::GL.GLMesh
 
-Transform a string into a mesh of lines.
-To display as graphical text.
-# Example
-```
-julia> GL.text("Plasm")
-([0.0 0.0 … 0.833333 0.833333; 0.0 0.25 … 0.0 0.125; 0.0 0.0 … 0.0 0.0], Array{Int64,1}[[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]
-, [6, 7], [8, 9], [9, 10], [11, 12], [13, 14]  …  [25, 26], [26, 27], [27, 28], [28, 29], [29, 30], [31, 32], [32, 33], [34, 3
-5], [35, 36], [37, 38]])
-
-julia> GL.GLText("Plasm")
-ViewerGL.GLMesh(1, [1.0 0.0 0.0 0.0; 0.0 1.0 0.0 0.0; 0.0 0.0 1.0 0.0; 0.0 0.0 0.0 1.0], ViewerGL.GLVertexArray(-1), ViewerGL.GLVertexBuffer(-1, Float32[0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.125, 0.25, 0.0, 0.0  …  0.0, 0.916667, 0.125, 0.0, 0.833333, 0.125, 0.0, 0.833333, 0.0, 0.0]), ViewerGL.GLVertexBuffer(-1, Float32[]), ViewerGL.GLVertexBuffer(-1, Float32[]))
-```
-"""
-function GLText(string)::GL.GLMesh
-	GL.GLLines(GL.text(string)...)
-end
 
 """
-	GLPoints(points::Lar.Points)::GL.GLMesh
+	GLPoints(points::Lar.Points,color=COLORS[12])::GL.GLMesh
 
 Transform an array of points into a mesh of points.
 # Example
@@ -252,20 +235,20 @@ julia> GL.GLPoints(points::Lar.Points)::GL.GLMesh
 ViewerGL.GLMesh(0, [1.0 0.0 0.0 0.0; 0.0 1.0 0.0 0.0; 0.0 0.0 1.0 0.0; 0.0 0.0 0.0 1.0], ViewerGL.GLVertexArray(-1), ViewerGL.GLVertexBuffer(-1, Float32[0.469546, 0.117036, 0.70094, 0.645718, 0.453858, 0.750581, 0.220592, 0.19583, 0.192406, 0.860808  …  0.956595, 0.395031, 0.805344, 0.111219, 0.0562529, 0.923611, 0.634622, 0.794003, 0.0861098, 0.600665]), ViewerGL.GLVertexBuffer(-1, Float32[]), ViewerGL.GLVertexBuffer(-1, Float32[]))
 ```
 """
-function GLPoints(points::Lar.Points)::GL.GLMesh # points by row
+function GLPoints(points::Lar.Points,color=COLORS[12])::GL.GLMesh # points by row
       #points = convert(Lar.Points, points')
 	  if size(points,2) == 2
 		  points = [points zeros(size(points,1),1)]
 	  end
       vertices=Vector{Float32}()
-      #normals =Vector{Float32}()
+      colors =Vector{Float32}()
       for k=1:size(points,1)
 		point = convert(GL.Point3d,points[k,:])
-        append!(vertices,convert(GL.Point3d,point)); #append!(normals,n)
+        append!(vertices,convert(GL.Point3d,point)); append!(colors,color)
       end
       ret=GL.GLMesh(GL.GL_POINTS)
       ret.vertices = GL.GLVertexBuffer(vertices)
-      #ret.normals  = GL.GLVertexBuffer(normals)
+      ret.colors  = GL.GLVertexBuffer(colors)
       return ret
 end
 

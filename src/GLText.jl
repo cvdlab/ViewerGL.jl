@@ -80,20 +80,6 @@ function charseq(mystring)
 	return [char for char in mystring]
 end
 
-function cons(funs)
-	return x -> [f(x) for f in funs]
-end
-function comp(funs)
-	function compose(f,g)
-	  return x -> f(g(x))
-	end
-	id = x->x
-	return reduce(compose, funs; init=id)
-end
-function distr(args)
-	list,element = args
-	return [ [e,element] for e in list ]
-end
 
 """
 	text(mystring::String)::LAR
@@ -123,6 +109,26 @@ function text(mystring,flag=true)
 	return out
 end
 
+
+"""
+	GLText(string)::GL.GLMesh
+
+Transform a string into a mesh of lines.
+To display as graphical text.
+# Example
+```
+julia> GL.text("Plasm")
+([0.0 0.0 … 0.833333 0.833333; 0.0 0.25 … 0.0 0.125; 0.0 0.0 … 0.0 0.0], Array{Int64,1}[[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]
+, [6, 7], [8, 9], [9, 10], [11, 12], [13, 14]  …  [25, 26], [26, 27], [27, 28], [28, 29], [29, 30], [31, 32], [32, 33], [34, 3
+5], [35, 36], [37, 38]])
+
+julia> GL.GLText("Plasm")
+ViewerGL.GLMesh(1, [1.0 0.0 0.0 0.0; 0.0 1.0 0.0 0.0; 0.0 0.0 1.0 0.0; 0.0 0.0 0.0 1.0], ViewerGL.GLVertexArray(-1), ViewerGL.GLVertexBuffer(-1, Float32[0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.125, 0.25, 0.0, 0.0  …  0.0, 0.916667, 0.125, 0.0, 0.833333, 0.125, 0.0, 0.833333, 0.0, 0.0]), ViewerGL.GLVertexBuffer(-1, Float32[]), ViewerGL.GLVertexBuffer(-1, Float32[]))
+```
+"""
+function GLText(string)::GL.GLMesh
+	GL.GLLines(GL.text(string)...)
+end
 
 
 """
@@ -189,49 +195,6 @@ end
 
 
 """
-	k(Any)(x)
-
-*Constant* functional of FL and PLaSM languages.
-
-Gives a constant functional that always returns the actual parameter
-when applied to another parameter.
-
-#	Examples
-
-```
-julia> GL.k(10)(100)
-10
-
-julia> GL.k(sin)(cos)
-sin
-```
-"""
-function k(any::Any)
-	x->any
-end
-
-
-
-"""
-	apply(fun::Function, params::Array)
-
-To apply a function to an array of parameters.
-In the style of PLaSM and Backus' FL.
-# Example
-```
-julia> apply(x->sin(x[1]))([pi/2])
-1.0
-```
-"""
-function apply(fun::Function)
-	function apply0(params::Array)
-		return fun(params)
-	end
-	return apply0
-end
-
-
-"""
 	textWithAttributes(textalignment='centre', textangle=0,
 		textwidth=1.0, textheight=2.0, textspacing=0.25)(strand::String)::LAR
 
@@ -243,23 +206,23 @@ Partial implementation of the GKS's graphics primitive `text`.
 Plasm.view(Plasm.textWithAttributes("left", pi/4)("PLaSM"))
 ```
 """
-function textWithAttributes(textalignment="centre", textangle=0, textwidth=1.0, textheight=2.0, textspacing=0.25)
-	function textWithAttributes0(strand)
+function textWithAttributes(textalignment="centre", textangle=0,
+							textwidth=1.0, textheight=2.0, textspacing=0.25)
+	function textWithAttributes(strand)
 		id = x->x
-		mat = Lar.s(GL.textwidth/GL.fontwidth,GL.textheight/GL.fontheight)
-		Lar.apply(Lar.r(textangle),
-		comp([ align(textalignment),
+		mat = Lar.s(textwidth/fontwidth,textheight/fontheight)
+		comp([
+		   apply(Lar.r(textangle)),
+		   align(textalignment),
 		   Lar.struct2lar,
 		   Lar.Struct,
-		   GL.cat,
-		   GL.distr,
-		   GL.cons([ GL.a2a(mat) ∘ GL.charpols,
-				GL.k(Lar.t(textwidth+textspacing,0)) ]),
-		   GL.charseq ]))(strand)
+		   cat,
+		   distr,
+		   cons([ a2a(mat) ∘ charpols,
+				k(Lar.t(textwidth+textspacing,0)) ]),
+		   charseq ])(strand)
 	end
-	return textWithAttributes0
 end
-# TODO: fix textWithAttributes
 
 
 """
@@ -285,7 +248,7 @@ function embed(n)
 	return embed0
 end
 
-#=
+
 """
 	numbering(model::LARmodel)
 
@@ -311,7 +274,7 @@ function numbering(numberSizeScaling=1)
 		end
 		wireframe = Plasm.lar2hpc(V,cells[2])
 		ns = numberSizeScaling
-		gcode = Plasm.textWithAttributes("centre", 0, 0.1ns, 0.2ns, 0.025ns)
+		gcode = GL.textWithAttributes("centre", 0, 0.1ns, 0.2ns, 0.025ns)
 		scene = [wireframe]
 		for (h,skel) in enumerate(cells)
 			  colors = [p["GREEN"], p["YELLOW"], p["CYAN"], p["ORANGE"]]
@@ -330,7 +293,7 @@ function numbering(numberSizeScaling=1)
 	end
 	return numbering0
 end
-=#
+
 
 
 """
@@ -368,4 +331,92 @@ function numbering1(scaling=0.1)
 		return GL.numbering(scaling)(model)
 	end
 	return numbering0
+end
+
+
+function cons(funs)
+	return x -> [f(x) for f in funs]
+end
+function comp(funs)
+	function compose(f,g)
+	  return x -> f(g(x))
+	end
+	id = x->x
+	return reduce(compose, funs; init=id)
+end
+function distr(args)
+	list,element = args
+	return [ [e,element] for e in list ]
+end
+
+
+
+"""
+	k(Any)(x)
+
+*Constant* functional of FL and PLaSM languages.
+
+Gives a constant functional that always returns the actual parameter
+when applied to another parameter.
+
+#	Examples
+
+```
+julia> GL.k(10)(100)
+10
+
+julia> GL.k(sin)(cos)
+sin
+```
+"""
+function k(any::Any)
+	x->any
+end
+
+
+
+"""
+	apply(affineMatrix::Matrix)(larmodel::LAR)::LAR
+
+Apply the `affineMatrix` parameter to the vertices of `larmodel`.
+
+# Example
+
+```
+julia> square = LinearAlgebraicRepresentation.cuboid([1,1])
+([0.0 0.0 1.0 1.0; 0.0 1.0 0.0 1.0], Array{Int64,1}[[1, 2, 3, 4]])
+
+julia> Plasm.apply(LinearAlgebraicRepresentation.t(1,2))(square)
+([1.0 1.0 2.0 2.0; 2.0 3.0 2.0 3.0], Array{Int64,1}[[1, 2, 3, 4]])
+```
+"""
+function apply(affineMatrix)
+	function apply0(larmodel)
+		return Lar.struct2lar(Lar.Struct([ affineMatrix,larmodel ]))
+	end
+	return apply0
+end
+
+
+
+"""
+	COMP(Funs)
+
+Compose an Array of functions.
+```
+julia> COMP([sin,cos,tan])(pi/4)
+0.5143952585235492
+
+julia> COMP([sin,cos,tan])(pi/4) == (sin∘cos)(1)
+true
+```
+"""
+function COMP(Funs)
+	function ∘(f,g)
+		function h(x)
+			return f(g(x))
+		end
+		return h
+	end
+	return reduce(∘,Funs)
 end

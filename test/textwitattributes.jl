@@ -16,7 +16,7 @@ def TEXTWITHATTRIBUTES (TEXTALIGNMENT='centre', TEXTANGLE=0, TEXTWIDTH=1.0, TEXT
 		align = if textalignment == 'centre'
 					COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIV), CONS([ SIZE(1), K(-2) ]) ]), ID ]) ]),
 				elseif textalignment == 'right'
-					COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIFF), SIZE(1) ]), ID ]) ]),
+					COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIFF), SIZE(1) ]), id ]) ]),
 				else
 					id
 				end
@@ -72,12 +72,23 @@ function COMP(Funs)
 end
 
 
-
-function lift(f)
+"""
+	lift(f::Function)::Function
+```
+```
+"""
+function lift(f::Function)::Function
 	return funs-> COMP([f, CONS(funs)])
 end
 
-function raise(f)
+
+
+"""
+	raise(f::Function)::Function
+```
+```
+"""
+function raise(f::Function)::Function
 	function raise0(args)
 		return (issequence(isfun) ? lift(f) : f)(args)
 	end
@@ -121,3 +132,70 @@ function isSequenceOf(predicate)
 	end
 	return isSequenceof0
 end
+
+
+
+"""
+	ispol(x::Any)::Bool
+```
+julia> ispol(Lar.cuboid([1,1,1]))
+true
+```
+"""
+ispol(x::Any)::Bool = isa(x,Lar.LAR)
+
+
+
+"""
+	isnum(x::Any)::Bool
+```
+julia> isnum("234")
+false
+
+julia> isnum(234)
+true
+```
+"""
+isnum(x::Any)::Bool = isa(x,Number)
+
+
+"""
+	isstring(x::Any)::Bool
+```
+julia> isstring("234")
+true
+
+julia> isstring(234)
+false
+```
+"""
+isstring(x::Any)::Bool = isa(x,String)
+
+
+
+
+
+function diff(args):
+	if isinstance(args,list) and ISPOL(args[0]):
+		return DIFFERENCE(args)
+	elseif isnum(args):
+		return -1 * args
+	elseif isinstance(args,list) and  ISNUM(args[0]):
+		return reduce(lambda x,y: x - y, args)
+	elseif isinstance(args,list) and  isinstance(args[0],list):
+		#matrix difference
+		if isinstance(args[0][0],list):
+			return AA(VECTDIFF)(zip(*args))
+		# vector diff
+		else:
+			return VECTDIFF(args)
+		end
+	end
+
+	raise Exception("\'-\' function has been applied to %s!" % repr(args))
+
+end
+
+
+if __name__ == "__main__":
+	assert(DIFF(2)==-2 and DIFF([1,2,3])==-4 and DIFF([[1,2,3],[1,2,3]])==[0,0,0])
