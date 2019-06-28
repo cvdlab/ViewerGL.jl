@@ -2,6 +2,7 @@ using DataStructures
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
 import Base.cat
+import Base.∘
 using ViewerGL
 GL = ViewerGL
 
@@ -40,14 +41,14 @@ ascii2lar = DataStructures.OrderedDict(zip(32:126,hpcs))
 # Attributes for `text` 2D graphics primitive.
 # Reference to GKS ISO Graphics Standard (ISO/IEC 7942-4:1998)
 
-const textalignment = "centre" #default value
-const textangle = pi/4 #default value
-const textwidth = 1.0 #default value
-const textheight = 1.0 #default value
-const textspacing = 0.25 #default value
-const fontwidth = 4.0 #default value
-const fontheight = 8.0 #default value
-const fontspacing = 1.0 #default value
+global textalignment = "centre" #default value
+global textangle = pi/4 #default value
+global textwidth = 1.0 #default value
+global textheight = 1.0 #default value
+global textspacing = 0.25 #default value
+global fontwidth = 4.0 #default value
+global fontheight = 8.0 #default value
+global fontspacing = 1.0 #default value
 
 
 """
@@ -177,6 +178,10 @@ end
  	cat(args)
 
 Redefined locally, as service to `textWithAttributes` implementation.
+```
+julia> cat([[1,2],[3,4],[],[5,6,7,8]])==collect(1:8)
+true
+```
 """
 function cat(args)
 	return reduce( (x,y) -> append!(x,y), args; init=[] )
@@ -210,6 +215,13 @@ end
 """
 	apply(fun::Function, params::Array)
 
+To apply a function to an array of parameters.
+In the style of PLaSM and Backus' FL.
+# Example
+```
+julia> apply(x->sin(x[1]))([pi/2])
+1.0
+```
 """
 function apply(fun::Function)
 	function apply0(params::Array)
@@ -231,24 +243,23 @@ Partial implementation of the GKS's graphics primitive `text`.
 Plasm.view(Plasm.textWithAttributes("left", pi/4)("PLaSM"))
 ```
 """
-# function textWithAttributes(textalignment="centre", textangle=0,
-# 							textwidth=1.0, textheight=2.0, textspacing=0.25)
-# 	function textWithAttributes0(strand)
-# 		id = x->x
-# 		mat = Lar.s(textwidth/fontwidth,textheight/fontheight)
-# 		Lar.apply(Lar.r(textangle),
-# 		comp([ align(textalignment),
-# 		   Lar.struct2lar,
-# 		   Lar.Struct,
-# 		   cat,
-# 		   distr,
-# 		   GL.cons([ a2a(mat) ∘ charpols,
-# 				k(Lar.t(textwidth+textspacing,0)) ]),
-# 		   charseq ]))(strand)
-# 	end
-# 	return textWithAttributes0
-# end
-# # TODO: fix textWithAttributes
+function textWithAttributes(textalignment="centre", textangle=0, textwidth=1.0, textheight=2.0, textspacing=0.25)
+	function textWithAttributes0(strand)
+		id = x->x
+		mat = Lar.s(GL.textwidth/GL.fontwidth,GL.textheight/GL.fontheight)
+		Lar.apply(Lar.r(textangle),
+		comp([ align(textalignment),
+		   Lar.struct2lar,
+		   Lar.Struct,
+		   GL.cat,
+		   GL.distr,
+		   GL.cons([ GL.a2a(mat) ∘ GL.charpols,
+				GL.k(Lar.t(textwidth+textspacing,0)) ]),
+		   GL.charseq ]))(strand)
+	end
+	return textWithAttributes0
+end
+# TODO: fix textWithAttributes
 
 
 """

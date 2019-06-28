@@ -71,28 +71,24 @@ model = V,EVs
 Plasm.view(lar_exploded(model)(1.2,1.2,1.2))
 ```
 """
-function lar_exploded(model)
-	function lar_exploded0( sx=1.2, sy=1.2, sz=1.2 )
-		verts,arrayofcells = model
-		outVerts, outCells = [],[]
-		for cells in arrayofcells
-			vcell = convert(Lar.Cells,[collect(Set(cat(cells)))])
-
-			center = sum([verts[:,v] for v in vcell[1]])/length(vcell[1])
-			scaled_center = size(center,1)==2 ? center .* [sx,sy] :
-												center .* [sx,sy,sz]
-			translation_vector = scaled_center - center
-			vertcell = [verts[:,k]+translation_vector for k in vcell[1]]
-			cellverts = hcat(vertcell...)
-
-			vdict = DataStructures.OrderedDict( zip( vcell[1],
-						[k for k=1:length(vcell[1])] ))
-			edges = [[vdict[e[1]], vdict[e[2]]] for e in cells]
-
-			append!(outVerts,cellverts)
-			append!(outCells,edges)
+function exploded(model,sx=1.2, sy=1.2, sz=1.2)
+	verts,cells = model
+	outVerts, outCells = [],[]
+	out = []
+	for cell in cells
+		vcell = zeros(Float64,size(verts,1),length(cell))
+		for k=1:size(vcell,2)
+			vcell[:,k]=verts[:,cell[k]]
 		end
-		return outVerts,outCells
+
+		center = sum(vcell,dims=2)/size(vcell,2)
+		scaled_center = size(center,1)==2 ? center .* [sx,sy] : center .* [sx,sy,sz]
+		translation_vector = scaled_center - center
+		cellverts = vcell .+ translation_vector
+		newcell = [v for v=1:length(cell)]
+
+		lar = cellverts, newcell
+		push!(out, lar)
 	end
-	return lar_exploded0
+	return out
 end
