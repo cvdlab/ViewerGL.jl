@@ -324,9 +324,13 @@ end
 =#
 
 
+"""
+	GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])::GL.GLMesh
+```
 
-function GLGrid(model,color=GL.COLORS[1])::GL.GLMesh
-	V,CV = model
+```
+"""
+function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])::GL.GLMesh
 	# test if all cells have same length
 	ls = map(length,CV)
 	@assert( (&)(map((==)(ls[1]),ls)...) == true )
@@ -397,9 +401,9 @@ function GLGrid(model,color=GL.COLORS[1])::GL.GLMesh
             error("cannot visualize dim > 3")
       end
       ret.vertices = GL.GLVertexBuffer(vertices)
-	ret.normals  = GL.GLVertexBuffer(normals)
-	ret.colors  = GL.GLVertexBuffer(colors)
-    return ret
+	  ret.normals  = GL.GLVertexBuffer(normals)
+	  ret.colors  = GL.GLVertexBuffer(colors)
+      return ret
 end
 
 
