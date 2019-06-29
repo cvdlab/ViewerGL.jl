@@ -37,7 +37,9 @@ function GLHull(points::Array{Float64,2},color::GL.Point4d)::GL.GLMesh
 	ret.colors  = GL.GLVertexBuffer(colors)
 	return ret
 end
-
+function GLHull(points::Array{Float64,2})::GL.GLMesh
+	GLHull(points::Array{Float64,2},GL.Point4d(1,1,1,1))::GL.GLMesh
+end
 
 
 """
