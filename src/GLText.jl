@@ -268,14 +268,14 @@ Plasm.view(Plasm.numbering(1.5)(model))
 function numbering(numberSizeScaling=1)
 	function numbering0(model)
 		V,cells = model
-		meshes = [ GL.GLHulls(V, cells[3]) ]  # TO CHANGE
+		background = GL.GLHulls(V, cells[3], GL.Point4d(1,1,1,0.3))
 		if size(V,1)==2
 			V = GL.embed(1)(model)[1]
 		end
 		wireframe = V,cells[2]
 		ns = numberSizeScaling
 		gcode = GL.textWithAttributes("centre", 0, 0.1ns, 0.2ns, 0.025ns)
-		push!(meshes, GL.GLLines(wireframe[1],wireframe[2]))
+		meshes = [ GL.GLLines(wireframe[1],wireframe[2]) ]
 		# GL.VIEW(scene);
 		#colors = [p["GREEN"], p["YELLOW"], p["CYAN"], p["ORANGE"]]
 		colors = GL.COLORS[3], GL.COLORS[7], GL.COLORS[5], GL.COLORS[8]
@@ -293,6 +293,7 @@ function numbering(numberSizeScaling=1)
 			push!( meshes, mesh )
 		  end
 		end
+		push!( meshes, background )
 		return meshes
 	end
 	return numbering0
