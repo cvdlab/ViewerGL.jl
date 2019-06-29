@@ -16,11 +16,21 @@ function randomlines(n=300, t=0.4)
 	return V,EV
 end
 
-V,EV = randomlines(30,2)
+V,EV = randomlines(300,.4)
 
-for k=1:length(assembly)
+meshes = []
+for k=1:length(EV)
 	color = GL.COLORS[k%12+1] - (rand(Float64,4)*0.1)
-	push!(meshes, GL.GLGrid(V,EV,color) )
+	push!(meshes, GL.GLGrid(V,[EV[k]],color) )
 end
+GL.VIEW(meshes);
 
+
+meshes = []
+model = V,EV
+W,EW = Lar.fragmentlines(model);
+for k=1:length(EW)
+	color = GL.COLORS[k%12+1] - (rand(Float64,4)*0.1)
+	push!(meshes, GL.GLGrid(W,[EW[k]],color) )
+end
 GL.VIEW(meshes);

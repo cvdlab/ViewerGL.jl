@@ -19,7 +19,7 @@ GL.VIEW([
 ])
 ```
 """
-function GLHull(points::Array{Float64,2})::GL.GLMesh
+function GLHull(points::Array{Float64,2},color::GL.Point4d)::GL.GLMesh
 	#data preparation
 	ch = QHull.chull(points)
 	verts = ch.vertices
@@ -28,9 +28,13 @@ function GLHull(points::Array{Float64,2})::GL.GLMesh
 	points = points[verts,:]
 	# mesh building
 	vertices,normals = GL.lar4mesh(points,trias)
+	colors=Vector{Float32}()
+	for k=1:length(vertices) append!(colors,color) end
+
 	ret=GL.GLMesh(GL.GL_TRIANGLES)
 	ret.vertices = GL.GLVertexBuffer(vertices)
 	ret.normals  = GL.GLVertexBuffer(normals)
+	ret.colors  = GL.GLVertexBuffer(colors)
 	return ret
 end
 
@@ -104,7 +108,7 @@ GL.VIEW([
 ])
 ```
 """
-function GLMkpols(V::Array{Float64,2},
+function GLHulls(V::Array{Float64,2},
 	FV::Array{Array{Int64,1},1},back::GL.Point4d)::GL.GLMesh
 
 	vertices=Vector{Float32}()
