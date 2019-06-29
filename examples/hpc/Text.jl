@@ -24,6 +24,6 @@ VV = [[k] for k=1:size(V,2)]
 
 model = (V, (VV,EV,FV))
 
-GL.VIEW(GL.numbering(2.)(model));
+GL.VIEW(GL.numbering(1.)(model));
 
 #View(Plasm.hpc_exploded( model )(1.5,1.5,1.5))
