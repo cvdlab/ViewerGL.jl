@@ -1,4 +1,4 @@
-using DataStructures
+using DataStructures,SparseArrays
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
 import Base.cat
@@ -203,8 +203,15 @@ Partial implementation of the GKS's graphics primitive `text`.
 # Example
 
 ```
-Plasm.view(Plasm.textWithAttributes("left", pi/4)("PLaSM"))
+GL.VIEW([
+	GL.GLLines(GL.textWithAttributes("centre", pi/4)("PLaSM")...),
+	GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1))
+	])
 ```
+GL.VIEW([
+	GL.GLLines(GL.textWithAttributes("left", pi/4)("PLaSM")...),
+	GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1))
+])
 """
 function textWithAttributes(textalignment="centre", textangle=0,
 							textwidth=1.0, textheight=2.0, textspacing=0.25)
@@ -268,16 +275,19 @@ Plasm.view(Plasm.numbering(1.5)(model))
 function numbering(numberSizeScaling=1)
 	function numbering0(model)
 		V,cells = model
-		background = GL.GLHulls(V, cells[3], GL.Point4d(1,1,1,0.3))
+		meshes = []
+		if length(cells)>2
+			background = GL.GLHulls(V, cells[3], GL.Point4d(1,1,1,0.3))
+			push!( meshes, background )
+		end
 		if size(V,1)==2
 			V = GL.embed(1)(model)[1]
 		end
 		wireframe = V,cells[2]
 		ns = numberSizeScaling
 		gcode = GL.textWithAttributes("centre", 0, 0.1ns, 0.2ns, 0.025ns)
-		meshes = [ GL.GLLines(wireframe[1],wireframe[2]) ]
-		# GL.VIEW(scene);
-		#colors = [p["GREEN"], p["YELLOW"], p["CYAN"], p["ORANGE"]]
+		push!(meshes,GL.GLLines(wireframe[1],wireframe[2]))
+
 		colors = GL.COLORS[3], GL.COLORS[7], GL.COLORS[5], GL.COLORS[8]
 		for (h,skel) in enumerate(cells)
 	 	  nums = []
@@ -293,7 +303,6 @@ function numbering(numberSizeScaling=1)
 			push!( meshes, mesh )
 		  end
 		end
-		push!( meshes, background )
 		return meshes
 	end
 	return numbering0
@@ -329,8 +338,8 @@ function numbering1(scaling=0.1)
 	function numbering0(model::Tuple{Lar.Points,Lar.ChainOp,Lar.ChainOp})
 		(V, copEV, copFE) = model
 		VV = [[k] for k=1:size(V,1)]
-		EV = [findnz(copEV[h,:])[1] for h=1:size(copEV,1)]
-		FV = [collect(Set(cat(EV[e] for e in findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
+		EV = [SparseArrays.findnz(copEV[h,:])[1] for h=1:size(copEV,1)]
+		FV = [collect(Set(cat(EV[e] for e in SparseArrays.findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
 		FV = convert(Array{Array{Int64,1},1}, FV)
 		model = (convert(Lar.Points, V'), Lar.Cells[VV,EV,FV])
 		return GL.numbering(scaling)(model)

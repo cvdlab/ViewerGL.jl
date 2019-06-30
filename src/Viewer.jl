@@ -174,34 +174,36 @@ GL_RENDERER                 NVIDIA GeForce GT 750M OpenGL Engine
 function VIEW(meshes,view=true)
 
 	global viewer
-	viewer=Viewer(meshes)
+	viewer=GL.Viewer(meshes)
 
 	# calculate bounding box -> (-1,+1) ^3
-	BOX=invalidBox()
+	BOX=GL.invalidBox()
 	for mesh in viewer.meshes
-		box=getBoundingBox(mesh)
-		addPoint(BOX,box.p1)
-		addPoint(BOX,box.p2)
+		box=GL.getBoundingBox(mesh)
+		GL.addPoint(BOX,box.p1)
+		GL.addPoint(BOX,box.p2)
 	end
 
 	S=BOX.p2-BOX.p1
 	maxsize=max(S[1],S[2],S[3])
 
 	for mesh in viewer.meshes
-		mesh.T=translateMatrix(Point3d(-1.0,-1.0,-1.0)) * scaleMatrix(Point3d(2.0/maxsize,2.0/maxsize,2.0/maxsize)) * translateMatrix(-BOX.p1)
+		mesh.T=GL.translateMatrix(GL.Point3d(-1.0,-1.0,-1.0)) *
+			GL.scaleMatrix(GL.Point3d(2.0/maxsize,2.0/maxsize,2.0/maxsize)) *
+			GL.translateMatrix(-BOX.p1)
 	end
 
-	viewer.pos = Point3d(3,3,3)
-	viewer.dir = normalized(Point3d(0,0,0)-viewer.pos)
-	viewer.vup = Point3d(0,0,1)
+	viewer.pos = GL.Point3d(3,3,3)
+	viewer.dir = GL.normalized(GL.Point3d(0,0,0)-viewer.pos)
+	viewer.vup = GL.Point3d(0,0,1)
 
 	maxsize           = 2.0
 	viewer.zNear	  = maxsize / 50.0
 	viewer.zFar	  = maxsize * 10.0
 	viewer.walk_speed = maxsize / 500.0
 	if view==true
-		redisplay(viewer)
-		runViewer(viewer)
+		GL.redisplay(viewer)
+		GL.runViewer(viewer)
 	end
 	return viewer
 end

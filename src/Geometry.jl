@@ -441,7 +441,7 @@ function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])::GL.GLMesh
 			p1 = convert(GL.Point3d, points[:,p1]);
 			p2 = convert(GL.Point3d, points[:,p2])
 			p3 = convert(GL.Point3d, points[:,p3])
-			n = 0.5*GL.computeNormal(p1,p2,p3)
+			n = GL.computeNormal(p1,p2,p3)
 			append!(vertices,p1); append!(vertices,p2); append!(vertices,p3);
 			append!(normals,n);   append!(normals,n);   append!(normals,n);
 			append!(colors,c);    append!(colors,c);    append!(colors,c);
