@@ -302,7 +302,7 @@ function numbering(numberSizeScaling=1)
 			push!( meshes, mesh )
 		  end
 		end
-		push!( meshes, background )
+		if length(cells)>2 push!( meshes, background ) end
 		return meshes
 	end
 	return numbering0
