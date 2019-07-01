@@ -111,7 +111,7 @@ GL.VIEW([
 ```
 """
 function GLHulls(V::Array{Float64,2},
-	FV::Array{Array{Int64,1},1},back::GL.Point4d)::GL.GLMesh
+	FV::Array{Array{Int64,1},1},back::GL.Point4d=COLORS[1])::GL.GLMesh
 
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()
