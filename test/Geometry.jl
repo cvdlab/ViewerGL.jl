@@ -4,7 +4,7 @@ Lar = LinearAlgebraicRepresentation
 using ViewerGL
 GL = ViewerGL
 
-@testset "Goemetry.jl" begin
+@testset "Geometry.jl" begin
 
    points = [0.214359   0.261879  0.317665;
         0.0235449  0.584002  0.477773;
