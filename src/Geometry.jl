@@ -375,23 +375,32 @@ function GLPol(V::Lar.Points, CV::Lar.Cells,color=COLORS[1])::GL.GLMesh
 	trias,triangles = [],[]
 	vcount = 0;
 	outpoints = Array{Float64,2}(undef,0,3)
+	#data preparation
 	for cell in CV
 		points = convert(Lar.Points, V[:,cell]')
-		#data preparation
 		ch = QHull.chull(points)
 		trias = ch.simplices
-		global m = size(ch.points,1)
+		m = size(ch.points,1)
 		trias = [triangle .+ vcount for triangle in ch.simplices]
 		append!(triangles,trias)
-		global outpoints = [outpoints; ch.points]
-		global vcount += m
+		outpoints = [outpoints; ch.points]
+		vcount += m
 	end
-	#sites = reshape(thepoints,:,3)
 	# mesh building
 	FW = convert(Lar.Cells,triangles)
 	W = convert(Lar.Points,outpoints')
 	mesh = GL.GLGrid(W,FW,GL.COLORS[1]);
+
+	colors = Vector{Point4d}()
+	c = color
+	for triangle in triangles
+		append!(colors,c); append!(colors,c); append!(colors,c)
+	end
+	mesh.colors  = GL.GLVertexBuffer(colors)
 end
+
+# mesh = GL.GLPol(V,CV, GL.Point4d(1,1,1,0.2))
+# GL.VIEW([ mesh ]);
 
 
 """
