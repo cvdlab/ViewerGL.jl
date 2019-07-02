@@ -391,12 +391,12 @@ function GLPol(V::Lar.Points, CV::Lar.Cells,color=COLORS[1])::GL.GLMesh
 	W = convert(Lar.Points,outpoints')
 	mesh = GL.GLGrid(W,FW,GL.COLORS[1]);
 
-	colors = Vector{Point4d}()
-	c = color
-	for triangle in triangles
-		append!(colors,c); append!(colors,c); append!(colors,c)
-	end
-	mesh.colors  = GL.GLVertexBuffer(colors)
+	# colors = Vector{Point4d}()
+	# c = color
+	# for triangle in triangles
+	# 	append!(colors,c); append!(colors,c); append!(colors,c)
+	# end
+	# mesh.colors  = GL.GLVertexBuffer(colors)
 end
 
 # mesh = GL.GLPol(V,CV, GL.Point4d(1,1,1,0.2))
