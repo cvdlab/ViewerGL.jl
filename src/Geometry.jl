@@ -490,7 +490,7 @@ end
 
 
 # ////////////////////////////////////////////////////////////
-function GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1)
+function GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1,alpha=0.2::Float64)
 	assembly = GL.explodecells(V,FVs,sx,sy,sz)
 	meshes = Any[]
 	for k=1:length(assembly)-1
@@ -504,6 +504,7 @@ function GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1)
 		else # colors > 12: cyclic colors w random component
 			color = GL.COLORS[k%12+1] - (rand(Float64,4)*0.1)
 		end
+		color *= alpha
 		push!(meshes, GL.GLGrid(V,FV,color) )
 	end
 	return meshes
