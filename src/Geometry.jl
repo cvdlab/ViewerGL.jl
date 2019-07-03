@@ -364,7 +364,7 @@ end
 
 
 """
-	GLPol(V::Lar.Points, CV::Lar.Cells,color=GL.COLORS[1])::GL.GLMesh
+	GLPol(V::Lar.Points, CV::Lar.Cells,color=GL.COLORS[1],alpha=1.0)::GL.GLMesh
 
 Create the GLMesh for a cellular complex with general convex 3-cells.
 
@@ -376,6 +376,7 @@ function GLPol(V::Lar.Points, CV::Lar.Cells,color=COLORS[1])::GL.GLMesh
 	vcount = 0;
 	outpoints = Array{Float64,2}(undef,0,3)
 	#data preparation
+	color *= alpha
 	for cell in CV
 		points = convert(Lar.Points, V[:,cell]')
 		ch = QHull.chull(points)
@@ -389,7 +390,7 @@ function GLPol(V::Lar.Points, CV::Lar.Cells,color=COLORS[1])::GL.GLMesh
 	# mesh building
 	FW = convert(Lar.Cells,triangles)
 	W = convert(Lar.Points,outpoints')
-	mesh = GL.GLGrid(W,FW,GL.COLORS[1]);
+	mesh = GL.GLGrid(W,FW,color);
 
 	# colors = Vector{Point4d}()
 	# c = color
@@ -411,7 +412,7 @@ A grid is defined here as a cellular `p`-complex where all `p`-cells have the sa
 
 ```
 """
-function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])::GL.GLMesh
+function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1],alpha=0.2::Float64)::GL.GLMesh
 	# test if all cells have same length
 	ls = map(length,CV)
 	@assert( (&)(map((==)(ls[1]),ls)...) == true )
@@ -422,6 +423,7 @@ function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])::GL.GLMesh
 	len = length(cells[1])  # cell dimension
 
 	c  = convert(GL.Point4d, color)
+	c *= alpha
 
 	vertices= Vector{Float32}()
 	normals = Vector{Float32}()
@@ -490,6 +492,10 @@ end
 
 
 # ////////////////////////////////////////////////////////////
+"""
+	GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1,alpha=0.2::Float64)
+
+"""
 function GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1,alpha=0.2::Float64)
 	assembly = GL.explodecells(V,FVs,sx,sy,sz)
 	meshes = Any[]
