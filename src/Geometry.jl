@@ -371,7 +371,7 @@ Create the GLMesh for a cellular complex with general convex 3-cells.
 Mirror the behavior of MKPOL primitive of PLaSM language:
 Convert the convex hull of each cell in a set of triangles.
 """
-function GLPol(V::Lar.Points, CV::Lar.Cells,color=COLORS[1])::GL.GLMesh
+function GLPol(V::Lar.Points, CV::Lar.Cells,color=COLORS[1],alpha=1.0)::GL.GLMesh
 	trias,triangles = [],[]
 	vcount = 0;
 	outpoints = Array{Float64,2}(undef,0,3)
@@ -502,16 +502,17 @@ function GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1,alpha=0.2::Float64)
 	for k=1:length(assembly)-1
 		# Lar model with constant lemgth of cells, i.e a GRID object !!
 		V,FV = assembly[k]
+		col = GL.Point4d(1,1,1,1)
 		# cyclic color + random color components
 		if colors == 1
-			color = GL.COLORS[1]
+			col = GL.COLORS[1]
 		elseif 2 <= colors <= 12
-			color = GL.COLORS[colors]
+			col = GL.COLORS[colors]
 		else # colors > 12: cyclic colors w random component
-			color = GL.COLORS[k%12+1] - (rand(Float64,4)*0.1)
+			col = GL.COLORS[k%12+1] - (rand(Float64,4)*0.1)
 		end
-		color *= alpha
-		push!(meshes, GL.GLGrid(V,FV,color) )
+		#col *= alpha
+		push!(meshes, GL.GLGrid(V,FV,col,alpha) )
 	end
 	return meshes
 end
