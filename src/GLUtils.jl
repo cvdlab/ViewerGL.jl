@@ -1,5 +1,7 @@
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
+using ViewerGL
+
 
 """
 	lar4mesh(points,faces)

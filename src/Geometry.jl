@@ -378,14 +378,24 @@ function GLPol(V::Lar.Points, CV::Lar.Cells,color=COLORS[1],alpha=1.0)::GL.GLMes
 	#data preparation
 	color *= alpha
 	for cell in CV
-		points = convert(Lar.Points, V[:,cell]')
-		ch = QHull.chull(points)
-		trias = ch.simplices
-		m = size(ch.points,1)
-		trias = [triangle .+ vcount for triangle in ch.simplices]
-		append!(triangles,trias)
-		outpoints = [outpoints; ch.points]
-		vcount += m
+		if length(cell)>=3
+			points = convert(Lar.Points, V[:,cell]')
+			ch = QHull.chull(points)
+			trias = ch.simplices
+			m = size(ch.points,1)
+			trias = [triangle .+ vcount for triangle in ch.simplices]
+			append!(triangles,trias)
+			outpoints = [outpoints; ch.points]
+			vcount += m
+		elseif length(cell)==2
+			points = convert(Lar.Points, V[:,cell]')
+			line = [1,2]
+			m = 2
+			lines = [line .+ vcount]
+			append!(triangles,lines)
+			outpoints = [outpoints; points]
+			vcount += m
+		end
 	end
 	# mesh building
 	FW = convert(Lar.Cells,triangles)
@@ -412,18 +422,19 @@ A grid is defined here as a cellular `p`-complex where all `p`-cells have the sa
 
 ```
 """
-function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1],alpha=0.2::Float64)::GL.GLMesh
+function GLGrid(V::Lar.Points,CV::Lar.Cells,c=GL.COLORS[1],alpha=0.2::Float64)::GL.GLMesh
 	# test if all cells have same length
 	ls = map(length,CV)
-	@assert( (&)(map((==)(ls[1]),ls)...) == true )
+#	@assert( (&)(map((==)(ls[1]),ls)...) == true )
 
 	n = size(V,1)  # space dimension
 	points = GL.embed(3-n)((V,CV))[1]
 	cells = CV
 	len = length(cells[1])  # cell dimension
 
-	c  = convert(GL.Point4d, color)
-	c *= alpha
+	color = c
+	color[4] = alpha
+	c = Point4d(color)
 
 	vertices= Vector{Float32}()
 	normals = Vector{Float32}()
@@ -499,7 +510,7 @@ end
 function GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1,alpha=0.2::Float64)
 	assembly = GL.explodecells(V,FVs,sx,sy,sz)
 	meshes = Any[]
-	for k=1:length(assembly)-1
+	for k=0:length(assembly)-1
 		# Lar model with constant lemgth of cells, i.e a GRID object !!
 		V,FV = assembly[k]
 		col = GL.Point4d(1,1,1,1)

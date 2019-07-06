@@ -30,4 +30,7 @@ module ViewerGL
 	include("GLText.jl")
 	include("GLColorBuffer.jl")
 
+	const GLFrame = GLAxis(Point3d(0,0,0),Point3d(1,1,1))
+
+
 end # module
