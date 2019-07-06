@@ -510,7 +510,7 @@ end
 function GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1,alpha=0.2::Float64)
 	assembly = GL.explodecells(V,FVs,sx,sy,sz)
 	meshes = Any[]
-	for k=0:length(assembly)-1
+	for k=1:length(assembly)
 		# Lar model with constant lemgth of cells, i.e a GRID object !!
 		V,FV = assembly[k]
 		col = GL.Point4d(1,1,1,1)
@@ -520,7 +520,7 @@ function GLExplode(V,FVs,sx=1.2,sy=1.2,sz=1.2,colors=1,alpha=0.2::Float64)
 		elseif 2 <= colors <= 12
 			col = GL.COLORS[colors]
 		else # colors > 12: cyclic colors w random component
-			col = GL.COLORS[k%12+1] - (rand(Float64,4)*0.1)
+			col = GL.COLORS[(k-1)%12+1] - (rand(Float64,4)*0.1)
 		end
 		#col *= alpha
 		push!(meshes, GL.GLGrid(V,FV,col,alpha) )
