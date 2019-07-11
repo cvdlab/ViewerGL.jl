@@ -41,11 +41,11 @@ mutable struct Viewer
 	down_button::Int32
 	meshes::Any
 	shaders::Dict
-	exitNow::Int32
+	use_ortho:: Bool
 
 	# constructor
 	function Viewer(meshes)
-		new(0,1024,768,1.0,1.0, 60.0, Point3d(), Point3d(), Point3d(), 0.0, 0.0, 0.0,  0,0,0, meshes,Dict())
+		new(0,1024,768,1.0,1.0, 60.0, Point3d(), Point3d(), Point3d(), 0.0, 0.0, 0.0,  0,0,0, meshes,Dict(),false)
 	end
 
 end
@@ -200,7 +200,7 @@ function VIEW(meshes,view=true)
 	maxsize           = 2.0
 	viewer.zNear	  = maxsize / 50.0
 	viewer.zFar	  = maxsize * 10.0
-	viewer.walk_speed = maxsize / 500.0
+	viewer.walk_speed = maxsize / 100.0
 	if view==true
 		GL.redisplay(viewer)
 		GL.runViewer(viewer)
@@ -267,9 +267,18 @@ julia> GL.getProjection(GL.viewer)  # `GL.viewer` global variable set by `GL.VIE
 ```
 """
 function getProjection(viewer::Viewer)
-	return perspectiveMatrix(viewer.fov,viewer.W/float(viewer.H),viewer.zNear,viewer.zFar)
-end
+	ratio=viewer.W/float(viewer.H)
+	if viewer.use_ortho
+		# euristic that seem to work well
+		Z=viewer.zNear + 0.5*(viewer.zFar - viewer.zNear)
+		right=Z * tan(deg2rad(viewer.fov/2.0))
+		left=-right
+		return  orthoMatrix(left, right, -0.5*(right-left)/ratio, +0.5*(right-left)/ratio, viewer.zNear, viewer.zFar)
+	else
+		return perspectiveMatrix(viewer.fov,ratio,viewer.zNear,viewer.zFar)
+	end
 
+end
 
 
 """
@@ -304,7 +313,7 @@ end
 
 Inverse projection of a 2D point in screen coordinates.
 """
-function unprojectPoint(viewer::Viewer,x::Float32,y::Float32)
+function unprojectPoint(viewer::Viewer,x::Float64,y::Float64)
 	viewport=[0,0,viewer.W,viewer.H]
 	projection =getProjection(viewer)
 	modelview=getModelview(viewer)
@@ -561,7 +570,7 @@ Helper GLFW function to handle the Key Press Event.
 """
 function handleKeyPressEvent(viewer,key, scancode, action, mods)
 
-	if action != GLFW.PRESS
+	if action != GLFW.PRESS && action != GLFW.REPEAT
 		return
 	end
 
@@ -572,43 +581,38 @@ function handleKeyPressEvent(viewer,key, scancode, action, mods)
 		return
 	end
 
-	if (key=="+" || key=="=")
+	if (key==GLFW.KEY_KP_ADD)
 		viewer.walk_speed*=0.95
 		return
 	end
 
-	if (key=='-' || key=="=")
+	if (key==GLFW.KEY_KP_SUBTRACT)
 		viewer.walk_speed*=(1.0/0.95)
 		return
 	end
 
-	if (key=='w')
-		dir=unproject(viewer,x,y)
+	if (key==GLFW.KEY_W)
+		dir=unprojectPoint(viewer,0.5*viewer.W,0.5*viewer.H)
+		println("dir",dir,"walk_speed",viewer.walk_speed)
 		viewer.pos=viewer.pos+dir*viewer.walk_speed
 		redisplay(viewer)
 		return
 	end
 
-	if (key=='s')
-		dir=unproject(viewer,x,y)
+	if (key==GLFW.KEY_S)
+		dir=unprojectPoint(viewer,0.5*viewer.W,0.5*viewer.H)
 		viewer.pos=viewer.pos-dir*viewer.walk_speed
 		redisplay(viewer)
 		return
 	end
 
-	if (key=='a'	|| key==GLFW.KEY_LEFT)
-		right=normalized(cross(viewer.dir,viewer.vup))
-		viewer.pos=viewer.pos-right*viewer.walk_speed
+	if (key==GLFW.KEY_O)
+		viewer.use_ortho=!viewer.use_ortho
+		println("use_ortho ",viewer.use_ortho)
 		redisplay(viewer)
 		return
 	end
 
-	if (key=='d' || key==GLFW.KEY_RIGHT)
-		right=normalized(cross(viewer.dir,viewer.vup))
-		viewer.pos=viewer.pos+right*viewer.walk_speed
-		redisplay(viewer)
-		return
-	end
 
 	if (key==GLFW.KEY_UP)
 		viewer.pos=viewer.pos+viewer.vup*viewer.walk_speed
@@ -621,6 +625,21 @@ function handleKeyPressEvent(viewer,key, scancode, action, mods)
 		redisplay(viewer)
 		return
 	end
+
+	if (key==GLFW.KEY_LEFT || key==GLFW.KEY_A)
+		right=normalized(cross(viewer.dir,viewer.vup))
+		viewer.pos=viewer.pos-right*viewer.walk_speed
+		redisplay(viewer)
+		return
+	end
+
+	if (key==GLFW.KEY_RIGHT || key==GLFW.KEY_D)
+		right=normalized(cross(viewer.dir,viewer.vup))
+		viewer.pos=viewer.pos+right*viewer.walk_speed
+		redisplay(viewer)
+		return
+	end
+
 end
 
 

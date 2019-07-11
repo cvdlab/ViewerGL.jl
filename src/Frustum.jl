@@ -28,13 +28,13 @@ mutable struct FrustumMap
 
 	# constructor
 	function FrustumMap(viewport,projection::Matrix4,modelview::Matrix4)
+		x,y,z,h = viewport
 		viewport_T=Matrix4(
-			viewport[3] / 2.0,                  0,       0, viewport[1] + viewport[3] / 2.0,
-		                   0,  viewport[4] / 2.0,       0, viewport[2] + viewport[4] / 2.0,
-		                   0,                  0, 1 / 2.0, 1 / 2.0,
-						   0,                  0,       0,        1)
-	   #new(viewport_T,projection,modelview,inv(ret.viewport),inv(ret.projection),inv(ret.modelview))
-	   ret = new(viewport_T,projection,modelview,inv(viewport_T),inv(projection),inv(modelview))
+			w/2.0,   0.0,   0.0, x+w/2.0,
+			  0.0, h/2.0,   0.0, y+h/2.0,
+			  0.0,   0.0, 1/2.0,   1/2.0,
+			  0.0,   0.0,   0.0,     1.0)
+		new(viewport_T,projection,modelview,inv(viewport_T),inv(projection),inv(modelview))
 	end
 
 end
@@ -59,10 +59,7 @@ end
 Return in 3D world coordinates a `GL.Point3d`, given in 3D screen coordinates.
 Use the inverse matrices of viewing transformation, contained in `map::FrustumMap`.
 """
-function unprojectPoint(map::FrustumMap,x::Float32,y::Float32, z::Float32)
+function unprojectPoint(map::FrustumMap,x::Float64,y::Float64, z::Float64)
 	p4 = (map.inv_modelview * (map.inv_projection * (map.inv_viewport * Point4d(x,y,z, 1.0))))
-	if p4.w==0
-		p4.w=1
-	end
 	return Point3d(p4[1]/p4[4],p4[2]/p4[4],p4[3]/p4[4])
 end
