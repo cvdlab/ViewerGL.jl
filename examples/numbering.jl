@@ -12,4 +12,8 @@ FV = Array{Int64,1}[[1, 2, 27], [6, 7, 18], [7, 8, 18, 31], [8, 31, 32], [8, 9, 
 VV = [[k] for k=1:size(V,2)]
 Lar_model = (V, (VV,EV,FV))
 
-GL.VIEW(GL.numbering(1.)(Lar_model, GL.COLORS[4]));
+meshes = GL.numbering(1.)(Lar_model, GL.COLORS[4])
+#push!(meshes, GL.GLFrame)
+GL.VIEW(meshes);
+
+using Plasm

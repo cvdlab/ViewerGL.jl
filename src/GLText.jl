@@ -126,8 +126,8 @@ julia> GL.GLText("Plasm")
 ViewerGL.GLMesh(1, [1.0 0.0 0.0 0.0; 0.0 1.0 0.0 0.0; 0.0 0.0 1.0 0.0; 0.0 0.0 0.0 1.0], ViewerGL.GLVertexArray(-1), ViewerGL.GLVertexBuffer(-1, Float32[0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.125, 0.25, 0.0, 0.0  …  0.0, 0.916667, 0.125, 0.0, 0.833333, 0.125, 0.0, 0.833333, 0.0, 0.0]), ViewerGL.GLVertexBuffer(-1, Float32[]), ViewerGL.GLVertexBuffer(-1, Float32[]))
 ```
 """
-function GLText(string)::GL.GLMesh
-	GL.GLLines(GL.text(string)...)
+function GLText(string,color=COLORS[12])::GL.GLMesh
+	GL.GLLines(GL.text(string)...,color)
 end
 
 

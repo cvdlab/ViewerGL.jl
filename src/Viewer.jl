@@ -186,16 +186,20 @@ function VIEW(meshes,view=true)
 
 	S=BOX.p2-BOX.p1
 	maxsize=max(S[1],S[2],S[3])
+	minsize=min(S[1],S[2],S[3])
 
 	for mesh in viewer.meshes
-		mesh.T=GL.translateMatrix(GL.Point3d(-1.0,-1.0,-1.0)) *
-			GL.scaleMatrix(GL.Point3d(2.0/maxsize,2.0/maxsize,2.0/maxsize)) *
-			GL.translateMatrix(-BOX.p1)
+		mesh.T=translateMatrix(Point3d(-1.0,-1.0,-1.0)) * scaleMatrix(Point3d(2.0/maxsize,2.0/maxsize,2.0/maxsize)) * translateMatrix(-BOX.p1)
 	end
 
-	viewer.pos = GL.Point3d(3,3,3)
-	viewer.dir = GL.normalized(GL.Point3d(0,0,0)-viewer.pos)
-	viewer.vup = GL.Point3d(0,0,1)
+	if minsize == 0.0
+		viewer.pos = Point3d(0,0,3)
+		viewer.vup = Point3d(0,1,0)
+	else
+		viewer.pos = Point3d(3,3,3)
+		viewer.vup = Point3d(0,0,1)
+	end
+	viewer.dir = normalized(Point3d(0,0,0)-viewer.pos)
 
 	maxsize           = 2.0
 	viewer.zNear	  = maxsize / 50.0

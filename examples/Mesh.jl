@@ -1,5 +1,5 @@
-using ViewerGL
-GL = ViewerGL
+using LinearAlgebraicRepresentation, ViewerGL
+GL = ViewerGL; Lar = LinearAlgebraicRepresentation
 
 function randomlines(n=300, t=0.4)
 	V = zeros(Float64,2,2*n)
@@ -21,7 +21,7 @@ V,EV = randomlines(300,.4)
 meshes = []
 for k=1:length(EV)
 	color = GL.COLORS[k%12+1] - (rand(Float64,4)*0.1)
-	push!(meshes, GL.GLGrid(V,[EV[k]],color) )
+	push!(meshes, GL.GLGrid(V,[EV[k]],color,1) )
 end
 GL.VIEW(meshes);
 
@@ -31,6 +31,6 @@ model = V,EV
 W,EW = Lar.fragmentlines(model);
 for k=1:length(EW)
 	color = GL.COLORS[k%12+1] - (rand(Float64,4)*0.1)
-	push!(meshes, GL.GLGrid(W,[EW[k]],color) )
+	push!(meshes, GL.GLGrid(W,[EW[k]],color,1) )
 end
 GL.VIEW(meshes);
