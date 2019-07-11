@@ -22,5 +22,5 @@ V,EVs,FVs = Lar.obj2lar("test/out3d.obj")
 
 GL.VIEW([
       GL.GLPolyhedron(V, FVs[1])
-      GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,1))
+      GL.GLFrame
 ]);

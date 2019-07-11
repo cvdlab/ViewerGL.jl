@@ -7,6 +7,5 @@ GL = ViewerGL
 
 GL.VIEW([
       GL.GLPolygon(V, EV),
-      #GL.GLFrame
-      GL.GLAxis(GL.Point3d(0,0,0),GL.Point3d(1,1,0))
+      GL.GLFrame2
 ]);
