@@ -648,7 +648,7 @@ end
 
 
 # example: see GLMesh.jl for an example about how to generate a mesh
-#VIEW([
-#	GLCuboid(Box3d(Point3d(0,0,0),Point3d(1,1,1)))
-#	GLAxis(Point3d(-2,-2,-2),Point3d(+2,+2,+2))
-#	])
+# GL.VIEW([
+# 	GL.GLCuboid(GL.Box3d(GL.Point3d(0,0,0),GL.Point3d(1,1,1)))
+# 	GL.GLAxis(GL.Point3d(-2,-2,-2),GL.Point3d(+2,+2,+2))
+# 	])

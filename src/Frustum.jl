@@ -28,7 +28,7 @@ mutable struct FrustumMap
 
 	# constructor
 	function FrustumMap(viewport,projection::Matrix4,modelview::Matrix4)
-		x,y,z,h = viewport
+		x,y,w,h = viewport
 		viewport_T=Matrix4(
 			w/2.0,   0.0,   0.0, x+w/2.0,
 			  0.0, h/2.0,   0.0, y+h/2.0,

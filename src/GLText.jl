@@ -273,11 +273,11 @@ Plasm.view(Plasm.numbering(1.5)(model))
 ```
 """
 function numbering(numberSizeScaling=1)
-	function numbering0(model,color=COLORS[12])
+	function numbering0(model,color=COLORS[12],alpha=1.0)
 		V,cells = model
 		meshes = []
 		if length(cells)>2
-			background = GL.GLHulls(V, cells[3], GL.Point4d(1,1,1,0.1))
+			background = GL.GLHulls(V, cells[3], GL.Point4d(1,1,1,alpha))
 		end
 		if size(V,1)==2
 			V = GL.embed(1)(model)[1]
