@@ -86,14 +86,10 @@ function GLHull2d(points::Array{Float64,2},color=COLORS[1])::GL.GLMesh # points 
 end
 
 function circularsort(center, points)
-@show center
-@show points
 if size(center,2)==2 center=[center zeros(size(center,1),1)] end
 if size(points,2)==2 points=[points zeros(size(points,1),1)] end
 	V = points .- center
 	v1 = @view V[1,:]; v2 = @view V[2,:];
-@show v1
-@show v2
 	v3 = LinearAlgebra.normalize(LinearAlgebra.cross(v1,v2))
 	basis = [normalize(v1) normalize(v2) v3]
 	vecs2 = (V * basis)[:,1:2]
@@ -132,10 +128,17 @@ function GLHulls(V::Array{Float64,2},
 	for face in FV
 		points = convert(Lar.Points, V[:,face]')
 		center = sum(points,dims=1)/size(points,1)
-		edges = circularsort(center, points)
+		#edges = circularsort(center, points)
+
+		ch = QHull.chull(points)
+		verts = ch.vertices
+		vdict = Dict(zip(1:length(face), face))
+		edges = [[vdict[u],vdict[v]] for (u,v) in ch.simplices]
+		#faces = edges # TODO generalize to 3D convex cells
+
 
 		for (v1,v2) in edges
-			p2,p1 = points[v2,:], points[v1,:]
+			p2,p1 = V[:,v2], V[:,v1]
 
 			p1 = convert(GL.Point3d, Rn==2 ? [p1; 0.0] : p1)
 			p2 = convert(GL.Point3d, Rn==2 ? [p2; 0.0] : p2)
