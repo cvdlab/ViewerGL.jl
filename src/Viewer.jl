@@ -41,7 +41,8 @@ mutable struct Viewer
 	down_button::Int32
 	meshes::Any
 	shaders::Dict
-	use_ortho:: Bool
+	use_ortho::Bool
+	exitNow::Int32
 
 	# constructor
 	function Viewer(meshes)
