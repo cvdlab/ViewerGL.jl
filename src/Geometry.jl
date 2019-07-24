@@ -129,7 +129,7 @@ function GLHulls(V::Array{Float64,2},
 		points = convert(Lar.Points, V[:,face]')
 		center = sum(points,dims=1)/size(points,1)
 		#edges = circularsort(center, points)
-
+@show points
 		ch = QHull.chull(points)
 		verts = ch.vertices
 		vdict = Dict(zip(1:length(face), face))
@@ -274,7 +274,7 @@ julia> mesh = GL.GLLines(points::Lar.Points,lines::Lar.Cells);
 julia> mesh
 ```
 """
-function GLLines(points::Lar.Points,lines::Lar.Cells,color=COLORS[12])::GL.GLMesh
+function GLLines(points::Lar.Points,lines::Lar.Cells,color=COLORS[12],alpha=1.)::GL.GLMesh
       points = convert(Lar.Points, points')
       vertices=Vector{Float32}()
 	  colors  = Vector{Float32}()
@@ -282,6 +282,7 @@ function GLLines(points::Lar.Points,lines::Lar.Cells,color=COLORS[12])::GL.GLMes
 	  if size(points,2) == 2
 		  points = [points zeros(size(points,1),1)]
 	  end
+	  color *= alpha
       for line in lines
             p2,p1 = points[line[1],:], points[line[2],:]
             t=p2-p1;  n=LinearAlgebra.normalize([-t[2];+t[1];t[3]])
