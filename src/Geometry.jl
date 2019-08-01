@@ -129,7 +129,6 @@ function GLHulls(V::Array{Float64,2},
 		points = convert(Lar.Points, V[:,face]')
 		center = sum(points,dims=1)/size(points,1)
 		#edges = circularsort(center, points)
-@show points
 		ch = QHull.chull(points)
 		verts = ch.vertices
 		vdict = Dict(zip(1:length(face), face))

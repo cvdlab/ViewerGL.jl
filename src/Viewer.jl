@@ -93,11 +93,11 @@ Init ``GLFW``, Create a new UI ``window``, make ``context`` current, print ``sha
 # Example
 ```
 julia> GL.runViewer(viewer)
-GLFW init returned true
-GL_SHADING_LANGUAGE_VERSION 1.20
-GL_VERSION                  2.1 NVIDIA-12.0.23 355.11.10.50.10.103
-GL_VENDOR                   NVIDIA Corporation
-GL_RENDERER                 NVIDIA GeForce GT 750M OpenGL Engine
+# GLFW init returned true
+# GL_SHADING_LANGUAGE_VERSION 1.20
+# GL_VERSION                  2.1 NVIDIA-12.0.23 355.11.10.50.10.103
+# GL_VENDOR                   NVIDIA Corporation
+# GL_RENDERER                 NVIDIA GeForce GT 750M OpenGL Engine
 ```
 """
 function runViewer(viewer::Viewer)
@@ -165,11 +165,11 @@ Generate the window, display the mesh of the unit cube, and allow for viewing in
 julia> mesh = ViewerGL.GLMesh(4, [2.0 0.0 0.0 -1.0; 0.0 2.0 0.0 -1.0; 0.0 0.0 2.0 -1.0; 0.0 0.0 0.0 1.0], ViewerGL.GLVertexArray(-1), ViewerGL.GLVertexBuffer(-1, Float32[0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0]), ViewerGL.GLVertexBuffer(-1, Float32[0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0]), ViewerGL.GLVertexBuffer(-1, Float32[]))
 
 julia> GL.VIEW([mesh]);
-GLFW init returned true
-GL_SHADING_LANGUAGE_VERSION 1.20
-GL_VERSION                  2.1 NVIDIA-12.0.23 355.11.10.50.10.103
-GL_VENDOR                   NVIDIA Corporation
-GL_RENDERER                 NVIDIA GeForce GT 750M OpenGL Engine
+# GLFW init returned true
+# GL_SHADING_LANGUAGE_VERSION 1.20
+# GL_VERSION                  2.1 NVIDIA-12.0.23 355.11.10.50.10.103
+# GL_VENDOR                   NVIDIA Corporation
+# GL_RENDERER                 NVIDIA GeForce GT 750M OpenGL Engine
 ```
 """
 function VIEW(meshes,view=true)
