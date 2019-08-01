@@ -103,7 +103,7 @@ julia> GL.runViewer(viewer)
 function runViewer(viewer::Viewer)
 
 	ret_code=GLFW.Init()
-	println("GLFW init returned ",ret_code)
+	# println("GLFW init returned ",ret_code)
 
 	# seems not to be needed for julia 1.x
   	#GLFW.WindowHint(GLFW.CONTEXT_VERSION_MAJOR, 3)
@@ -115,10 +115,10 @@ function runViewer(viewer::Viewer)
 	viewer.win=win
 	GLFW.MakeContextCurrent(win)
 
-	println("GL_SHADING_LANGUAGE_VERSION ",unsafe_string(glGetString(GL_SHADING_LANGUAGE_VERSION)))
-	println("GL_VERSION                  ",unsafe_string(glGetString(GL_VERSION)))
-	println("GL_VENDOR                   ",unsafe_string(glGetString(GL_VENDOR)))
-	println("GL_RENDERER                 ",unsafe_string(glGetString(GL_RENDERER)))
+	# println("GL_SHADING_LANGUAGE_VERSION ",unsafe_string(glGetString(GL_SHADING_LANGUAGE_VERSION)))
+	# println("GL_VERSION                  ",unsafe_string(glGetString(GL_VERSION)))
+	# println("GL_VENDOR                   ",unsafe_string(glGetString(GL_VENDOR)))
+	# println("GL_RENDERER                 ",unsafe_string(glGetString(GL_RENDERER)))
 
 	# problem of retina
 	window_size     =GLFW.GetWindowSize(viewer.win)
