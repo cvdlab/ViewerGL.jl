@@ -1,8 +1,7 @@
 using ViewerGL
 GL = ViewerGL
 
-
-points = rand(1000,2)
+points = rand(100,2)
 GL.VIEW([
   GL.GLHull2d(points),
   GL.GLPoints(points),
