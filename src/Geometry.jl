@@ -118,12 +118,13 @@ GL.VIEW([
 ```
 """
 function GLHulls(V::Array{Float64,2},
-	FV::Array{Array{Int64,1},1}, back::GL.Point4d=COLORS[1])::GL.GLMesh
+	FV::Array{Array{Int64,1},1}, back::GL.Point4d=COLORS[1], alpha=0.2)::GL.GLMesh
 
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()
 	colors =Vector{Float32}()
 	Rn = size(V,1)
+	back = back.*alpha
 
 	for face in FV
 		points = convert(Lar.Points, V[:,face]')

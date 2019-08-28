@@ -272,12 +272,12 @@ model = Lar.cuboidGrid([10,10], true)
 Plasm.view(Plasm.numbering(1.5)(model))
 ```
 """
-function numbering(numberSizeScaling=1)
-	function numbering0(model,color=COLORS[12],alpha=0.2)
+function numbering(numberSizeScaling=1.)
+	function numbering0(model,color=COLORS[1],alpha=0.2)
 		V,cells = model
 		meshes = []
 		if length(cells)>2
-			background = GL.GLHulls(V, cells[3], GL.COLORS[1])
+			background = GL.GLHulls(V, cells[3], color, alpha)
 		end
 		if size(V,1)==2
 			V = GL.embed(1)(model)[1]
