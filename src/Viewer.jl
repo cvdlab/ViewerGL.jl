@@ -598,7 +598,7 @@ function handleKeyPressEvent(viewer,key, scancode, action, mods)
 
 	if (key==GLFW.KEY_W)
 		dir=unprojectPoint(viewer,0.5*viewer.W,0.5*viewer.H)
-		println("dir",dir,"walk_speed",viewer.walk_speed)
+		# println("dir = $dir, walk_speed = $(viewer.walk_speed)")
 		viewer.pos=viewer.pos+dir*viewer.walk_speed
 		redisplay(viewer)
 		return
