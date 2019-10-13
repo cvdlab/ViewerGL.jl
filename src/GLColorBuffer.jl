@@ -2,6 +2,22 @@ using StaticArrays
 using ViewerGL
 GL = ViewerGL
 
+rgb = rgb = [77 202 137;
+       130 70 88;
+       198 180 71;
+       133 185 98;
+       175 115 69;
+       227 184 128;
+       144 121 86;
+       203 107 113;
+       231 157 134;
+       146 230 136;
+       79 153 125;
+       187 154 38]
+
+RGBMaya = [[rgb[k,:]' 255]./ 255 for k=1:12]
+const MayaColors = GL.Point4d.(RGBMaya)
+
 """
 Palette of twelve predefined colors
 """
@@ -18,9 +34,12 @@ const BROWN   = Point4d([0.65, 0.16, 0.16, 1.0])
 const GRAY    = Point4d([0.5, 0.5, 0.5, 1.0])
 const BLACK   = Point4d([0.0, 0.0, 0.0, 1.0])
 
-const COLORS = Dict(1=>WHITE, 2=>RED, 3=>GREEN, 4=>BLUE,
+palette = Dict(1=>WHITE, 2=>RED, 3=>GREEN, 4=>BLUE,
         5=>CYAN, 6=>MAGENTA, 7=>YELLOW, 8=>ORANGE,
         9=>PURPLE, 10=>BROWN, 11=>GRAY, 12=>BLACK )
+
+#COLORS = palette
+COLORS = MayaColors
 
 """
 	mutable struct GLColor
