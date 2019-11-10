@@ -5,7 +5,7 @@ os:
   - osx
 
 julia:
-  - 1.1
+  - 1.2
   - nightly
 
 matrix:
@@ -15,11 +15,6 @@ matrix:
  
 notifications:
   email: false
-
-install:
-  - julia -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/cvdlab/LinearAlgebraicRepresentation.jl"))'
-  - julia -e 'using Pkg; Pkg.add("ModernGL")'
-  - julia -e 'using Pkg; Pkg.add("GLFW")'
 
 addons:
   apt:
