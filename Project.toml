@@ -15,7 +15,6 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [compat]
-DataStructures = "^0.15.0"
 GLFW = "^3.0.0"
 LinearAlgebraicRepresentation = "^1.0.0"
 ModernGL = "^1.0.0"
