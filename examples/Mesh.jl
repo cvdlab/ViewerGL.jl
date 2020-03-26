@@ -20,7 +20,7 @@ V,EV = randomlines(300,.4)
 
 meshes = []
 for k=1:length(EV)
-	color = GL.COLORS[k%12+1] - (rand(Float64,4)*0.1)
+	color = GL.MayaColors[k%12+1] - (rand(Float64,4)*0.1)
 	push!(meshes, GL.GLGrid(V,[EV[k]],color,1) )
 end
 GL.VIEW(meshes);

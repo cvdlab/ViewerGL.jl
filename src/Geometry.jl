@@ -386,7 +386,7 @@ function GLPol(V::Lar.Points, CV::Lar.Cells,color=COLORS[1],alpha=1.0)::GL.GLMes
 	color *= alpha
 	for cell in CV
 		if length(cell)>=3
-			points = convert(Lar.Points, V[:,cell]')
+			points = convert(Array{Float64,2}, V[:,cell]')
 			ch = QHull.chull(points)
 			trias = ch.simplices
 			m = size(ch.points,1)
