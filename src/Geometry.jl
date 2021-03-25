@@ -176,6 +176,7 @@ EV = [[1,2],[2,3],[3,4],[4,1],[5,6],[6,7],[7,8],[8,5]]
 function GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp)::GL.GLMesh
       # triangulation
       W = convert(Lar.Points, V')
+			if size(W,2)==2 W=[W zeros(size(W,1))] end
       EV = Lar.cop2lar(copEV)
       trias = Lar.triangulate2d(W,EV)
       # mesh building
@@ -429,7 +430,7 @@ A grid is defined here as a cellular `p`-complex where all `p`-cells have the sa
 
 ```
 """
-function GLGrid(V::Lar.Points,CV::Lar.Cells,c=GL.COLORS[1],alpha=0.2::Float64)::GL.GLMesh
+function GLGrid(V::Lar.Points,CV::Lar.Cells,c=GL.COLORS[1],alpha=1.0::Float64)::GL.GLMesh
 	# test if all cells have same length
 	ls = map(length,CV)
 #	@assert( (&)(map((==)(ls[1]),ls)...) == true )

@@ -23,7 +23,7 @@ mutable struct GLMesh
 
 	# constructor
 	function GLMesh()
-		ret=new(POINTS,Matrix4(),GLVertexArray(),GLVertexBuffer(),GLVertexBuffer(),GLVertexBuffer())
+		ret=new(POINTS,Matrix4(),GLVertexArray(), GLVertexBuffer(),GLVertexBuffer(),GLVertexBuffer())
 		finalizer(releaseGpuResources, ret)
 		return ret
 	end

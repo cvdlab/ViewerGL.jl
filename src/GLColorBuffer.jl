@@ -38,8 +38,8 @@ const palette = Dict(1=>WHITE, 2=>RED, 3=>GREEN, 4=>BLUE,
         5=>CYAN, 6=>MAGENTA, 7=>YELLOW, 8=>ORANGE,
         9=>PURPLE, 10=>BROWN, 11=>GRAY, 12=>BLACK )
 
-#const COLORS = palette
-const COLORS = MayaColors
+const COLORS = palette
+#const COLORS = MayaColors
 
 """
 	mutable struct GLColor

@@ -277,7 +277,7 @@ function numbering(numberSizeScaling=1.)
 		V,cells = model
 		meshes = []
 		if length(cells)>2
-			background = GL.GLHulls(V, cells[3], color, alpha)
+			#background = GL.GLHulls(V, cells[3], color, alpha)
 		end
 		if size(V,1)==2
 			V = GL.embed(1)(model)[1]
@@ -302,7 +302,7 @@ function numbering(numberSizeScaling=1.)
 			push!( meshes, mesh )
 		  end
 		end
-		if length(cells)>2 push!( meshes, background ) end
+		#if length(cells)>2 push!( meshes, background ) end
 		return meshes
 	end
 	return numbering0
