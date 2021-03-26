@@ -20,8 +20,8 @@ FV = convert(Lar.Cells,FV)
 
 
 VV = [[k] for k=1:size(V,2)]
-model = (V, [VV,EV,FV])::Lar.LARmodel
+model = (V, [VV,EV,FV])::Lar.LARmodel;
 
-meshes = GL.numbering(1.5)(model, GL.COLORS[1], 0.1)
+meshes = GL.numbering(1.5)(model, GL.COLORS[1], 0.1);
 #push!(meshes, GL.GLFrame)
 GL.VIEW(meshes);

@@ -265,11 +265,12 @@ Different `colors` and size are used for the various dimensional cells.
 # Examples
 
 ```
-model = Lar.cuboidGrid([3,4,2], true)
-Plasm.view(Plasm.numbering()(model))
+model = Lar.cuboidGrid([3,4,2], true);
+GL.VIEW(GL.numbering()(model));
 
-model = Lar.cuboidGrid([10,10], true)
-Plasm.view(Plasm.numbering(1.5)(model))
+model = Lar.cuboidGrid([10,10], true);
+meshes = GL.numbering(1.5)(model);
+GL.VIEW(meshes)
 ```
 """
 function numbering(numberSizeScaling=1.)
@@ -321,7 +322,7 @@ Vertices in `V` are stored by row.
 
 ```julia
 using LinearAlgebraicRepresentation
-using Plasm, SparseArrays
+using SparseArrays
 Lar = LinearAlgebraicRepresentation
 
 V,EV = Lar.randomcuboids(7, 1.0);
@@ -331,7 +332,7 @@ cop_EV = Lar.coboundary_0(EV::Lar.Cells);
 cop_EW = convert(Lar.ChainOp, cop_EV);
 V, copEV, copFE = Lar.planar_arrangement(W, cop_EW);
 
-Plasm.view( Plasm.numbering(0.05)((V, copEV, copFE)) )
+VIEW( GL.numbering(0.05)((V, copEV, copFE)) )
 ```
 """
 function numbering1(scaling=0.1)
