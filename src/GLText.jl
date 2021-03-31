@@ -1,6 +1,7 @@
 using DataStructures,SparseArrays
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
+import DataStructures
 import Base.cat
 import Base.∘
 using ViewerGL
@@ -273,7 +274,7 @@ meshes = GL.numbering(1.5)(model);
 GL.VIEW(meshes)
 ```
 """
-function numbering(numberSizeScaling=1.)
+function numbering(sizeScaling=1.)
 	function numbering0(model,color=COLORS[1],alpha=0.2)
 		V,cells = model
 		meshes = []
@@ -284,14 +285,15 @@ function numbering(numberSizeScaling=1.)
 			V = GL.embed(1)(model)[1]
 		end
 		wireframe = V,cells[2]
-		ns = numberSizeScaling
+		ns = sizeScaling
 		gcode = GL.textWithAttributes("centre", 0, 0.1ns, 0.2ns, 0.025ns)
 		push!(meshes,GL.GLLines(wireframe[1],wireframe[2],color))
 
 		colors = GL.COLORS[3], GL.COLORS[7], GL.COLORS[5], GL.COLORS[8]
-		for (h,skel) in enumerate(cells)
+		
+		for (h,skel) in zip(1:length(cells),cells)
 	 	  nums = []
-		  for (k,cell) in enumerate(skel)
+		  for (k,cell) in zip(1:length(skel),skel)
 				center = sum([V[:,v] for v in cell])/length(cell)
 				code = GL.embed(1)( gcode(string(k)) )
 				scaling = (0.6+0.1h,0.6+0.1h,1)
@@ -299,8 +301,8 @@ function numbering(numberSizeScaling=1.)
 					Lar.t(center...), Lar.s(scaling...), code ]) ))
 		  end
 		  for num in nums
-			mesh = GL.GLLines(num[1],num[2],colors[h])
-			push!( meshes, mesh )
+				mesh = GL.GLLines(num[1],num[2],colors[h])
+				push!( meshes, mesh )
 		  end
 		end
 		#if length(cells)>2 push!( meshes, background ) end
@@ -310,43 +312,75 @@ function numbering(numberSizeScaling=1.)
 end
 
 
+#function numbering1(Model,scaling=1.)
+#	function numbering0(model,color=COLORS[1],alpha=0.2)
+#		# dictionary of global unit chains
+#		SkelDict = []
+#		for (k,skel) in enumerate(Model[2])
+#			push!(SkelDict, DataStructures.OrderedDict(zip(skel,1:length(skel))))
+#		end
+#		# dictionary of local unit chains
+#		skeldict = []
+#		for (k,skel) in enumerate(model[2])
+#		  push!(skeldict, DataStructures.OrderedDict(zip(skel,1:length(skel))))
+#    end
+#		# dictionary of local unit chains with global keys
+#		skelDict = []
+#		for (k,skel) in enumerate(model[2])
+#			vect = []
+#			for key in collect(keys(skeldict[k]))
+#				push!(vect, (key,SkelDict[k][key]))
+#			end
+#			push!(skelDict, DataStructures.OrderedDict(vect))
+#		end
+#		@show SkelDict; # dizionario globale (SD)
+#		@show skeldict; # dizionario locale (sd)
+#		@show skelDict; # dizionario locale con chiavi globali (sD)
+#	end
+#	return numbering0
+#end
 
-"""
-#	numbering(scaling=0.1)
-#		(V::Lar.Points, copEV::Lar.ChainOp, copFE::Lar.ChainOp)::Lar.Hpc
-
-Produce the numbered `Hpc` of `planar_arrangement()` 2D output.
-Vertices in `V` are stored by row.
-
-# Example
-
-```julia
-using LinearAlgebraicRepresentation
-using SparseArrays
-Lar = LinearAlgebraicRepresentation
-
-V,EV = Lar.randomcuboids(7, 1.0);
-V = GL.normalize(V,flag=true);
-W = convert(Lar.Points, V');
-cop_EV = Lar.coboundary_0(EV::Lar.Cells);
-cop_EW = convert(Lar.ChainOp, cop_EV);
-V, copEV, copFE = Lar.planar_arrangement(W, cop_EW);
-
-VIEW( GL.numbering(0.05)((V, copEV, copFE)) )
-```
-"""
-function numbering1(scaling=0.1)
-	function numbering0(model::Tuple{Lar.Points,Lar.ChainOp,Lar.ChainOp})
-		(V, copEV, copFE) = model
-		VV = [[k] for k=1:size(V,1)]
-		EV = [SparseArrays.findnz(copEV[h,:])[1] for h=1:size(copEV,1)]
-		FV = [collect(Set(cat(EV[e] for e in SparseArrays.findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
-		FV = convert(Array{Array{Int64,1},1}, FV)
-		model = (convert(Lar.Points, V'), Lar.Cells[VV,EV,FV])
-		return GL.numbering(scaling)(model)
-	end
-	return numbering0
-end
+#"""
+##	numbering(scaling=0.1)
+##		(V::Lar.Points, copEV::Lar.ChainOp, copFE::Lar.ChainOp)::Lar.Hpc
+#
+#Produce the numbered `Hpc` of `planar_arrangement()` 2D output.
+#Vertices in `V` are stored by row.
+#
+## Example
+#
+#```julia
+#using LinearAlgebraicRepresentation
+#using SparseArrays
+#Lar = LinearAlgebraicRepresentation
+#using ViewerGL; GL = ViewerGL
+#
+#V,EV = Lar.randomcuboids(10, 1.0);
+#V = Lar.normalize(V,flag=true);
+#W = convert(Lar.Points, V');
+#cop_EV = Lar.coboundary_0(EV::Lar.Cells);
+#cop_EW = convert(Lar.ChainOp, cop_EV);
+#V, copEV, copFE = Lar.planar_arrangement(W, cop_EW);
+#EV = Lar.cop2lar(copEV)
+#FV = [collect(Set(cat(EV[e] for e in SparseArrays.findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
+#VV = [[v] for v=1:size(V,1)]
+#model = (convert(Lar.Points, V'), Lar.Cells[VV,EV,FV])
+#meshes = GL.numbering(.02)(model, GL.COLORS[1], 0.1);
+#GL.VIEW(meshes);
+#```
+#"""
+#function numbering1(scaling=0.1)
+#	function numbering0(model::Tuple{Lar.Points,Lar.ChainOp,Lar.ChainOp})
+#		(V, copEV, copFE) = model
+#		VV = [[k] for k=1:size(V,1)]
+#		EV = [SparseArrays.findnz(copEV[h,:])[1] for h=1:size(copEV,1)]
+#		FV = [collect(Set(cat(EV[e] for e in SparseArrays.findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
+#		#FV = convert(Array{Array{Int64,1},1}, FV)
+#		model = (convert(Lar.Points, V'), Lar.Cells[VV,EV,FV])
+#		return GL.numbering(scaling)(model)
+#	end
+#	return numbering0
+#end
 
 
 function cons(funs)
@@ -401,7 +435,7 @@ Apply the `affineMatrix` parameter to the vertices of `larmodel`.
 julia> square = LinearAlgebraicRepresentation.cuboid([1,1])
 ([0.0 0.0 1.0 1.0; 0.0 1.0 0.0 1.0], Array{Int64,1}[[1, 2, 3, 4]])
 
-julia> Plasm.apply(LinearAlgebraicRepresentation.t(1,2))(square)
+julia> Lar.apply(LinearAlgebraicRepresentation.t(1,2))(square)
 ([1.0 1.0 2.0 2.0; 2.0 3.0 2.0 3.0], Array{Int64,1}[[1, 2, 3, 4]])
 ```
 """

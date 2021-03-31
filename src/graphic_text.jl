@@ -1,9 +1,8 @@
-using DataStructures
-using LinearAlgebraicRepresentation
+using DataStructures, ViewerGL, LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
 import Base.cat
 
-View = Plasm.view
+View = ViewerGL.view
 
 # Graphic text font implementation
 # Vector definition of printable ASCII codes as one-dimensional LAR models.
@@ -135,14 +134,14 @@ ascii_LAR = DataStructures.OrderedDict{Int,Lar.LAR}()
 Font design: *Geometric Programming for Computer-Aided Design*, Wiley, 2003.
 # Example
 ```
-julia> Plasm.ascii_LAR[46]
+julia> ascii_LAR[46]
 ([2.0 2.0 … 1.5 2.0; 0.0 0.5 … 0.0 0.0], Array{Int64,1}[[1, 2], [2, 3], [3, 4], [4, 5]])
 
-julia> Plasm.ascii_LAR[126]
+julia> ascii_LAR[126]
 ([1.0 1.75 2.75 3.5; 5.0 5.5 5.0 5.5], Array{Int64,1}[[1, 2], [2, 3], [3, 4]])
 ```
 """
-ascii_LAR = DataStructures.OrderedDict(zip(32:126,Plasm.hpcs))
+ascii_LAR = DataStructures.OrderedDict(zip(32:126,hpcs))
 
 
 
@@ -175,13 +174,21 @@ end
 
 # Example
 ```
-julia> Plasm.charseq("PLaSM")
-5-element Array{Char,1}:
- 'P'
- 'L'
- 'a'
- 'S'
- 'M'
+julia> collect("PLaSM or LAR?")
+13-element Vector{Char}:
+ 'P': ASCII/Unicode U+0050 (category Lu: Letter, uppercase)
+ 'L': ASCII/Unicode U+004C (category Lu: Letter, uppercase)
+ 'a': ASCII/Unicode U+0061 (category Ll: Letter, lowercase)
+ 'S': ASCII/Unicode U+0053 (category Lu: Letter, uppercase)
+ 'M': ASCII/Unicode U+004D (category Lu: Letter, uppercase)
+ ' ': ASCII/Unicode U+0020 (category Zs: Separator, space)
+ 'o': ASCII/Unicode U+006F (category Ll: Letter, lowercase)
+ 'r': ASCII/Unicode U+0072 (category Ll: Letter, lowercase)
+ ' ': ASCII/Unicode U+0020 (category Zs: Separator, space)
+ 'L': ASCII/Unicode U+004C (category Lu: Letter, uppercase)
+ 'A': ASCII/Unicode U+0041 (category Lu: Letter, uppercase)
+ 'R': ASCII/Unicode U+0052 (category Lu: Letter, uppercase)
+ '?': ASCII/Unicode U+003F (category Po: Punctuation, other)
 ```
 """
 function charseq(mystring)
@@ -196,18 +203,11 @@ Compute the one-dim *LAR model* drawing the contents of `mystring`
 
 # Example
 ```
-julia> model = Plasm.text("PLaSM")
-# output
-([0.0 0.0 3.0 4.0 4.0 3.0 0.0 9.0 5.0 5.0 14.0 13.0 11.0 10.0
-10.0 11.0 13.0 14.0 14.0 14.0 15.0 16.0 18.0 19.0 19.0 18.0 16.0 15.0 15.0 16.0 18.0
-19.0 20.0 20.0 22.0 24.0 24.0; 0.0 6.0 6.0 5.0 3.0 2.0 2.0 0.0 0.0 6.0 1.0 0.0 0.0 1.0
-2.0 3.0 3.0 2.0 0.0 3.0 1.0 0.0 0.0 1.0 2.0 3.0 3.0 4.0 5.0 6.0 6.0 5.0 0.0 6.0 4.0
-6.0 0.0],
-Array{Int64,1}[[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[8,9],[9,10],[11,12],[12,13],[13,14],
-[14,15],[15,16],[16,17],[17,18],[18,11],[19,20],[21,22],[22,23],[23,24],[24,25],[25,26],
-[26,27],[27,28],[28,29],[29,30],[30,31],[31,32],[33,34],[34,35],[35,36],[36,37]])
+julia> model = ViewerGL.text("PLaSM");
+julia> @show model;
+model = ([0.0 0.0 0.125 0.16666667 0.16666667 0.125 0.0 0.375 0.20833333 0.20833333 0.58333333 0.54166667 0.45833333 0.41666667 0.41666667 0.45833333 0.54166667 0.58333333 0.58333333 0.58333333 0.625 0.66666667 0.75 0.79166667 0.79166667 0.75 0.66666667 0.625 0.625 0.66666667 0.75 0.79166667 0.83333333 0.83333333 0.91666667 1.0 1.0; 0.0 0.25 0.25 0.20833333 0.125 0.08333333 0.08333333 0.0 0.0 0.25 0.04166667 0.0 0.0 0.04166667 0.08333333 0.125 0.125 0.08333333 0.0 0.125 0.04166667 0.0 0.0 0.04166667 0.08333333 0.125 0.125 0.16666667 0.20833333 0.25 0.25 0.20833333 0.0 0.25 0.16666667 0.25 0.0; 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0], [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [8, 9], [9, 10], [11, 12], [12, 13], [13, 14], [14, 15], [15, 16], [16, 17], [17, 18], [18, 11], [19, 20], [21, 22], [22, 23], [23, 24], [24, 25], [25, 26], [26, 27], [27, 28], [28, 29], [29, 30], [30, 31], [31, 32], [33, 34], [34, 35], [35, 36], [36, 37]])
 
-julia> Plasm.view(model)
+julia> ViewerGL.view(model)
 ```
 """
 function text(mystring)
@@ -288,7 +288,7 @@ Partial implementation of the GKS's graphics primitive `text`.
 # Example
 
 ```
-Plasm.view(Plasm.textWithAttributes("left", pi/4)("PLaSM"))
+ViewerGL.view(ViewerGL.textWithAttributes("left", pi/4)("PLaSM"))
 ```
 """
 function textWithAttributes(textalignment="centre", textangle=0,
@@ -331,89 +331,4 @@ function embed(n)
 		return [larmodel[1]; zeros(n,size(larmodel[1],2))], larmodel[2]
 	end
 	return embed0
-end
-
-
-"""
-	numbering(model::LARmodel)
-
-Display a *wireframe* of `model` cells, of any dimension, with their *ordinal number*.
-Different `colors` and size are used for the various dimensional cells.
-
-# Examples
-
-```
-model = Lar.cuboidGrid([3,4,2], true)
-Plasm.view(Plasm.numbering()(model))
-
-model = Lar.cuboidGrid([10,10], true)
-Plasm.view(Plasm.numbering(1.5)(model))
-```
-"""
-function numbering(numberSizeScaling=1)
-	p = PyCall.pyimport("pyplasm")
-	function numbering0(model)
-		V,cells = model
-		if size(V,1)==2
-			V = Plasm.embed(1)(model)[1]
-		end
-		wireframe = Plasm.lar2hpc(V,cells[2])
-		ns = numberSizeScaling
-		gcode = Plasm.textWithAttributes("centre", 0, 0.1ns, 0.2ns, 0.025ns)
-		scene = [wireframe]
-		for (h,skel) in enumerate(cells)
-			  colors = [p["GREEN"], p["YELLOW"], p["CYAN"], p["ORANGE"]]
-		 	  nums = []
-			  for (k,cell) in enumerate(skel)
-				center = sum([V[:,v] for v in cell])/length(cell)
-				code = Plasm.embed(1)( gcode(string(k)) )
-				scaling = (0.6+0.1h,0.6+0.1h,1)
-				push!(nums, Lar.struct2lar( Lar.Struct([
-					Lar.t(center...), Lar.s(scaling...), code ]) ))
-			end
-			hpc = Plasm.lar2hpc(nums)
-			push!( scene, p["COLOR"](colors[h])(hpc) )
-		end
-		p["STRUCT"]( scene )
-	end
-	return numbering0
-end
-
-
-
-"""
-#	numbering(scaling=0.1)
-#		(V::Lar.Points, copEV::Lar.ChainOp, copFE::Lar.ChainOp)::Lar.Hpc
-
-Produce the numbered `Hpc` of `planar_arrangement()` 2D output.
-Vertices in `V` are stored by row.
-
-# Example
-
-```julia
-using LinearAlgebraicRepresentation
-using Plasm, SparseArrays
-Lar = LinearAlgebraicRepresentation
-
-V,EV = Lar.randomcuboids(7, 1.0);
-V = Plasm.normalize(V,flag=true);
-W = convert(Lar.Points, V');
-cop_EV = Lar.coboundary_0(EV::Lar.Cells);
-cop_EW = convert(Lar.ChainOp, cop_EV);
-V, copEV, copFE = Lar.planar_arrangement(W, cop_EW);
-
-Plasm.view( Plasm.numbering(0.05)((V, copEV, copFE)) )
-```
-"""
-function numbering1(scaling=0.1)
-	function numbering0(model::Tuple{Lar.Points,Lar.ChainOp,Lar.ChainOp})
-		(V, copEV, copFE) = model
-		VV = [[k] for k=1:size(V,1)]
-		EV = [findnz(copEV[h,:])[1] for h=1:size(copEV,1)]
-		FV = [collect(Set(cat(EV[e] for e in findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
-		FV = convert(Array{Array{Int64,1},1}, FV)
-		model = (convert(Lar.Points, V'), Lar.Cells[VV,EV,FV])
-		return Plasm.numbering(scaling)(model)
-	end
-	return numbering0
 end

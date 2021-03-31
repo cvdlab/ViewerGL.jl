@@ -16,11 +16,17 @@ V, copEV, copFE, copCF = Lar.Arrangement.spatial_arrangement(
 
 cc = [copEV, copFE, copCF]
 LarModelString = Lar.lar2obj(V::Lar.Points, cc::Lar.ChainComplex)
-f = open("test/out3d.obj", "w")
+f = open("../test/out3d.obj", "w")
 print(f, LarModelString); close(f)
-V,EVs,FVs = Lar.obj2lar("test/out3d.obj")
+V,EVs,FVs = Lar.obj2lar("../test/out3d.obj")
 
 GL.VIEW([
       GL.GLPolyhedron(V, FVs[1])
       GL.GLFrame
 ]);
+
+V,CVs,FVs,EVs = Lar.pols2tria(V, copEV, copFE, copCF); # whole assembly
+GL.VIEW(GL.GLExplode(V,FVs,1.2,1.2,1.2,99,1));
+GL.VIEW(GL.GLExplode(V,EVs,1.5,1.5,1.5,99,1));
+GL.VIEW(GL.GLExplode(V,CVs[2:end],5,5,5,99,0.2));
+GL.VIEW(GL.GLExplode(V,[CVs[1]],1,1,1,99,0.5));
