@@ -210,14 +210,15 @@ GL.VIEW([
 ```
 """
 function GLPolygon(V::Lar.Points,EV::Lar.Cells)::GL.GLMesh
-      W = convert(Lar.Points, V')
-      
-      cop_EV = Lar.coboundary_0(EV::Lar.Cells)
-      cop_EW = convert(Lar.ChainOp, cop_EV)
-      V, copEV, copFE = Lar.Arrangement.planar_arrangement(
-            W::Lar.Points, cop_EW::Lar.ChainOp)
-@show V, SparseArrays.findnz(copEV), SparseArrays.findnz(copFE);
-      return GLPolygon(V, copEV, copFE)
+      trias = Lar.triangulate2d(V,EV) 
+      V = GL.two2three(V)
+
+      # mesh building
+      vertices,normals = GL.lar4mesh(V,trias)
+      ret=GL.GLMesh(GL.GL_TRIANGLES)
+      ret.vertices = GL.GLVertexBuffer(vertices)
+      ret.normals  = GL.GLVertexBuffer(normals)
+      return ret
 end
 
 

@@ -25,15 +25,20 @@ Float32[0.0, 0.0, -0.5, 0.0, 0.0, -0.5, 0.0, 0.0, -0.5, 0.0  …  -0.5, 0.0, 0.0
 ```
 """
 function lar4mesh(verts,cells) # cells are triangles
+	if size(verts,1) < size(verts,2) 
+		verts = Matrix(verts') 
+	end
+	if size(verts,2) == 2 
+		verts = [copy(verts) zeros(size(verts,1),1)] 
+	end
 	vertices=Vector{Float32}()
 	normals =Vector{Float32}()
 	for cell in cells
 		p3,p2,p1 = verts[cell[1],:],verts[cell[2],:],verts[cell[3],:]
-		p1 = convert(Point3d, p1)
-		p2 = convert(Point3d, p2)
-		p3 = convert(Point3d, p3)
-		n=0.5*computeNormal(p1::Point3d,p2::Point3d,p3::Point3d)
-
+		p1 = convert(GL.Point3d, p1)
+		p2 = convert(GL.Point3d, p2)
+		p3 = convert(GL.Point3d, p3)
+		n=0.5*GL.computeNormal(p1::GL.Point3d,p2::GL.Point3d,p3::GL.Point3d)
 		append!(vertices,p1); append!(normals,n)
 		append!(vertices,p2); append!(normals,n)
 		append!(vertices,p3); append!(normals,n)

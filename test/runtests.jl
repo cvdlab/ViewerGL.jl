@@ -1,5 +1,5 @@
 using Test
-#import Pkg; Pkg.add("LinearAlgebraicRepresentation")
+import Pkg; Pkg.add("LinearAlgebraicRepresentation")
 
 include("./Box.jl")
 include("./Frustum.jl")
