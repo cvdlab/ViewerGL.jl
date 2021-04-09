@@ -2,7 +2,7 @@ using DataStructures,SparseArrays
 using LinearAlgebraicRepresentation
 Lar = LinearAlgebraicRepresentation
 import DataStructures
-import Base.cat
+# import Base.cat
 import Base.∘
 using ViewerGL
 GL = ViewerGL
@@ -104,7 +104,7 @@ julia> GL.VIEW([GL.GLLar2gl(model...)])
 ```
 """
 function text(mystring,flag=true)
-	V,EV = GL.comp([ Lar.struct2lar, Lar.Struct, cat, distr,
+	V,EV = GL.comp([ Lar.struct2lar, Lar.Struct, Cat, distr,
 			GL.cons([ charpols, k(Lar.t(fontspacing+fontwidth,0)) ]),charseq ])(mystring)
 	out = GL.normalize3(V,flag),EV
 	return out
@@ -182,15 +182,15 @@ end
 
 
 """
- 	cat(args)
+ 	Cat(args)
 
 Redefined locally, as service to `textWithAttributes` implementation.
 ```
-julia> cat([[1,2],[3,4],[],[5,6,7,8]])==collect(1:8)
+julia> Cat([[1,2],[3,4],[],[5,6,7,8]])==collect(1:8)
 true
 ```
 """
-function cat(args)
+function Cat(args)
 	return reduce( (x,y) -> append!(x,y), args; init=[] )
 end
 
@@ -224,7 +224,7 @@ function textWithAttributes(textalignment="centre", textangle=0,
 		   align(textalignment),
 		   Lar.struct2lar,
 		   Lar.Struct,
-		   cat,
+		   Cat,
 		   distr,
 		   cons([ a2a(mat) ∘ charpols,
 				k(Lar.t(textwidth+textspacing,0)) ]),
@@ -362,25 +362,25 @@ end
 #cop_EW = convert(Lar.ChainOp, cop_EV);
 #V, copEV, copFE = Lar.planar_arrangement(W, cop_EW);
 #EV = Lar.cop2lar(copEV)
-#FV = [collect(Set(cat(EV[e] for e in SparseArrays.findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
+#FV = [collect(Set(Cat(EV[e] for e in SparseArrays.findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
 #VV = [[v] for v=1:size(V,1)]
 #model = (convert(Lar.Points, V'), Lar.Cells[VV,EV,FV])
 #meshes = GL.numbering(.02)(model, GL.COLORS[1], 0.1);
 #GL.VIEW(meshes);
 #```
 #"""
-#function numbering1(scaling=0.1)
-#	function numbering0(model::Tuple{Lar.Points,Lar.ChainOp,Lar.ChainOp})
-#		(V, copEV, copFE) = model
-#		VV = [[k] for k=1:size(V,1)]
-#		EV = [SparseArrays.findnz(copEV[h,:])[1] for h=1:size(copEV,1)]
-#		FV = [collect(Set(cat(EV[e] for e in SparseArrays.findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
-#		#FV = convert(Array{Array{Int64,1},1}, FV)
-#		model = (convert(Lar.Points, V'), Lar.Cells[VV,EV,FV])
-#		return GL.numbering(scaling)(model)
-#	end
-#	return numbering0
-#end
+function numbering1(scaling=0.1)
+function numbering0(model::Tuple{Lar.Points,Lar.ChainOp,Lar.ChainOp})
+	(V, copEV, copFE) = model
+	VV = [[k] for k=1:size(V,1)]
+	EV = [SparseArrays.findnz(copEV[h,:])[1] for h=1:size(copEV,1)]
+	FV = [collect(Set(Cat(EV[e] for e in SparseArrays.findnz(copFE[i,:])[1]))) for i=1:size(copFE,1)]
+	#FV = convert(Array{Array{Int64,1},1}, FV)
+	model = (convert(Lar.Points, V'), Lar.Cells[VV,EV,FV])
+	return GL.numbering(scaling)(model)
+end
+return numbering0
+end
 
 
 function cons(funs)

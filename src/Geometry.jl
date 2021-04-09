@@ -174,13 +174,16 @@ EV = [[1,2],[2,3],[3,4],[4,1],[5,6],[6,7],[7,8],[8,5]]
 ```
 """
 function GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp)::GL.GLMesh
+@show V;
+@show SparseArrays.findnz(copEV);
+@show SparseArrays.findnz(copFE);
       # triangulation
-      W = convert(Lar.Points, V')
-			if size(W,2)==2 W=[W zeros(size(W,1))] end
+      W = convert(Lar.Points, V)
+			#if size(W,2)==2 W=[W zeros(size(W,1))] end
       EV = Lar.cop2lar(copEV)
-      trias = Lar.triangulate2d(W,EV)
+      trias = Lar.triangulate2d(V,EV) 
       # mesh building
-      vertices,normals = GL.lar4mesh(V,trias)
+      vertices,normals = GL.lar4mesh(W,trias)
       ret=GL.GLMesh(GL.GL_TRIANGLES)
       ret.vertices = GL.GLVertexBuffer(vertices)
       ret.normals  = GL.GLVertexBuffer(normals)
@@ -208,16 +211,12 @@ GL.VIEW([
 """
 function GLPolygon(V::Lar.Points,EV::Lar.Cells)::GL.GLMesh
       W = convert(Lar.Points, V')
+      
       cop_EV = Lar.coboundary_0(EV::Lar.Cells)
       cop_EW = convert(Lar.ChainOp, cop_EV)
       V, copEV, copFE = Lar.Arrangement.planar_arrangement(
             W::Lar.Points, cop_EW::Lar.ChainOp)
-	  if size(V,2)==2
-		  V = GL.two2three(V)
-	  elseif size(V,2)==3
-		  V=V
-	  else error("bad coordinates: $V =")
-	  end
+@show V, SparseArrays.findnz(copEV), SparseArrays.findnz(copFE);
       return GLPolygon(V, copEV, copFE)
 end
 

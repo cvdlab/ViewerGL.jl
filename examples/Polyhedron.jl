@@ -11,7 +11,7 @@ cop_EW = convert(Lar.ChainOp, cop_EV);
 cop_FE = Lar.coboundary_1(V, FV::Lar.Cells, EV::Lar.Cells);
 W = convert(Lar.Points, V');
 
-V, copEV, copFE, copCF = Lar.Arrangement.spatial_arrangement(
+V, copEV, copFE, copCF = Lar.space_arrangement(
 	W::Lar.Points, cop_EW::Lar.ChainOp, cop_FE::Lar.ChainOp)
 
 cc = [copEV, copFE, copCF]

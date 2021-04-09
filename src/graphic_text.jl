@@ -272,7 +272,7 @@ end
 
 Redefined locally, as service to `textWithAttributes` implementation.
 """
-function cat(args)
+function Cat(args)
 	return reduce( (x,y) -> append!(x,y), args; init=[] )
 end
 

@@ -1,6 +1,5 @@
 name = "ViewerGL"
 uuid = "32496ab8-9004-11e9-0205-c9e71bda7ab0"
-authors = ["apaoluzzi <apaoluzzi@mac.com>"]
 version = "0.1.0"
 
 [deps]

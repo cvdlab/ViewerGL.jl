@@ -242,7 +242,8 @@ function explodecells(V,FVs,sx=1.2,sy=1.2,sz=1.2)
 	outVerts, outCells = [],[]
 	grids = []
 	for FV in FVs
-		vertidx = sort(collect(Set(cat(FV))))
+		# vertidx = sort(collect(Set(cat(FV))))
+		vertidx = union(FV...)
 		vcell = V[:,vertidx]
 		vdict = Dict(zip(vertidx,1:length(vertidx)))
 

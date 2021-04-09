@@ -1,3 +1,6 @@
+using ViewerGL
+GL = ViewerGL
+
 function allexamples()
     include("./Convex.jl")
     include("./Convex2d.jl")
