@@ -39,20 +39,25 @@ const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
    end
 
    # function GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp)::GL.GLMesh
-   @testset "GLPolygon" begin
-      V = hcat([[0,0],[1,0],[1,1],[0,1],[.25,.25],[.75,.25],[.75,.75],[.25,.75]]...)
-      EV = [[1,2],[2,3],[3,4],[4,1],[5,6],[6,7],[7,8],[8,5]]
-      W = convert(Lar.Points, V')
-      cop_EV = Lar.coboundary_0(EV::Lar.Cells)
-      cop_EW = convert(Lar.ChainOp, cop_EV)
-      V, copEV, copFE = Lar.Arrangement.planar_arrangement(W::Lar.Points, cop_EW::Lar.ChainOp)
-      V = GL.two2three(V)
-      @test typeof(GL.GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp))==GL.GLMesh
-      @test GL.GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp).primitive==4
-      @test GL.GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp).T==M44
-      @test GL.GLMesh.size==48
-      @test GL.GLMesh.isbitstype==false
-   end
+#   @testset "GLPolygon" begin
+#      V = hcat([[0,0],[1,0],[1,1],[0,1],[.25,.25],[.75,.25],[.75,.75],[.25,.75]]...)
+#      EV = [[1,2],[2,3],[3,4],[4,1],[5,6],[6,7],[7,8],[8,5]]
+#      W = convert(Lar.Points, V')
+#      cop_EV = Lar.coboundary_0(EV::Lar.Cells)
+#      cop_EW = convert(Lar.ChainOp, cop_EV)
+#      V, copEV, copFE = Lar.Arrangement.planar_arrangement(W::Lar.Points, cop_EW::Lar.ChainOp)
+#      
+#      EV = Lar.cop2lar(copEV)
+#      FE = Lar.cop2lar(copFE)
+#      
+#      V = GL.two2three(V)
+#      #@test typeof(GL.GLPolygon(V::Lar.Points,EV::Lar.Cells))== GL.GLMesh
+#      @test typeof(GL.GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp))== GL.GLMesh
+#      @test GL.GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp).primitive==4
+#      @test GL.GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp).T==M44
+#      @test GL.GLMesh.size==48
+#      @test GL.GLMesh.isbitstype==false
+#   end
 
    # function GLPolygon(V::Lar.Points,EV::Lar.Cells)::GL.GLMesh
    @testset "GLPolygon" begin
@@ -61,7 +66,6 @@ const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
       @test GL.GLPolygon(V::Lar.Points,EV::Lar.Cells).primitive==4
       @test GL.GLPolygon(V::Lar.Points,EV::Lar.Cells).T==M44
       @test GL.GLMesh.size==48
-      @test GL.GLMesh.isbitstype==false
    end
 
    # function GLLar2gl(V::Lar.Points, CV::Lar.Cells)::GL.GLMesh
@@ -71,8 +75,6 @@ const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
       @test GL.GLLar2gl(V::Lar.Points, CV::Lar.Cells).primitive==4
       @test GL.GLLar2gl(V::Lar.Points, CV::Lar.Cells).T==M44
       @test GL.GLMesh.size==48
-      @test GL.GLMesh.isbitstype==false
-      @test GL.GLVertexBuffer.isconcretetype==true
    end
 
    # function GLLines(points::Lar.Points,lines::Lar.Cells)
@@ -82,8 +84,6 @@ const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
       @test GL.GLLines(points::Lar.Points,lines::Lar.Cells).primitive==1
       @test GL.GLLines(points::Lar.Points,lines::Lar.Cells).T==M44
       @test GL.GLMesh.size==48
-      @test GL.GLMesh.isbitstype==false
-      @test GL.GLVertexBuffer.isconcretetype==true
    end
 
    # function GLText(string)
@@ -92,8 +92,6 @@ const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
       @test GL.GLText("Plasm").primitive==1
       @test GL.GLText("Plasm").T==M44
       @test GL.GLMesh.size==48
-      @test GL.GLMesh.isbitstype==false
-      @test GL.GLVertexBuffer.isconcretetype==true
    end
 
    # function GLPoints(points::Lar.Points) # points by row
@@ -103,8 +101,6 @@ const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
       @test GL.GLPoints(points::Lar.Points).primitive==0
       @test GL.GLPoints(points::Lar.Points).T==M44
       @test GL.GLMesh.size==48
-      @test GL.GLMesh.isbitstype==false
-      @test GL.GLVertexBuffer.isconcretetype==true
    end
 
    # function GLPolyhedron(V::Lar.Points, FV::Lar.Cells, T::GL.Matrix4=M44)
@@ -114,28 +110,7 @@ const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
       @test GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells).primitive==4
       @test GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells).T==M44
       @test GL.GLMesh.size==48
-      @test GL.GLMesh.isbitstype==false
-      @test GL.GLVertexBuffer.isconcretetype==true
    end
-#=
-   @testset "GLPolyhedron" begin
-      (V, FV, EV) = ([0.0 0.0 0.0 0.0 1.0 1.0 1.0 1.0; 0.0 0.0 1.0 1.0 0.0 0.0 1.0 1.0; 0.0 1.0 0.0 1.0 0.0 1.0 0.0 1.0], Array{Int64,1}[[1, 2, 3, 4], [5, 6, 7, 8], [1, 2, 5, 6], [3, 4, 7, 8], [1, 3, 5, 7], [2, 4, 6, 8]], Array{Int64,1}[[1, 2], [3, 4], [5, 6
-      ], [7, 8], [1, 3], [2, 4], [5, 7], [6, 8], [1, 5], [2, 6], [3, 7], [4, 8]])
-      cop_EV = Lar.coboundary_0(EV::Lar.Cells);
-      cop_EW = convert(Lar.ChainOp, cop_EV);
-      cop_FE = Lar.coboundary_1(V, FV::Lar.Cells, EV::Lar.Cells);
-      W = convert(Lar.Points, V');
-
-      V, copEV, copFE, copCF = Lar.Arrangement.spatial_arrangement(
-      	W::Lar.Points, cop_EW::Lar.ChainOp, cop_FE::Lar.ChainOp)
-      @test typeof(GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells))==GL.GLMesh
-      @test GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells).primitive==4
-      @test GL.GLPolyhedron(V::Lar.Points, FV::Lar.Cells).T==M44
-      @test GL.GLMesh.size==48
-      @test GL.GLMesh.isbitstype==false
-      @test GL.GLVertexBuffer.isconcretetype==true
-   end
-=#
 
    # function GLGrid(V::Lar.Points,CV::Lar.Cells,color=GL.COLORS[1])
    @testset "GLGrid" begin
@@ -144,8 +119,6 @@ const M44 = convert(GL.Matrix4, Matrix{Float64}(I,4,4))
       @test GL.GLGrid(V,FV,GL.Point4d(1,1,1,0.1)).primitive==7
       @test GL.GLGrid(V,FV,GL.Point4d(1,1,1,0.1)).T==M44
       @test GL.GLMesh.size==48
-      @test GL.GLMesh.isbitstype==false
-      @test GL.GLVertexBuffer.isconcretetype==true
    end
 
 end

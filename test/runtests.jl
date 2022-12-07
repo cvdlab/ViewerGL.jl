@@ -1,5 +1,8 @@
 using Test
-import Pkg; Pkg.add("LinearAlgebraicRepresentation")
+using LinearAlgebraicRepresentation
+using StaticArrays
+using ViewerGL
+GL = ViewerGL
 
 include("./Box.jl")
 include("./Frustum.jl")

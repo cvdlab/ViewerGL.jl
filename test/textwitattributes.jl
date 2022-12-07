@@ -1,32 +1,32 @@
-def TEXTWITHATTRIBUTES (TEXTALIGNMENT='centre', TEXTANGLE=0, TEXTWIDTH=1.0, TEXTHEIGHT=2.0, TEXTSPACING=0.25):
-    PRINT(TEXTALIGNMENT)
-    ALIGN = IF([ K(TEXTALIGNMENT == 'centre'),
-				 COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIV), CONS([ SIZE(1), K(-2) ]) ]), ID ]) ]),
-				 IF([ K(TEXTALIGNMENT == 'right'),
-					  COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIFF), SIZE(1) ]), ID ]) ]),
-					  ID ]) ])
-    HANDLE = CONS([
-				COMP([ AA(S([1,2])([TEXTWIDTH/FONTWIDTH, TEXTHEIGHT/FONTHEIGHT])), charpols ]),
-				K(T(1)(TEXTSPACING + TEXTWIDTH)) ])
-    fn = COMP([ R([1,2])(TEXTANGLE), ALIGN, STRUCT, CAT, DISTR, HANDLE, CHARSEQ ])
-    return fn
+#def TEXTWITHATTRIBUTES (TEXTALIGNMENT='centre', TEXTANGLE=0, TEXTWIDTH=1.0, TEXTHEIGHT=2.0, TEXTSPACING=0.25):
+#    PRINT(TEXTALIGNMENT)
+#    ALIGN = IF([ K(TEXTALIGNMENT == 'centre'),
+#				 COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIV), CONS([ SIZE(1), K(-2) ]) ]), ID ]) ]),
+#				 IF([ K(TEXTALIGNMENT == 'right'),
+#					  COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIFF), SIZE(1) ]), ID ]) ]),
+#					  ID ]) ])
+#    HANDLE = CONS([
+#				COMP([ AA(S([1,2])([TEXTWIDTH/FONTWIDTH, TEXTHEIGHT/FONTHEIGHT])), charpols ]),
+#				K(T(1)(TEXTSPACING + TEXTWIDTH)) ])
+#    fn = COMP([ R([1,2])(TEXTANGLE), ALIGN, STRUCT, CAT, DISTR, HANDLE, CHARSEQ ])
+#    return fn
 
-	function textWithAttributes(textalignment="centre", textangle=0, textwidth=1.0, textheight=2.0, textspacing=0.25)
-		id = x->x
-		align = if textalignment == 'centre'
-					COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIV), CONS([ SIZE(1), K(-2) ]) ]), ID ]) ]),
-				elseif textalignment == 'right'
-					COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIFF), SIZE(1) ]), id ]) ]),
-				else
-					id
-				end
-		handle = CONS([
-					COMP([ AA( Lar.s(GL.textwidth/GL.fontwidth, GL.textheight/GL.fontheight) ), GL.charpols ]),
-					GL.k(Lar.t(textwidth+textspacing,0)) ])
-
-		fn = COMP([ R([1,2])(TEXTANGLE), ALIGN, STRUCT, CAT, DISTR, HANDLE, GL.charseq ])
-		return fn
-	end
+#	function textWithAttributes(textalignment="centre", textangle=0, textwidth=1.0, textheight=2.0, textspacing=0.25)
+#		id = x->x
+#		align = if textalignment == 'centre'
+#					COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIV), CONS([ SIZE(1), K(-2) ]) ]), ID ]) ]),
+#				elseif textalignment == 'right'
+#					COMP([ APPLY, CONS([ COMP([ T(1), RAISE(DIFF), SIZE(1) ]), id ]) ]),
+#				else
+#					id
+#				end
+#		handle = CONS([
+#					COMP([ AA( Lar.s(GL.textwidth/GL.fontwidth, GL.textheight/GL.fontheight) ), GL.charpols ]),
+#					GL.k(Lar.t(textwidth+textspacing,0)) ])
+#
+#		fn = COMP([ R([1,2])(TEXTANGLE), ALIGN, STRUCT, CAT, DISTR, HANDLE, GL.charseq ])
+#		return fn
+#	end
 
 
 		function textWithAttributes0(strand)
