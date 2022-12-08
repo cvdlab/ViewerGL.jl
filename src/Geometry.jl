@@ -181,7 +181,7 @@ function GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp)::GL.GLMe
       W = convert(Lar.Points, V)
 			#if size(W,2)==2 W=[W zeros(size(W,1))] end
       EV = Lar.cop2lar(copEV)
-      trias = Lar.triangulate2d(V,EV) 
+      trias = Lar.triangulate2d(V,copEV) 
       # mesh building
       vertices,normals = GL.lar4mesh(W,trias)
       ret=GL.GLMesh(GL.GL_TRIANGLES)
@@ -285,7 +285,7 @@ function GLLines(points::Lar.Points,lines::Lar.Cells,color=COLORS[12],alpha=1.):
 	  end
 	  color *= alpha
       for line in lines
-            p2,p1 = points[line[1],:], points[line[2],:]
+            p2,p1 = points[line[2],:], points[line[1],:]
             t=p2-p1;  n=LinearAlgebra.normalize([-t[2];+t[1];t[3]])
 
             p1 = convert(GL.Point3d, p1)
