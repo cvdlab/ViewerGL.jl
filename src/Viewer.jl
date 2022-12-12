@@ -190,7 +190,8 @@ function VIEW(meshes,view=true)
 	minsize=min(S[1],S[2],S[3])
 
 	for mesh in viewer.meshes
-		mesh.T=translateMatrix(Point3d(-1.0,-1.0,-1.0)) * scaleMatrix(Point3d(2.0/maxsize,2.0/maxsize,2.0/maxsize)) * translateMatrix(-BOX.p1)
+	    mesh.T=translateMatrix(Point3d(-1.0,-1.0,-1.0)) * 
+scaleMatrix(Point3d(2.0/maxsize,2.0/maxsize,2.0/maxsize)) * translateMatrix(-BOX.p1)
 	end
 
 	if minsize == 0.0
@@ -251,7 +252,7 @@ julia> GL.VIEW([mesh])
 
 julia> viewer = GL.viewer
 
-julia> viewerstring = @show GL.viewer;
+julia> viewerstring = GL.viewer;
 
 julia> open("test/viewcube.txt", "w") do f
 	  	  print(f, viewerstring);
@@ -470,7 +471,7 @@ function handleResizeEvent(viewer)
 	size=GLFW.GetWindowSize(viewer.win)
 	viewer.W = size[1]*viewer.scalex
 	viewer.H = size[2]*viewer.scaley
-	redisplay(viewer)
+	redisplay(viewer);
 end
 
 
@@ -577,75 +578,68 @@ function handleKeyPressEvent(viewer,key, scancode, action, mods)
 
 	if action != GLFW.PRESS && action != GLFW.REPEAT
 		return
-	end
+	end;
 
 	x,y=0.5*viewer.W,0.5*viewer.H
 
 	if key == GLFW.KEY_ESCAPE
 		viewer.exitNow = true
 		return
-	end
+	end;
 
 	if (key==GLFW.KEY_KP_ADD)
 		viewer.walk_speed*=0.95
 		return
-	end
+	end;
 
 	if (key==GLFW.KEY_KP_SUBTRACT)
 		viewer.walk_speed*=(1.0/0.95)
 		return
-	end
+	end;
 
 	if (key==GLFW.KEY_W)
 		dir=unprojectPoint(viewer,0.5*viewer.W,0.5*viewer.H)
 		# println("dir = $dir, walk_speed = $(viewer.walk_speed)")
 		viewer.pos=viewer.pos+dir*viewer.walk_speed
-		redisplay(viewer)
-		return
-	end
+		return redisplay(viewer);
+	end;
 
 	if (key==GLFW.KEY_S)
 		dir=unprojectPoint(viewer,0.5*viewer.W,0.5*viewer.H)
 		viewer.pos=viewer.pos-dir*viewer.walk_speed
-		redisplay(viewer)
-		return
-	end
+		return redisplay(viewer);
+	end;
 
 	if (key==GLFW.KEY_O)
 		viewer.use_ortho=!viewer.use_ortho
 		println("use_ortho ",viewer.use_ortho)
-		redisplay(viewer)
-		return
-	end
+		return redisplay(viewer);
+	end;
 
 
 	if (key==GLFW.KEY_UP)
 		viewer.pos=viewer.pos+viewer.vup*viewer.walk_speed
-		redisplay(viewer)
-		return
-	end
+		return redisplay(viewer);
+	end;
 
 	if (key==GLFW.KEY_DOWN)
 		viewer.pos=viewer.pos-viewer.vup*viewer.walk_speed
-		redisplay(viewer)
-		return
-	end
+		return redisplay(viewer);
+	end;
 
 	if (key==GLFW.KEY_LEFT || key==GLFW.KEY_A)
 		right=normalized(cross(viewer.dir,viewer.vup))
 		viewer.pos=viewer.pos-right*viewer.walk_speed
-		redisplay(viewer)
-		return
-	end
+		return redisplay(viewer);
+	end;
 
 	if (key==GLFW.KEY_RIGHT || key==GLFW.KEY_D)
 		right=normalized(cross(viewer.dir,viewer.vup))
 		viewer.pos=viewer.pos+right*viewer.walk_speed
-		redisplay(viewer)
-		return
-	end
+		return redisplay(viewer);
+	end;
 
-end
+end;
 
 
 # example: see GLMesh.jl for an example about how to generate a mesh
