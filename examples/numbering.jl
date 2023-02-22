@@ -15,8 +15,7 @@ V,copEV,copFE = Lar.Arrangement.planar_arrangement(W,cop_EW);
 V = convert(Lar.Points,V');
 EV = Lar.cop2lar(copEV);
 FE = Lar.cop2lar(copFE);
-FV = map(union,[Lar.cat([EV[e] for e in f]) for f in FE]);
-FV = convert(Lar.Cells,FV);
+FV = [union([EV[e] for e in f]...) for f in FE]
 
 
 VV = [[k] for k=1:size(V,2)];
