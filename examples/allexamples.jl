@@ -2,6 +2,7 @@ using ViewerGL
 GL = ViewerGL
 
 function allexamples()
+    include("./twosquares.jl");
     include("./Convex.jl");
     include("./Convex2d.jl");
     include("./Grid.jl");
