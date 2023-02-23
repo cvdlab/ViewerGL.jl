@@ -243,7 +243,6 @@ end
 
 
 function explodecells(V,FVs,sx=1.2,sy=1.2,sz=1.2)
-	@show V,FVs
 	outVerts, outCells = [],[]
 	grids = []
 	for FV in FVs
