@@ -243,12 +243,13 @@ end
 
 
 function explodecells(V,FVs,sx=1.2,sy=1.2,sz=1.2)
-	V,FVs
+	@show V,FVs
 	outVerts, outCells = [],[]
 	grids = []
 	for FV in FVs
 		#vertidx = sort(collect(Set(cat(FV,dims=1))))
-		vertidx = sort(union(FV...))
+		vertidx = if !(FV==Any[]) sort(union(FV...))
+		    else break end
 		vcell = V[:,vertidx]
 		vdict = Dict(zip(vertidx,1:length(vertidx)))
 
