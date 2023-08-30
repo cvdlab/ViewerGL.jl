@@ -1,3 +1,5 @@
+using LinearAlgebraicRepresentation
+Lar = LinearAlgebraicRepresentation
 using ViewerGL
 GL = ViewerGL
 

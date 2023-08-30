@@ -173,7 +173,7 @@ V = hcat([[0,0],[1,0],[1,1],[0,1],[.25,.25],[.75,.25],[.75,.75],[.25,.75]]...)
 EV = [[1,2],[2,3],[3,4],[4,1],[5,6],[6,7],[7,8],[8,5]]
 ```
 """
-function GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp)::GL.GLMesh
+function GLPolygon(V::Lar.Points,copEV::Lar.ChainOp,copFE::Lar.ChainOp) ::GL.GLMesh
 @show V;
 @show SparseArrays.findnz(copEV);
 @show SparseArrays.findnz(copFE);
@@ -494,17 +494,23 @@ function GLGrid(V::Lar.Points,CV::Lar.Cells,c=GL.COLORS[1],alpha=1.0::Float64)::
 			p2 = convert(GL.Point3d, points[:,p2])
 			p3 = convert(GL.Point3d, points[:,p3])
 			p4 = convert(GL.Point3d, points[:,p4])
-			n = 0.5*GL.computeNormal(p1,p2,p3)
-			append!(vertices,p1); append!(vertices,p2); append!(vertices,p4); append!(vertices,p3);
-			append!(normals,n);   append!(normals,n);   append!(normals,n);   append!(normals,n);
-			append!(colors,c);    append!(colors,c);    append!(colors,c);    append!(colors,c);
+			n1 = 0.5*GL.computeNormal(p1,p2,p3)
+			n2 = 0.5*GL.computeNormal(p2,p3,p4)
+         append!(vertices,p1); append!(vertices,p2); append!(vertices,p4); append!(vertices,p3);
+         append!(normals,n1);   append!(normals,n1);   append!(normals,n1);   append!(normals,n1);
+         append!(colors,c);    append!(colors,c);    append!(colors,c);    append!(colors,c);
+			if !(n1 ≈ n2)
+            append!(vertices,p1); append!(vertices,p4); append!(vertices,p2); append!(vertices,p3);
+            append!(normals,n2);   append!(normals,n2);   append!(normals,n2);   append!(normals,n2);
+            append!(colors,c);    append!(colors,c);    append!(colors,c);    append!(colors,c);
+         end
 		end
       else # dim > 3
             error("cannot visualize dim > 3")
       end
       ret.vertices = GL.GLVertexBuffer(vertices)
-	  ret.normals  = GL.GLVertexBuffer(normals)
-	  ret.colors  = GL.GLVertexBuffer(colors)
+	   ret.normals  = GL.GLVertexBuffer(normals)
+	   ret.colors  = GL.GLVertexBuffer(colors)
       return ret
 end
 
